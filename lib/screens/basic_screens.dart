@@ -4,6 +4,8 @@ import 'package:handcrafts/screens/account_screen.dart';
 import 'package:handcrafts/screens/cart_screen.dart';
 import 'package:handcrafts/screens/favorite_screen.dart';
 import 'package:handcrafts/screens/home_screen.dart';
+import 'package:handcrafts/screens/login_register_screen.dart';
+import 'package:handcrafts/screens/regiser_as_screen.dart';
 import 'package:handcrafts/widgets/all_appBar.dart';
 import '../widgets/nav_btn_item.dart';
 
@@ -71,7 +73,7 @@ class _BasicScreensState extends State<BasicScreens>
                     HomeScreen(),
                     FavoriteScreen(),
                     CartScreen(),
-                    AccountScreen(),
+                    RegisterAsScreen(),
                   ],
                 ),
               ),

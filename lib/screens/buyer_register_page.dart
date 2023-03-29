@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:handcrafts/constants.dart';
 import 'package:handcrafts/widgets/app_text_form_field.dart';
 import 'package:handcrafts/widgets/text_form_label.dart';
-
 import '../widgets/app_button.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+class BuyerRegisterPage extends StatefulWidget {
+  const BuyerRegisterPage({Key? key}) : super(key: key);
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<BuyerRegisterPage> createState() => _BuyerRegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _BuyerRegisterPageState extends State<BuyerRegisterPage> {
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -58,7 +56,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           const SizedBox(height: 35),
                           AppButton(text: 'تسجيل',onPressed: (){
                             Navigator.pushNamed(context, '/basic_screens');
-                          },)
+                          },),
                         ],
                       ),
                   ),

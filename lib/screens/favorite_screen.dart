@@ -11,7 +11,7 @@ class FavoriteScreen extends StatefulWidget {
 class _FavoriteScreenState extends State<FavoriteScreen> {
   Color _favoriteColor = Colors.white;
   final List<Map> myProducts =
-      List.generate(100000, (index) => {"id": index, "name": "Product $index"})
+      List.generate(10, (index) => {"id": index, "name": "Product $index"})
           .toList();
 
   @override

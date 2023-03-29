@@ -6,14 +6,14 @@ import 'package:handcrafts/widgets/text_form_label.dart';
 
 import '../widgets/app_text_form_field.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class BuyerLoginPage extends StatefulWidget {
+  const BuyerLoginPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<BuyerLoginPage> createState() => _BuyerLoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _BuyerLoginPageState extends State<BuyerLoginPage> {
   final _formKey = GlobalKey<FormState>();
 
   @override

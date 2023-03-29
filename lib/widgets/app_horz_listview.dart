@@ -34,18 +34,18 @@ class _AppHorzListView extends State<AppHorzListView> {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: widget.onTap,
-                  child: Text(
+            child: InkWell(
+              onTap: widget.onTap,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
                     widget.listTitle,
                     style: const TextStyle(fontSize: 18),
                   ),
-                ),
-                const Icon(Icons.arrow_forward_ios),
-              ],
+                  const Icon(Icons.arrow_forward_ios),
+                ],
+              ),
             ),
           ),
           SizedBox(

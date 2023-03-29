@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:handcrafts/constants.dart';
-import 'package:handcrafts/screens/login_page.dart';
-import 'package:handcrafts/screens/register_page.dart';
+import 'package:handcrafts/screens/buyer_login_page.dart';
+import 'package:handcrafts/screens/buyer_register_page.dart';
 
 class LoginRegisterScreen extends StatefulWidget {
   const LoginRegisterScreen({Key? key}) : super(key: key);
@@ -28,6 +28,10 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen>
     super.dispose();
   }
 
+  BuyerLoginPage? loginPage ;
+  BuyerRegisterPage? registerPage ;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +42,7 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen>
             Column(
               children: [
                 Container(
-                  margin: const EdgeInsets.fromLTRB(40, 30, 40, 0),
+                  margin: const EdgeInsets.fromLTRB(40, 20, 40, 0),
                   height: 65,
                   padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
@@ -66,7 +70,7 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen>
                 Expanded(
                     child: TabBarView(
                       controller: _tabController,
-                      children: const [LoginPage(), RegisterPage()],
+                      children: const [BuyerLoginPage(), BuyerRegisterPage()],
                 ))
               ],
             ),

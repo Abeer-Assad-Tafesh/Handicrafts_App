@@ -7,11 +7,16 @@ class AppTextFormField extends StatelessWidget {
   final bool obscureText;
   final IconData? suffixIcon;
   final String? hintText;
+  final int maxLines;
+  final double width;
+
 
   const AppTextFormField({
     super.key,
     this.hintText,
     this.suffixIcon,
+    this.maxLines = 1,
+    this.width = double.infinity,
     this.obscureText = false,
     this.textInputField = TextInputType.text,
   });
@@ -20,8 +25,9 @@ class AppTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 48,
+      width: width,
       child: TextFormField(
-        maxLines: 1,
+        maxLines: maxLines,
         keyboardType: textInputField,
         obscureText: obscureText,
         decoration: InputDecoration(
