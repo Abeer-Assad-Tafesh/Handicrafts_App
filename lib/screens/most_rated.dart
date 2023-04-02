@@ -21,7 +21,7 @@ class _MostRatedState extends State<MostRated> {
       body: SafeArea(
         child: Column(
           children: [
-            const AllAppBar(),
+            AllAppBar(back: true, text: 'الأعلى تقييماً',),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: SizedBox(

@@ -16,7 +16,7 @@ class PurchaseDetails extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  const AllAppBar(),
+                  AllAppBar(back: true, text: 'شراء',),
                   SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 30, right: 30,top: 20),
@@ -24,7 +24,7 @@ class PurchaseDetails extends StatelessWidget {
                         children: [
                           const SizedBox(height: 25),
                           const TextFormLabel(
-                              icon: Icons.home_outlined, label: 'العنوان'),
+                              icon: "assets/icons/address.svg", label: 'العنوان'),
                           const SizedBox(height: 5),
                           const AppTextFormField(
                             maxLines: 5,
@@ -37,7 +37,7 @@ class PurchaseDetails extends StatelessWidget {
                                 child: Column(
                                   children: const [
                                     TextFormLabel(
-                                        icon: Icons.calendar_month_rounded,
+                                        icon: "assets/icons/calendar.svg",
                                         label: 'تاريخ التوصيل'),
                                     SizedBox(height: 5),
                                     AppTextFormField(),
@@ -51,7 +51,7 @@ class PurchaseDetails extends StatelessWidget {
                                 child: Column(
                                   children: const [
                                     TextFormLabel(
-                                        icon: Icons.access_time_rounded,
+                                        icon: "assets/icons/time.svg",
                                         label: 'وقت التوصيل'),
                                     SizedBox(height: 5),
                                     AppTextFormField(),
@@ -62,7 +62,7 @@ class PurchaseDetails extends StatelessWidget {
                           ),
                           const SizedBox(height: 22),
                           const TextFormLabel(
-                              icon: Icons.money, label: 'وسيلة الدفع'),
+                              icon: "assets/icons/pay_method.svg", label: 'وسيلة الدفع'),
                           const SizedBox(height: 5),
                           const AppTextFormField(
                             maxLines: 5,
@@ -105,7 +105,7 @@ class PurchaseDetails extends StatelessWidget {
                     const SizedBox(height: 60,),
                     AppButton(
                       onPressed: (){
-                        Navigator.pushReplacementNamed(context, '/sent_successfully');
+                        Navigator.pushReplacementNamed(context, '/sent_successfully_screen');
                       },
                       text: 'تأكيد الطلب',
                     ),

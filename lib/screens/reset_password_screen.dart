@@ -49,14 +49,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         child: Column(
                           children: [
                             const TextFormLabel(
-                                icon: Icons.lock_outline, label: 'كلمة المرور'),
+                                icon: "assets/icons/password.svg", label: 'كلمة المرور'),
                             const AppTextFormField(
                               suffixIcon: Icons.remove_red_eye_outlined,
                               obscureText: true,
                             ),
                             const SizedBox(height: 12),
                             const TextFormLabel(
-                                icon: Icons.lock_outline, label: 'تأكيد كلمة المرور'),
+                                icon: "assets/icons/password.svg", label: 'تأكيد كلمة المرور'),
                             const AppTextFormField(
                               suffixIcon: Icons.remove_red_eye_outlined,
                               obscureText: true,

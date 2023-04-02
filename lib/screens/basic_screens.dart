@@ -5,7 +5,7 @@ import 'package:handcrafts/screens/cart_screen.dart';
 import 'package:handcrafts/screens/favorite_screen.dart';
 import 'package:handcrafts/screens/home_screen.dart';
 import 'package:handcrafts/screens/login_register_screen.dart';
-import 'package:handcrafts/screens/regiser_as_screen.dart';
+import 'package:handcrafts/screens/register_as_screen.dart';
 import 'package:handcrafts/widgets/all_appBar.dart';
 import '../widgets/nav_btn_item.dart';
 
@@ -64,16 +64,17 @@ class _BasicScreensState extends State<BasicScreens>
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const AllAppBar(),
+              AllAppBar(back: false,),
               SizedBox(
                 height: 749,
                 child: TabBarView(
                   controller: _tabController,
+                  physics: const NeverScrollableScrollPhysics(),
                   children: const [
                     HomeScreen(),
                     FavoriteScreen(),
                     CartScreen(),
-                    RegisterAsScreen(),
+                    AccountScreen(),
                   ],
                 ),
               ),

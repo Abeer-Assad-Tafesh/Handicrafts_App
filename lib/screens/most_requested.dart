@@ -22,7 +22,7 @@ class _MostRequestedState extends State<MostRequested> {
       body: SafeArea(
         child: Column(
           children: [
-            AllAppBar(),
+            AllAppBar(back: true, text: 'الأعلى طلباً',),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: SizedBox(

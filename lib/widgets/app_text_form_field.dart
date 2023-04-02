@@ -9,6 +9,7 @@ class AppTextFormField extends StatelessWidget {
   final String? hintText;
   final int maxLines;
   final double width;
+  final double height;
 
 
   const AppTextFormField({
@@ -19,19 +20,24 @@ class AppTextFormField extends StatelessWidget {
     this.width = double.infinity,
     this.obscureText = false,
     this.textInputField = TextInputType.text,
+    this.height = 55,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 48,
+      height: height,
       width: width,
       child: TextFormField(
         maxLines: maxLines,
         keyboardType: textInputField,
         obscureText: obscureText,
+        // style: TextStyle(color: Colors.black),
         decoration: InputDecoration(
           hintText: hintText,
+          hintStyle: const TextStyle(fontSize: 12,color: Colors.grey),
+          filled: true,
+          fillColor: Colors.grey.shade50,
           suffixIcon: Icon(
             suffixIcon,
             color: kDefaultColor,
@@ -46,8 +52,8 @@ class AppTextFormField extends StatelessWidget {
 
   OutlineInputBorder getBorder() {
     return OutlineInputBorder(
-        borderSide: const BorderSide(
-          color: Colors.grey,
+        borderSide: BorderSide(
+          color: Colors.grey.shade200,
         ),
         borderRadius: BorderRadius.circular(10));
   }

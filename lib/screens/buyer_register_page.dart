@@ -42,16 +42,16 @@ class _BuyerRegisterPageState extends State<BuyerRegisterPage> {
                       key: _formKey,
                       child: Column(
                         children: [
-                          const TextFormLabel(icon: Icons.perm_identity, label: 'الاسم بالكامل'),
+                          const TextFormLabel(icon: "assets/icons/profile.svg", label: 'الاسم بالكامل'),
                           const AppTextFormField(),
                           const SizedBox(height: 10),
-                          const TextFormLabel(icon: Icons.email_outlined, label: 'البريد الإلكتروني'),
+                          const TextFormLabel(icon: "assets/icons/message.svg", label: 'البريد الإلكتروني'),
                           const AppTextFormField(),
                           const SizedBox(height: 10),
-                          const TextFormLabel(icon: Icons.phone, label: 'رقم الجوال'),
+                          const TextFormLabel(icon: "assets/icons/call.svg", label: 'رقم الجوال'),
                           const AppTextFormField(),
                           const SizedBox(height: 10),
-                          const TextFormLabel(icon: Icons.lock_outline, label: 'كلمة المرور'),
+                          const TextFormLabel(icon: "assets/icons/password.svg", label: 'كلمة المرور'),
                           const AppTextFormField(suffixIcon: Icons.remove_red_eye_outlined,obscureText: true,),
                           const SizedBox(height: 35),
                           AppButton(text: 'تسجيل',onPressed: (){

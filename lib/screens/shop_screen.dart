@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:handcrafts/screens/about_us_page.dart';
+import 'package:handcrafts/screens/about_shop_page.dart';
 import 'package:handcrafts/screens/shop_page.dart';
 
 import '../constants.dart';
@@ -65,7 +65,7 @@ class _ShopScreenState extends State<ShopScreen> with TickerProviderStateMixin {
             Expanded(
                 child: TabBarView(
                   controller: _tabController,
-                  children: const [ShopPage(), AboutUsPage()],
+                  children: const [ShopPage(), AboutShopPage()],
                 ))
           ],
         ),

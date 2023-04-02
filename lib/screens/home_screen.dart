@@ -15,17 +15,18 @@ class _HomeScreenState extends State<HomeScreen> {
     return ListView.builder(
       shrinkWrap: false,
       scrollDirection: Axis.vertical,
-      itemCount: 2+3, //( المتاجر + 'الأعلى تقييمًا'و'الأكثر طلبًا')
+        physics: const ClampingScrollPhysics(),
+        itemCount: 2+3, //( المتاجر + 'الأعلى تقييمًا'و'الأكثر طلبًا')
       itemBuilder: (context, index) {
         if(index == 0){
           return AppHorzListView(
             listTitle: 'الأكثر طلبًا',
-            onTap: (){Navigator.pushNamed(context, '/most_requested');}
+            onTap: (){Navigator.pushNamed(context, '/most_requested_screen');}
           );
         }else if(index == 1){
           return AppHorzListView(
             listTitle: 'الأعلى تقييمًا',
-              onTap: (){Navigator.pushNamed(context, '/most_rated');}
+              onTap: (){Navigator.pushNamed(context, '/most_rated_screen');}
           );
         }else {
           return AppHorzListView(

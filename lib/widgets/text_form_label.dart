@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:handcrafts/constants.dart';
 
 class TextFormLabel extends StatelessWidget {
 
-  final IconData icon;
+  final String icon;
   final String label;
 
    const TextFormLabel({super.key,
@@ -13,20 +14,24 @@ class TextFormLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(
-          icon,
-          color: kDefaultColor,
-        ),
-        const SizedBox(
-          width: 5,
-        ),
-        Text(
-          label,
-          style: const TextStyle(fontSize: 13, color: Colors.grey),
-        )
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6.0),
+      child: Row(
+        children: [
+          SvgPicture.asset(
+            icon,
+            color: kDefaultColor,
+          ),
+          const SizedBox(
+            width: 5,
+          ),
+          Text(
+            label,
+            style: const TextStyle(fontSize: 13, color: Colors.grey),
+          )
+        ],
+      ),
     );
   }
 }
+

@@ -52,12 +52,12 @@ class _BuyerLoginPageState extends State<BuyerLoginPage> {
                     child: Column(
                       children: [
                         const TextFormLabel(
-                            icon: Icons.email_outlined,
+                            icon: "assets/icons/message.svg",
                             label: 'البريد الإلكتروني (أو رقم الجوال)'),
                         const AppTextFormField(),
                         const SizedBox(height: 12),
                         const TextFormLabel(
-                            icon: Icons.lock_outline, label: 'كلمة المرور'),
+                            icon: "assets/icons/password.svg", label: 'كلمة المرور'),
                         const AppTextFormField(
                           suffixIcon: Icons.remove_red_eye_outlined,
                           obscureText: true,
@@ -115,7 +115,7 @@ class _BuyerLoginPageState extends State<BuyerLoginPage> {
                                                   ),
                                                   const SizedBox(height: 15),
                                                   const TextFormLabel(
-                                                      icon: Icons.phone,
+                                                      icon: "assets/icons/call.svg",
                                                       label: 'رقم الجوال'),
                                                   const AppTextFormField(),
                                                   const SizedBox(height: 30),
