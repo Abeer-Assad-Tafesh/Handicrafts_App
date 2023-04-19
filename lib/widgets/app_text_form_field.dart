@@ -10,6 +10,9 @@ class AppTextFormField extends StatelessWidget {
   final int maxLines;
   final double width;
   final double height;
+  final TextEditingController controller;
+  final String? Function(String) onChanged;
+  final String? Function(String?) validator;
 
 
   const AppTextFormField({
@@ -21,6 +24,9 @@ class AppTextFormField extends StatelessWidget {
     this.obscureText = false,
     this.textInputField = TextInputType.text,
     this.height = 55,
+    required this.controller,
+    required this.onChanged,
+    required this.validator,
   });
 
   @override
@@ -29,10 +35,12 @@ class AppTextFormField extends StatelessWidget {
       height: height,
       width: width,
       child: TextFormField(
+        controller: controller,
+        onChanged: onChanged,
+        validator: validator,
         maxLines: maxLines,
         keyboardType: textInputField,
         obscureText: obscureText,
-        // style: TextStyle(color: Colors.black),
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: const TextStyle(fontSize: 12,color: Colors.grey),

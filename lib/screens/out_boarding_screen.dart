@@ -43,7 +43,7 @@ class _OutBoardingScreenState extends State<OutBoardingScreen> {
                   alignment: AlignmentDirectional.topEnd,
                   child: TextButton(
                     onPressed: (){
-                      Navigator.pushReplacementNamed(context, '/basic_screens');
+                      Navigator.pushNamed(context, '/basic_screens');
                     },
                     child: Text('تخطي',
                       style: TextStyle(color: kDefaultColor,),),

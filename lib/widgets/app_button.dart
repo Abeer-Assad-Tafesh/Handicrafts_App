@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
+import '../constants.dart';
+
 class AppButton extends StatelessWidget {
 
   final String text;
   final double height;
   final double width;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   const AppButton({
     super.key,
-    required this.onPressed,
+    this.onPressed,
     required this.text,
     this.height = 55,
     this.width = 260

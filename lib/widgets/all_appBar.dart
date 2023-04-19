@@ -5,12 +5,10 @@ import 'package:handcrafts/constants.dart';
 class AllAppBar extends StatelessWidget {
   final bool back;
   final String text;
-
   AllAppBar({super.key, this.text = '', required this.back});
 
   @override
   Widget build(BuildContext context) {
-
     double size = MediaQuery.of(context).size.width;
 
     return Container(
@@ -31,7 +29,9 @@ class AllAppBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pop(context);
+                },
                 child: back
                     ? SizedBox(
                       width: size/3,
