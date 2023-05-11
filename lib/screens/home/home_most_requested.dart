@@ -30,7 +30,7 @@ class HomeMostRequested extends StatelessWidget {
                 children: const [
                   Text(
                     'الأكثر طلباً',
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 16),
                   ),
                   Icon(Icons.arrow_forward_ios),
                 ],

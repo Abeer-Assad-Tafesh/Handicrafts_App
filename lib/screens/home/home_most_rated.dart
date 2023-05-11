@@ -10,6 +10,7 @@ class HomeMostRated extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       height: 370,
       child: GetBuilder<RecommendedProductControllers>(
@@ -18,23 +19,23 @@ class HomeMostRated extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 5,top: 20,right: 10,bottom: 10),
+                padding: const EdgeInsets.only(
+                    left: 5, top: 20, right: 10, bottom: 10),
                 child: InkWell(
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MostRatedScreen()));
-                    // Get.to(() {
-                    //   ProductDetailsScreen(product: product)
-                    // });
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MostRatedScreen(),
+                      ),
+                    );
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
                       Text(
                         'الأعلى تقييماً',
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize: 16),
                       ),
                       Icon(Icons.arrow_forward_ios),
                     ],
@@ -50,20 +51,20 @@ class HomeMostRated extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) =>
                       // Container()
                       GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProductDetailsScreen(
-                                product: controller.recommendedProductList[index],
-                              ),
-                            ),
-                          );
-                          },
-                        child: AppCard(
-                          product: controller.recommendedProductList[index],
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProductDetailsScreen(
+                            product: controller.recommendedProductList[index],
+                          ),
                         ),
-                      ),
+                      );
+                    },
+                    child: AppCard(
+                      product: controller.recommendedProductList[index],
+                    ),
+                  ),
                 ),
               ),
             ],

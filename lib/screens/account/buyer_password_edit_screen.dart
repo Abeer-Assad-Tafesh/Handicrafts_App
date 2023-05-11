@@ -70,6 +70,7 @@ class _BuyerPasswordInfoScreenState extends State<BuyerPasswordInfoScreen> {
                       controller: _oldPasswordController,
                       onChanged: (value) {
                         _oldPassword = value;
+                        return _oldPassword;
                       },
                       validator: validateNewPassword,
                       suffixIcon: Icons.remove_red_eye_outlined,
@@ -83,8 +84,9 @@ class _BuyerPasswordInfoScreenState extends State<BuyerPasswordInfoScreen> {
                         label: 'كلمة المرور الجديدة'),
                     AppTextFormField(
                       controller: _newPasswordController,
-                      onChanged: (value) {
+                      onChanged: (value){
                         _newPassword = value;
+                        return _newPassword;
                       },
                       validator: validateNewPassword,
                       suffixIcon: Icons.remove_red_eye_outlined,
@@ -100,6 +102,7 @@ class _BuyerPasswordInfoScreenState extends State<BuyerPasswordInfoScreen> {
                       controller: _confirmedNewPasswordController,
                       onChanged: (value) {
                         _confirmedNewPassword = value;
+                        return _confirmedNewPassword;
                       },
                       validator: validateConfirmedNewPassword,
                       suffixIcon: Icons.remove_red_eye_outlined,

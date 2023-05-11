@@ -28,7 +28,8 @@ class AppCardState extends State<AppCard> {
       margin: EdgeInsets.fromLTRB(10, widget.topMargin, 10, 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-         boxShadow: [
+        color: Colors.green.shade100,
+        boxShadow: [
            // BoxShadow(color: Colors.grey,spreadRadius: 0.1,blurRadius: 3),
            // BoxShadow(color: Colors.grey,spreadRadius: 0.1,blurRadius: 5),
            // BoxShadow(color: Colors.grey,spreadRadius: 0.1,blurRadius: 5),
@@ -39,7 +40,6 @@ class AppCardState extends State<AppCard> {
              offset: const Offset(0, 3), // changes position of shadow
            ),
          ],
-        color: Colors.orangeAccent,
         image: DecorationImage(
           fit: BoxFit.cover,
           image: NetworkImage(
@@ -53,14 +53,14 @@ class AppCardState extends State<AppCard> {
               right: 10,
               top: 10,
               child: Container(
-                  height: 40,
-                  width: 40,
+                  height: 45,
+                  width: 45,
                   decoration: BoxDecoration(
                     color: Colors.grey.shade300,
                     borderRadius: BorderRadius.circular(100),
                   ),
                   child: IconButton(
-                    icon: Icon(Icons.favorite_rounded, color: _favoriteColor,),
+                    icon: Icon(Icons.favorite_rounded, color: _favoriteColor,size: 30),
                     onPressed: (){
                       setState(() {
                         if(_favoriteColor == Colors.white){

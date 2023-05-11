@@ -74,7 +74,29 @@ class AccountScreen extends StatelessWidget {
                           const SizedBox(width: 8,),
                           const Text('كلمة المرور',
                             style: TextStyle(
-                              fontSize: 15
+                                fontSize: 15
+                            ),),
+                        ],
+                      ),
+                      const Icon(Icons.arrow_forward_ios,size: 18,),
+                    ],
+                  ),
+                ),                const Divider(),
+                const SizedBox(height: 10,),
+                InkWell(
+                  onTap: (){
+                    Navigator.pushNamed(context, '/buyer_history_cart_screen');
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          SvgPicture.asset("assets/icons/password.svg"),
+                          const SizedBox(width: 8,),
+                          const Text('طلباتي',
+                            style: TextStyle(
+                                fontSize: 15
                             ),),
                         ],
                       ),

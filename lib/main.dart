@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:handcrafts/constants.dart';
 import 'package:handcrafts/controller/popular_product_controller.dart';
 import 'package:handcrafts/controller/recommended_product_controller.dart';
+import 'package:handcrafts/screens/account/cart_history.dart';
 import 'package:handcrafts/screens/shop/about_shop_page.dart';
 import 'package:handcrafts/screens/account/account_screen.dart';
 import 'package:handcrafts/screens/basic/basic_screens.dart';
@@ -34,6 +35,7 @@ import 'package:handcrafts/screens/shop/shop_page.dart';
 import 'package:handcrafts/screens/shop/shop_screen.dart';
 import 'package:handcrafts/screens/account/verification_code_screen.dart';
 import 'package:handcrafts/screens/account/who_us_screen.dart';
+import 'controller/cart_controller.dart';
 import 'helper/h_dependencies.dart' as dep ;
 
 Future<void> main() async {
@@ -104,6 +106,7 @@ class MyApp extends StatelessWidget {
         '/buyer_register_page' : (context) => const BuyerRegisterPage(),
         '/account_screen' : (context) => const AccountScreen(),
         '/buyer_info_screen' : (context) => const BuyerInfoScreen(),
+        '/buyer_history_cart_screen' : (context) => const BuyerCartHistoryScreen(),
         '/buyer_password_edit_screen' : (context) => const BuyerPasswordInfoScreen(),
         '/contact_us_screen' : (context) => const ContactUsScreen(),
         '/who_us_screen' : (context) => const WhoUsScreen(),
