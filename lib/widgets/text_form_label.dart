@@ -6,10 +6,18 @@ class TextFormLabel extends StatelessWidget {
 
   final String icon;
   final String label;
+  final double fontSize;
+  final double iconH;
+  final double iconW;
+
 
    const TextFormLabel({super.key,
     required this.icon,
-    required this.label
+    required this.label,
+     this.fontSize = 13,
+     this.iconH = 20,
+     this.iconW = 20,
+
   });
 
   @override
@@ -20,14 +28,16 @@ class TextFormLabel extends StatelessWidget {
         children: [
           SvgPicture.asset(
             icon,
-            color: kDefaultColor,
+            color: kPrimaryColor,
+            height: iconH,
+            width: iconW,
           ),
           const SizedBox(
-            width: 5,
+            width: 6,
           ),
           Text(
             label,
-            style: const TextStyle(fontSize: 13, color: Colors.grey),
+            style: TextStyle(fontSize: fontSize, color: Colors.grey),
           )
         ],
       ),

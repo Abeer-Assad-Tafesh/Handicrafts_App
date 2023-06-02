@@ -5,37 +5,48 @@ import 'package:get/get.dart';
 import 'package:handcrafts/constants.dart';
 import 'package:handcrafts/controller/popular_product_controller.dart';
 import 'package:handcrafts/controller/recommended_product_controller.dart';
-import 'package:handcrafts/screens/account/cart_history.dart';
-import 'package:handcrafts/screens/shop/about_shop_page.dart';
-import 'package:handcrafts/screens/account/account_screen.dart';
-import 'package:handcrafts/screens/basic/basic_screens.dart';
-import 'package:handcrafts/screens/account/buyer_info_screen.dart';
-import 'package:handcrafts/screens/account/buyer_password_edit_screen.dart';
-import 'package:handcrafts/screens/basic/cart_screen.dart';
-import 'package:handcrafts/screens/account/contact_us_screen.dart';
-import 'package:handcrafts/screens/basic/favorite_screen.dart';
+import 'package:handcrafts/screens/buyre/basic_buyer/basic_buyer_screens.dart';
+import 'package:handcrafts/screens/buyre/basic_buyer/cart_screen.dart';
+import 'package:handcrafts/screens/buyre/basic_buyer/favorite_screen.dart';
+import 'package:handcrafts/screens/buyre/basic_buyer/register_as_screen.dart';
+import 'package:handcrafts/screens/buyre/home/home_screen.dart';
+import 'package:handcrafts/screens/buyre/home/sub_home/most_rated_screen.dart';
+import 'package:handcrafts/screens/buyre/home/sub_home/most_requested_screen.dart';
+import 'package:handcrafts/screens/buyre/home/sub_home/product_details_screen.dart';
+import 'package:handcrafts/screens/buyre/login_register/buyer_login_page.dart';
+import 'package:handcrafts/screens/buyre/login_register/buyer_register_page.dart';
+import 'package:handcrafts/screens/buyre/login_register/login_register_screen.dart';
+import 'package:handcrafts/screens/buyre/profile/account_screen.dart';
+import 'package:handcrafts/screens/buyre/profile/buyer_info_screen.dart';
+import 'package:handcrafts/screens/buyre/profile/buyer_password_edit_screen.dart';
+import 'package:handcrafts/screens/buyre/profile/cart_history.dart';
+import 'package:handcrafts/screens/buyre/profile/contact_us_screen.dart';
+import 'package:handcrafts/screens/buyre/profile/question_screen.dart';
+import 'package:handcrafts/screens/buyre/profile/reset_password_screen.dart';
+import 'package:handcrafts/screens/buyre/profile/verification_code_screen.dart';
+import 'package:handcrafts/screens/buyre/profile/who_us_screen.dart';
+import 'package:handcrafts/screens/buyre/shop/about_shop_page.dart';
+import 'package:handcrafts/screens/buyre/shop/shop_page.dart';
+import 'package:handcrafts/screens/buyre/shop/shop_screen.dart';
 import 'package:handcrafts/screens/full_image_screen.dart';
 import 'package:handcrafts/screens/hand_loading_image_screen.dart';
-import 'package:handcrafts/screens/home/home_screen.dart';
+import 'package:handcrafts/screens/buyer_notifications_screen.dart';
 import 'package:handcrafts/screens/launch_screen.dart';
-import 'package:handcrafts/screens/login_register/buyer_login_page.dart';
-import 'package:handcrafts/screens/login_register/login_register_screen.dart';
-import 'package:handcrafts/screens/home/sub_home/most_rated_screen.dart';
-import 'package:handcrafts/screens/home/sub_home/most_requested_screen.dart';
-import 'package:handcrafts/screens/notifications_screen.dart';
 import 'package:handcrafts/screens/out_boarding_screen.dart';
-import 'package:handcrafts/screens/home/sub_home/product_details_screen.dart';
 import 'package:handcrafts/screens/purchase_details_screen.dart';
-import 'package:handcrafts/screens/account/question_screen.dart';
-import 'package:handcrafts/screens/basic/register_as_screen.dart';
-import 'package:handcrafts/screens/login_register/buyer_register_page.dart';
-import 'package:handcrafts/screens/account/reset_password_screen.dart';
+import 'package:handcrafts/screens/seller/basic_seller/basic_seller_screens.dart';
+import 'package:handcrafts/screens/seller/basic_seller/more_screen.dart';
+import 'package:handcrafts/screens/seller/basic_seller/statistics_screen.dart';
+import 'package:handcrafts/screens/seller/more_screens/contact_us_seller_page.dart';
+import 'package:handcrafts/screens/seller/more_screens/my_store_page.dart';
+import 'package:handcrafts/screens/seller/more_screens/question_seller_page.dart';
+import 'package:handcrafts/screens/seller/more_screens/store_info_page.dart';
+import 'package:handcrafts/screens/seller/more_screens/who_us_seller_page.dart';
+import 'package:handcrafts/screens/seller/product_ops/add_product_page.dart';
+import 'package:handcrafts/screens/seller/product_ops/edit_product.dart';
+import 'package:handcrafts/screens/seller/product_ops/request_details_page.dart';
+import 'package:handcrafts/screens/seller/seller_notifications_screen.dart';
 import 'package:handcrafts/screens/sent_successfully_screen.dart';
-import 'package:handcrafts/screens/shop/shop_page.dart';
-import 'package:handcrafts/screens/shop/shop_screen.dart';
-import 'package:handcrafts/screens/account/verification_code_screen.dart';
-import 'package:handcrafts/screens/account/who_us_screen.dart';
-import 'controller/cart_controller.dart';
 import 'helper/h_dependencies.dart' as dep ;
 
 Future<void> main() async {
@@ -53,7 +64,6 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -64,16 +74,16 @@ class MyApp extends StatelessWidget {
       locale:Locale('ar',),
       navigatorKey:Get.key,
       theme: ThemeData(
-        accentColor: kDefaultColor,
+        accentColor: kPrimaryColor,
         scaffoldBackgroundColor: Colors.white,
         textSelectionTheme: TextSelectionThemeData(
-          selectionColor: kDefaultColor,
-          cursorColor: kDefaultColor,
-          selectionHandleColor: kDefaultColor,
+          selectionColor: kPrimaryColor,
+          cursorColor: kPrimaryColor,
+          selectionHandleColor: kPrimaryColor,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            primary: kDefaultColor,
+            primary: kPrimaryColor,
           ),
         ),
       ),
@@ -86,16 +96,17 @@ class MyApp extends StatelessWidget {
       supportedLocales: const [
         Locale('ar'),
       ],
-      initialRoute: '/launch_screen',
+      initialRoute: '/basic_seller_screens',
       routes: {
         '/launch_screen' : (context) => const LaunchScreen(),
         '/out_boarding_screen' : (context) => const OutBoardingScreen(),
         '/verification_code_screen' : (context) => const VerificationCodeScreen(),
         '/reset_password_screen' : (context) => const ResetPasswordScreen(),
-        '/basic_screens' : (context) => const BasicScreens(),
+
+        '/basic_buyer_screens' : (context) => const BasicBuyerScreens(),
         '/home_screen' : (context) => const HomeScreen(),
         '/hand_loading_image_screen' : (context) => const HandLoadingImageScreen(),
-        '/notifications_screen' : (context) => const NotificationsScreen(),
+        '/buyer_notifications_screen' : (context) => const BuyerNotificationsScreen(),
 
         '/favorite_screen' : (context) => const FavoriteScreen(),
         '/cart_screen' : (context) => const CartScreen(),
@@ -120,6 +131,22 @@ class MyApp extends StatelessWidget {
         '/shop_page' : (context) => const ShopPage(),
         '/about_shop_screen' : (context) => const AboutShopPage(),
         '/sent_successfully_screen' : (context) => const SentSuccessfullyScreen(),
+
+        '/basic_seller_screens' : (context) =>  BasicSellerScreens(),
+        // '/home_screen' : (context) => const HomeScreen(),
+        // '/favorite_screen' : (context) => const FavoriteScreen(),
+        // '/more_screen' : (context) => const MoreScreen(),
+        '/seller_notifications_screen' : (context) => const SellerNotificationsScreen(),
+        '/request_details_page' :  (context) => const RequestDetailsPage(),
+        '/add_product_page' :  (context) => const AddProductPage(),
+        '/edit_product_page' :  (context) => const EditProductPage(),
+
+        '/store_info_page' : (context) =>  StoreInfoPage(),
+        '/my_store_page' : (context) =>  MyStorePage(),
+        '/who_us_seller_page' : (context) =>  WhoUsSellerPage(),
+        '/question_seller_page' : (context) =>  QuestionSellerPage(),
+        '/contact_us_seller_page' : (context) =>  ContactUsSellerPage(),
+
       },
     );
   }

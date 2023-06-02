@@ -7,7 +7,7 @@ class BigText extends StatelessWidget {
   TextOverflow overflow;
 
   BigText({Key? key,
-     this.color = const Color(0x0035a550),
+     this.color = Colors.black,
      required this.text,
      this.size = 20,
      this.overflow = TextOverflow.ellipsis

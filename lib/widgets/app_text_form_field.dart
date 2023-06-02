@@ -12,7 +12,9 @@ class AppTextFormField extends StatelessWidget {
   final double height;
   final TextEditingController controller;
   final String? Function(String) onChanged;
-  final String? Function(String?) validator;
+  final String? Function(String?)? validator;
+  final Widget? prefixIcon;
+
 
 
   const AppTextFormField({
@@ -26,7 +28,9 @@ class AppTextFormField extends StatelessWidget {
     this.height = 55,
     required this.controller,
     required this.onChanged,
-    required this.validator,
+    this.validator,
+    this.prefixIcon,
+
   });
 
   @override
@@ -43,12 +47,13 @@ class AppTextFormField extends StatelessWidget {
         obscureText: obscureText,
         decoration: InputDecoration(
           hintText: hintText,
+          prefixIcon: prefixIcon,
           hintStyle: const TextStyle(fontSize: 12,color: Colors.grey),
           filled: true,
           fillColor: Colors.grey.shade50,
           suffixIcon: Icon(
             suffixIcon,
-            color: kDefaultColor,
+            color: kPrimaryColor,
           ),
           enabledBorder: getBorder(),
           disabledBorder: getBorder(),

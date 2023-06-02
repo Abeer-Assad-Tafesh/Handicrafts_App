@@ -34,7 +34,7 @@ class NoProductsYet extends StatelessWidget {
             },
             child: Text(
               'تسوق الآن',
-              style: TextStyle(color: kDefaultColor,
+              style: TextStyle(color: kPrimaryColor,
                   fontSize: 18,
                   decoration: TextDecoration.underline),
             ),

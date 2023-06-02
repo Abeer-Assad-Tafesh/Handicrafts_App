@@ -21,7 +21,7 @@ class NavBtnItem extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return ListTile(
-      title: SvgPicture.asset(iconImage, color: selected ? kDefaultColor : Colors.grey.shade600,),
+      title: SvgPicture.asset(iconImage, color: selected ? kPrimaryColor : Colors.grey.shade600,),
       subtitle: Visibility(
           visible: dotVisibility,
           maintainAnimation: true,

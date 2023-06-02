@@ -6,14 +6,18 @@ class SmallText extends StatelessWidget {
   double size;
   double height;
   TextOverflow overflow;
+  FontWeight fontWeight;
+
 
   SmallText(
       {Key? key,
-      this.color = const Color(0x005c5e5c),
+      this.color = Colors.black,
       required this.text,
       this.size = 11,
       this.height = 1.2,
-      this.overflow = TextOverflow.ellipsis})
+      this.overflow = TextOverflow.ellipsis,
+        this.fontWeight = FontWeight.normal,
+      })
       : super(key: key);
 
   @override
@@ -24,6 +28,7 @@ class SmallText extends StatelessWidget {
       style: TextStyle(
         color: color,
         fontSize: size,
+        fontWeight: fontWeight,
         height: height,
         fontFamily: 'Roboto',
       ),

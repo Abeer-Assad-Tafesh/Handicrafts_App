@@ -26,7 +26,7 @@ class CodeBox extends StatelessWidget {
         ],
       ),
       child: TextField(
-          style: TextStyle(color: kDefaultColor,fontSize: 35,fontWeight: FontWeight.w400 ),
+          style: TextStyle(color: kPrimaryColor,fontSize: 35,fontWeight: FontWeight.w400 ),
         keyboardType: TextInputType.number,
         textAlign: TextAlign.center,
         decoration: const InputDecoration(

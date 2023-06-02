@@ -23,7 +23,7 @@ class OutBoardingIndicator extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: selected ? kDefaultColor : unSelectedColor,
+        color: selected ? kPrimaryColor : unSelectedColor,
         borderRadius: BorderRadius.circular(10),
       ),
       margin: EdgeInsetsDirectional.only(end: marginEnd),

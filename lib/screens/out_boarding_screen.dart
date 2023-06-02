@@ -43,10 +43,10 @@ class _OutBoardingScreenState extends State<OutBoardingScreen> {
                   alignment: AlignmentDirectional.topEnd,
                   child: TextButton(
                     onPressed: (){
-                      Navigator.pushNamed(context, '/basic_screens');
+                      Navigator.pushNamed(context, '/basic_buyer_screens');
                     },
                     child: Text('تخطي',
-                      style: TextStyle(color: kDefaultColor,),),
+                      style: TextStyle(color: kPrimaryColor,),),
                   ),
                 ),
                 const SizedBox(height: 80,),
@@ -104,7 +104,7 @@ class _OutBoardingScreenState extends State<OutBoardingScreen> {
                     IconButton(
                       onPressed: () {
                         if(_currentPage == 3){
-                          Navigator.pushReplacementNamed(context, '/basic_screens');
+                          Navigator.pushReplacementNamed(context, '/basic_buyer_screens');
                         }else{
                           _pageController.nextPage(
                             duration: const Duration(milliseconds: 300),

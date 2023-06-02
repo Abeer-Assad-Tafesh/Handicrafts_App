@@ -1,7 +1,7 @@
 // import 'dart:ui';
 // import 'package:flutter/material.dart';
 // import 'package:handcrafts/screens/account_screen.dart';
-// import 'package:handcrafts/screens/cart_screen.dart';
+// import 'package:handcrafts/screens/statistics_screen.dart';
 // import 'package:handcrafts/screens/favorite_screen.dart';
 // import 'package:handcrafts/screens/home_screen.dart';
 // // import 'nav_btn_item.dart';

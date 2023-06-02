@@ -15,9 +15,8 @@ class CartRepo extends GetxService{
 
   // below code is to store and get cart data when app closed and then opened again
   void addToCartList(List<CartModel> cartList) {
-    /*
      sharedPreferences.remove(AppConstants.CART_HISTORY_LIST);
-     return ;*/
+     return ;
 
     var time = DateTime.now().toString();
     storedCart = [];

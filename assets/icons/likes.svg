@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="43" height="43" viewBox="0 0 43 43">
+  <g id="Group_1859" data-name="Group 1859" transform="translate(-0.394 -0.488)">
+    <rect id="Rectangle_1595" data-name="Rectangle 1595" width="43" height="43" rx="10" transform="translate(0.394 0.488)" fill="#fd7976"/>
+    <g id="vuesax_outline_heart" data-name="vuesax/outline/heart" transform="translate(10.839 10.322)">
+      <g id="heart" transform="translate(0)">
+        <path id="Vector" d="M10.344,18.571a2.491,2.491,0,0,1-.828-.125C5.841,17.185,0,12.711,0,6.1A6.09,6.09,0,0,1,6.072,0a5.979,5.979,0,0,1,4.272,1.77A5.979,5.979,0,0,1,14.616,0a6.1,6.1,0,0,1,6.072,6.1c0,6.62-5.841,11.085-9.516,12.345A2.491,2.491,0,0,1,10.344,18.571ZM6.072,1.443A4.649,4.649,0,0,0,1.443,6.1c0,6.572,6.322,10.228,8.544,10.989a1.525,1.525,0,0,0,.722,0c2.213-.76,8.544-4.407,8.544-10.989a4.649,4.649,0,0,0-4.628-4.657A4.572,4.572,0,0,0,10.931,3.31a.745.745,0,0,1-1.155,0A4.59,4.59,0,0,0,6.072,1.443Z" transform="translate(1.203 2.261)" fill="#fff"/>
+        <path id="Vector-2" data-name="Vector" d="M0,0H23.093V23.093H0Z" fill="none" opacity="0"/>
+      </g>
+    </g>
+  </g>
+</svg>

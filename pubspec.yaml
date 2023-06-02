@@ -42,6 +42,12 @@ dependencies:
   get: ^4.6.5
   shared_preferences: ^2.1.0
   intl: ^0.17.0    # for time formate
+  timeline_tile: ^2.0.0
+  http: ^0.13.6
+  mime: ^1.0.4
+  html: ^0.15.3
+  dio: ^5.1.2
+  dotted_border: ^2.0.0+3
 
 
 dev_dependencies:

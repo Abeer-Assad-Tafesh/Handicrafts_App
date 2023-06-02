@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:handcrafts/constants.dart';
 
+import '../api/models/user.dart';
+
 class AllAppBar extends StatelessWidget {
   final bool back;
+  final bool logo;
   final String text;
-  AllAppBar({super.key, this.text = '', required this.back});
+
+  AllAppBar({super.key, this.text = '', required this.back, this.logo = true});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +23,7 @@ class AllAppBar extends StatelessWidget {
             color: Colors.grey.withOpacity(0.3),
             spreadRadius: 1,
             blurRadius: 4,
-            offset: const Offset(0, 3), // changes position of shadow
+            offset: const Offset(0, 1), // changes position of shadow
           ),
         ],
       ),
@@ -48,22 +52,30 @@ class AllAppBar extends StatelessWidget {
                           Text(text,
                           style: TextStyle(
                             fontSize: 14,
-                            color: kDefaultColor
+                            color: kPrimaryColor
                           ),),
                         ]
                       ),
                     )
                     : SvgPicture.asset("assets/icons/search.svg")),
-            SizedBox(
+            logo ?SizedBox(
                 width: size/3,
                 child: SvgPicture.asset("assets/icons/logo.svg",height: 70, width: 70,),
-            ),
+            ) : SizedBox(),
             back ? SizedBox(
               width: size/3,
               height: 40,
             ) :
             InkWell(
-                onTap: () {},
+                onTap: () {
+                    User user = User();
+                    if(user.typeUser == 'buyer'){
+                      Navigator.pushNamed(context, '/buyer_notifications_screen');
+                    }
+                    else{
+                      Navigator.pushNamed(context, '/seller_notifications_screen');
+                    }
+                },
                 child: SvgPicture.asset("assets/icons/notifications.svg")),
           ],
         ),
