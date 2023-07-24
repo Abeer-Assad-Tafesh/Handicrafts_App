@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:handcrafts/constants.dart';
+import 'package:handcrafts/utils/constants.dart';
 import 'package:timeline_tile/timeline_tile.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 const deliverySteps = [
   "قيد المراجعة",
@@ -27,14 +28,14 @@ class DeliveryTimelineState extends State<DeliveryTimeline> {
         // SizedBox(width: 20,),
         Expanded(
           child: Container(
-            height: 40,
+            height: 40.h,
             // width: double.maxFinite,
             // color: Colors.green,
             // alignment: Alignment.centerRight,
             // padding:  EdgeInsets.only(right: 0,left: 50),
             child: ListView.builder(
               // padding: EdgeInsets.only(right: 0,left: 200),
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemCount: deliverySteps.length,
@@ -70,9 +71,6 @@ class DeliveryTimelineState extends State<DeliveryTimeline> {
                   indicatorStyle: IndicatorStyle(
                     width: indicatorSize,
                     height: indicatorSize,
-                    padding: index == 0
-                        ? EdgeInsets.only(right: 0)
-                        : EdgeInsets.all(0),
                     indicator: _IndicatorDelivery(
                         status: status, currentStep: widget.currentStep),
                   ),

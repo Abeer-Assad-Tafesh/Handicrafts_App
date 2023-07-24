@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:handcrafts/constants.dart';
+import 'package:handcrafts/utils/constants.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OutBoardingIndicator extends StatelessWidget {
 
@@ -26,7 +27,7 @@ class OutBoardingIndicator extends StatelessWidget {
         color: selected ? kPrimaryColor : unSelectedColor,
         borderRadius: BorderRadius.circular(10),
       ),
-      margin: EdgeInsetsDirectional.only(end: marginEnd),
+      margin: EdgeInsetsDirectional.only(end: marginEnd.w),
     );
   }
 }

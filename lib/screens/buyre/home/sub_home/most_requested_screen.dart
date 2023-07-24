@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:handcrafts/controller/popular_product_controller.dart';
+import 'package:handcrafts/api/controllers/popular_product_controller.dart';
 import 'package:handcrafts/screens/buyre/home/sub_home/product_details_screen.dart';
 import 'package:handcrafts/widgets/all_appBar.dart';
 import 'package:handcrafts/widgets/app_card.dart';
@@ -24,22 +24,24 @@ class _MostRequestedScreenState extends State<MostRequestedScreen> {
           children: [
             AllAppBar(
               back: true,
-              text: 'الأعلى تقييماً',
+              text: 'الأكثر طلباً',
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: SizedBox(
-                height: 749,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: GetBuilder<PopularProductControllers>(
                   builder: (controller) {
                     return GridView.builder(
+                      // shrinkWrap: true,
+                      // physics: NeverScrollableScrollPhysics(),
                       gridDelegate:
                           const SliverGridDelegateWithMaxCrossAxisExtent(
-                              maxCrossAxisExtent: 300,
+                              maxCrossAxisExtent: 230,
                               childAspectRatio: 3 / 4,
                               crossAxisSpacing: 2,
                               mainAxisSpacing: 2),
-                      itemCount: controller.popularProductList.length,
+                      itemCount: controller.popularProductList.length != 0 ?
+                      controller.popularProductList.length : 8,
                       itemBuilder: (BuildContext ctx, index) {
                         return GestureDetector(
                           onTap: () {
@@ -48,13 +50,18 @@ class _MostRequestedScreenState extends State<MostRequestedScreen> {
                               MaterialPageRoute(
                                 builder: (context) => ProductDetailsScreen(
                                   product: controller.popularProductList[index],
+                                  productId: controller.popularProductList[index].id,
                                 ),
                               ),
                             );
                           },
-                          child: AppCard(
+                          child: controller.popularProductList.length != 0 ?
+                          AppCard(
                             product: controller.popularProductList[index],
-                            topMargin: 20,
+                            topMargin: 10,
+                          ):
+                          AppCard2(
+                            topMargin: 10,
                           ),
                         );
                       },

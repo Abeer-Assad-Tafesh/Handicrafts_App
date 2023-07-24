@@ -1,14 +1,14 @@
-import 'package:handcrafts/models/product_model.dart';
+import 'package:handcrafts/api/models/all_products.dart';
 
 class CartModel {
   int? id;
   String? name;
-  int? price;
+  double? price;
   String? img;
   int? quantity;
   bool? isExist;
   String? time;
-  ProductModel? product;
+  AllProducts? product;
 
   CartModel({
     this.id,
@@ -30,20 +30,20 @@ class CartModel {
     quantity = json['quantity'];
     isExist = json['isExist'];
     time = json['time'];
-    product = ProductModel.fromJson(json['product']);
+    product = AllProducts.fromJson(json['product']);
   }
 
   // convert json to map/object
   Map<String, dynamic> toJson(){
     return{
-      'id': this.id,
-      'name': this.name,
-      'price': this.price,
-      'img': this.img,
-      'quantity': this.quantity,
-      'isExist': this.isExist,
-      'time': this.time,
-      'product': this.product!.toJson(),
+      'id': id,
+      'name': name,
+      'price': price,
+      'img': img,
+      'quantity': quantity,
+      'isExist': isExist,
+      'time': time,
+      'product': product!.toJson(),
     };
   }
 }

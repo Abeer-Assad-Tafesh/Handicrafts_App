@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "818615752470",
+    "project_id": "handicrafts-app",
+    "storage_bucket": "handicrafts-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:818615752470:android:3be8ceeb5f556b0dbc2237",
+        "android_client_info": {
+          "package_name": "com.example.handcrafts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "818615752470-aaes78tsp132qnb14qgesvbpp1em5ird.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgjNehPpIFIuXewLEf4edLzZd4Z1TSAeE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "818615752470-aaes78tsp132qnb14qgesvbpp1em5ird.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

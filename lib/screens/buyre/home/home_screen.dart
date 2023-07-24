@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:handcrafts/screens/buyre/home/home_most_rated.dart';
 import 'package:handcrafts/screens/buyre/home/home_most_requested.dart';
-import 'package:handcrafts/screens/buyre/home/home_shops.dart';
+import 'package:handcrafts/screens/buyre/home/home_stores.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -17,9 +17,10 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         children: const [
           SizedBox(height: 10,),
+          HomeStores(),
           HomeMostRequested(),
           HomeMostRated(),
-          HomeShops(),
+          SizedBox(height: 100,),
         ],
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
+import '../utils/constants.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppButton extends StatelessWidget {
 
@@ -22,22 +23,23 @@ class AppButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: height,
-      width: width,
+      height: height.h,
+      width: width.w,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           disabledBackgroundColor: color,
           disabledForegroundColor: color,
+          backgroundColor: color,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(10).r,
           ),
           shadowColor: Colors.grey, // elevation color
           elevation: 5,
         ),
         child: Text(
           text,
-          style: const TextStyle(fontSize: 16, color: Colors.white),
+          style: TextStyle(fontSize: 16.sp, color: Colors.white),
         ),
       ),
     );

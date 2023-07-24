@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:handcrafts/controller/cart_controller.dart';
-import 'package:handcrafts/controller/popular_product_controller.dart';
-import 'package:handcrafts/controller/recommended_product_controller.dart';
-import 'package:handcrafts/utils/app_constant.dart';
+import 'package:handcrafts/utils/constants.dart';
+import 'package:handcrafts/api/controllers/cart_controller.dart';
+import 'package:handcrafts/api/controllers/popular_product_controller.dart';
+import 'package:handcrafts/api/controllers/recommended_product_controller.dart';
+import 'package:handcrafts/prefs/shared_pref_controller.dart';
+import 'package:handcrafts/screens/purchase_details_screen.dart';
 import 'package:handcrafts/widgets/app_button.dart';
-import 'package:handcrafts/widgets/no_products_yet.dart';
+import 'package:handcrafts/widgets/big_text.dart';
+import 'package:handcrafts/widgets/not_yet.dart';
 import '../home/sub_home/product_details_screen.dart';
 
 class CartScreen extends StatefulWidget {
@@ -19,19 +22,38 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   CartController cartController = Get.find();
 
+  bool isLoading = false;
+
+  void startLoading() {
+    setState(() {
+      isLoading = true;
+    });
+
+    // Simulate a loading delay of 3 seconds
+    Future.delayed(const Duration(seconds: 3), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return cartController.getItems.isEmpty
-        ? const Center(
-            child: NoProductsYet(
-              image: 'assets/images/no_cart.svg',
-            ),
-          )
-        : SingleChildScrollView(
-            child: GetBuilder<CartController>(
-              builder: (controller) {
-                var _cartList = controller.getItems;
-                return Column(
+    return GetBuilder<CartController>(builder: (controller) {
+      var _cartList = controller.getItems;
+      return SharedPrefController().loggedIn
+          ? isLoading == false
+              ? controller.getItems.isEmpty
+              ? const Center(
+                  child: NotYet(
+                    image: 'assets/images/no_cart.svg',
+                    text: 'عذرًا! لا يوجد منتجات',
+                    textButton: 'تسوق الآن',
+                    route: '/basic_buyer_screens',
+                  ),
+                )
+              : SingleChildScrollView(
+                  child: Column(
                   children: [
                     ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
@@ -57,7 +79,7 @@ class _CartScreenState extends State<CartScreen> {
                                           Get.find<PopularProductControllers>()
                                               .popularProductList
                                               .indexOf(
-                                                  _cartList[index].product);
+                                                  _cartList[index].product!);
                                       if (popularIndex >= 0) {
                                         Navigator.push(
                                           context,
@@ -65,24 +87,32 @@ class _CartScreenState extends State<CartScreen> {
                                             builder: (context) =>
                                                 ProductDetailsScreen(
                                                     product: Get.find<
+                                                        PopularProductControllers>()
+                                                        .popularProductList[
+                                                    popularIndex],
+                                                    productId: Get.find<
                                                                 PopularProductControllers>()
                                                             .popularProductList[
-                                                        popularIndex]),
+                                                        popularIndex].id),
                                           ),
                                         );
                                       } else {
                                         var recommendedIndex = Get.find<
                                                 RecommendedProductControllers>()
                                             .recommendedProductList
-                                            .indexOf(_cartList[index].product);
+                                            .indexOf(_cartList[index].product!);
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => ProductDetailsScreen(
                                                 product: Get.find<
+                                                    RecommendedProductControllers>()
+                                                    .recommendedProductList[
+                                                recommendedIndex],
+                                                productId: Get.find<
                                                             RecommendedProductControllers>()
                                                         .recommendedProductList[
-                                                    recommendedIndex]),
+                                                    recommendedIndex].id),
                                           ),
                                         );
                                       }
@@ -95,8 +125,6 @@ class _CartScreenState extends State<CartScreen> {
                                         image: DecorationImage(
                                           fit: BoxFit.cover,
                                           image: NetworkImage(
-                                              AppConstants.BASE_URL +
-                                                  AppConstants.Upload_URI +
                                                   _cartList[index].img!),
                                         ),
                                       ),
@@ -140,32 +168,35 @@ class _CartScreenState extends State<CartScreen> {
                                   const SizedBox(
                                     width: 10,
                                   ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: const [
-                                      Text(
-                                        'اسم المنتج',
-                                        style: TextStyle(fontSize: 18),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      Text(
-                                        'المتجر',
-                                        style: TextStyle(color: Colors.grey),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ],
+                                  SizedBox(
+                                    width: 120,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        BigText(
+                                          text: _cartList[index].product!.name,
+                                          size: 15
+                                        ),
+                                        BigText(
+                                          text: _cartList[index].product!.store.name,
+                                         size: 12,
+                                         color: Colors.grey
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(
-                                  right: 10, top: 8, bottom: 8),
+                                  right: 5, top: 8, bottom: 8),
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   GestureDetector(
                                     onTap: () {
@@ -179,7 +210,7 @@ class _CartScreenState extends State<CartScreen> {
                                       size: 26,
                                     ),
                                   ),
-                                  Text('\$${_cartList[index].price}'),
+                                  Text('${_cartList[index].price}₪'),
                                 ],
                               ),
                             ),
@@ -190,20 +221,32 @@ class _CartScreenState extends State<CartScreen> {
                     const SizedBox(height: 60),
                     AppButton(
                         onPressed: () {
-                          controller.addItemsToHistory();
-                          Navigator.pushNamed(
-                              context, '/purchase_details_screen');
-                          // وخلي الليست صفر (نصفرها)
+                          if (!isLoading) {
+                            startLoading();
+                            Future.delayed(const Duration(seconds: 3), () {
+                              print(controller.getItems);
+                              Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (context) =>
+                                      PurchaseDetails()
+                              ));
+                            });
+                          }
                         },
                         text:
-                            ' اطلب الآن | ${controller.totalCartProductsPrice.toInt()}\$'),
+                            ' اطلب الآن | ₪${controller.totalCartProductsPrice.toDouble()}',
+                    ),
                     const SizedBox(
                       height: 100,
                     ),
                   ],
-                );
-              },
-            ),
-          );
+                ))
+          : Center(child: CircularProgressIndicator(color: kPrimaryColor,))
+          : const NotYet(
+              image: 'assets/images/no_cart.svg',
+              text: 'عذرًا! لم تسجل دخول',
+              textButton: 'سجل دخول لإضافة عناصرك إلى السلة',
+              route: '/login_register_screen',
+            );
+    });
   }
 }

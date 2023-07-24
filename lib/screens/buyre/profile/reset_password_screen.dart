@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:handcrafts/constants.dart';
+import 'package:handcrafts/api/controllers/auth_api_controller.dart';
+import 'package:handcrafts/utils/constants.dart';
 import 'package:handcrafts/widgets/app_button.dart';
 import 'package:handcrafts/widgets/app_text_form_field.dart';
 import 'package:handcrafts/widgets/text_form_label.dart';
 
-
 class ResetPasswordScreen extends StatefulWidget {
-  const ResetPasswordScreen({Key? key}) : super(key: key);
+  String? code;
+  String? email;
+  ResetPasswordScreen({Key? key,this.code,this.email}) : super(key: key);
 
   @override
   State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
@@ -57,7 +59,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     SizedBox(
                       width: 8,
                     ),
-                    Text('رمز التحقق'),
+                    Text('إعادة تعيين كلمة المرور'),
                   ],
                 ),
                 const SizedBox(
@@ -102,8 +104,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         const SizedBox(height: 40),
                         AppButton(
                           onPressed: () {
-
-                            Navigator.pushNamed(context, '/login_screen');
+                            if (_formKey.currentState!.validate()) {
+                              performResetPassword();
+                            }
                           },
                           text: 'حفظ',
                         ),
@@ -118,6 +121,16 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         ]),
       ),
     );
+  }
+
+  performResetPassword() async {
+    if (_newPassword == _confirmedNewPassword) {
+      bool status = await AuthApiController()
+          .resetForgetPassword(email: widget.email!, code: widget.code!, password: _newPassword);
+      if(status){
+        Navigator.pushNamed(context, '/login_screen');
+      }
+    }
   }
 
   String? validateNewPassword(String? value) {

@@ -1,11 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:handcrafts/api/controllers/auth_api_controller.dart';
 import 'package:handcrafts/api/models/user.dart';
+import 'package:handcrafts/utils/constants.dart';
 import 'package:handcrafts/widgets/app_button.dart';
 import 'package:handcrafts/widgets/app_text_form_field.dart';
 import 'package:handcrafts/widgets/big_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:handcrafts/widgets/text_form_label.dart';
+
 
 class BuyerRegisterPage extends StatefulWidget {
   const BuyerRegisterPage({Key? key}) : super(key: key);
@@ -15,6 +20,9 @@ class BuyerRegisterPage extends StatefulWidget {
 }
 
 class _BuyerRegisterPageState extends State<BuyerRegisterPage> {
+  final _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
+
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _fullNameController;
   late TextEditingController _emailController;
@@ -26,6 +34,7 @@ class _BuyerRegisterPageState extends State<BuyerRegisterPage> {
   late String _phone;
 
   String _userType = 'buyer';
+  bool _obscurePassword = true;
 
   @override
   void initState() {
@@ -52,9 +61,9 @@ class _BuyerRegisterPageState extends State<BuyerRegisterPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
-        child: Stack(
-            children: [
-          Image.asset('assets/images/bg_screens.png'),
+        child: Stack(children: [
+          Image.asset('assets/images/bg_screens.png',
+              width: double.infinity, fit: BoxFit.cover),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -80,30 +89,31 @@ class _BuyerRegisterPageState extends State<BuyerRegisterPage> {
                             icon: "assets/icons/profile.svg",
                             label: 'الاسم بالكامل'),
                         AppTextFormField(
-                            controller: _fullNameController,
-                            onChanged: (value) {
-                              _name = value;
-                            },
-                            validator: validateName,
+                          controller: _fullNameController,
+                          onChanged: (value) {
+                            _name = value;
+                          },
+                          validator: validateName,
                         ),
                         const SizedBox(height: 10),
                         const TextFormLabel(
                             icon: "assets/icons/message.svg",
                             label: 'البريد الإلكتروني'),
                         AppTextFormField(
-                            controller: _emailController,
-                            onChanged: (value) {
-                              _email = value;
-                            },
-                            validator: validateEmail,
+                          controller: _emailController,
                           textInputField: TextInputType.emailAddress,
+                          onChanged: (value) {
+                            _email = value;
+                          },
+                          validator: validateEmail,
                         ),
                         const SizedBox(height: 10),
                         const TextFormLabel(
                             icon: "assets/icons/call.svg", label: 'رقم الجوال'),
                         AppTextFormField(
                           controller: _phoneNumController,
-                          onChanged: (value){
+                          hintText: '059/056',
+                          onChanged: (value) {
                             _phone = value;
                           },
                           validator: validatePhoneNum,
@@ -113,28 +123,49 @@ class _BuyerRegisterPageState extends State<BuyerRegisterPage> {
                         const TextFormLabel(
                             icon: "assets/icons/password.svg",
                             label: 'كلمة المرور'),
-                        AppTextFormField(
-                          controller: _passwordController,
-                          onChanged: (value) {
-                            _password = value;
-                          },
-                          validator: validatePassword,
-                          suffixIcon: Icons.remove_red_eye_outlined,
-                          obscureText: true,
+                        Stack(
+                          children: [
+                            AppTextFormField(
+                              controller: _passwordController,
+                              onChanged: (value) {
+                                _password = value;
+                              },
+                              validator: validatePassword,
+                              obscureText: _obscurePassword,
+                            ),
+                            Positioned(
+                              left: 5,top: 3,
+                              child: IconButton(
+                                icon: _obscurePassword ? SvgPicture.asset('assets/icons/show.svg',color: kPrimaryColor,) :  SvgPicture.asset('assets/icons/hide.svg',color: kPrimaryColor,),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscurePassword = !_obscurePassword;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 10),
-                        BigText(text: 'التسجيل ك:',size: 16,color: Colors.grey,),
+                        BigText(
+                          text: 'التسجيل ك:',
+                          size: 16,
+                          color: Colors.grey,
+                        ),
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Expanded(
                               child: RadioListTile<String>(
                                 contentPadding: EdgeInsets.zero,
-                                title: BigText(text: 'مشتري',size: 18,),
+                                title: BigText(
+                                  text: 'مشتري',
+                                  size: 18,
+                                ),
                                 value: 'buyer',
                                 groupValue: _userType,
-                                onChanged: (String? value){
-                                  if(value != null){
+                                onChanged: (String? value) {
+                                  if (value != null) {
                                     setState(() {
                                       _userType = value;
                                     });
@@ -145,11 +176,14 @@ class _BuyerRegisterPageState extends State<BuyerRegisterPage> {
                             Expanded(
                               child: RadioListTile<String>(
                                 contentPadding: EdgeInsets.zero,
-                                title: BigText(text: 'حرفي',size: 18,),
+                                title: BigText(
+                                  text: 'حرفي',
+                                  size: 18,
+                                ),
                                 value: 'craftsman',
                                 groupValue: _userType,
-                                onChanged: (String? value){
-                                  if(value != null){
+                                onChanged: (String? value) {
+                                  if (value != null) {
                                     setState(() {
                                       _userType = value;
                                     });
@@ -165,7 +199,7 @@ class _BuyerRegisterPageState extends State<BuyerRegisterPage> {
                           child: AppButton(
                             text: 'تسجيل',
                             onPressed: () {
-                              if(_formKey.currentState!.validate()){
+                              if (_formKey.currentState!.validate()) {
                                 print('===========>done');
                                 register();
                                 /*print('login');
@@ -183,6 +217,7 @@ class _BuyerRegisterPageState extends State<BuyerRegisterPage> {
                             },
                           ),
                         ),
+                        const SizedBox(height: 100),
                       ],
                     ),
                   ),
@@ -195,35 +230,47 @@ class _BuyerRegisterPageState extends State<BuyerRegisterPage> {
     );
   }
 
-User get user {
-    User user = User();
-    user.name = _name;
-    user.email = _email;
-    user.phoneNumber = _phone;
-    user.password = _password;
-    user.typeUser = _userType;
+  UserApi get user {
+    UserApi user = UserApi();
+    user.name = _name.trim();
+    user.email = _email.trim();
+    user.phoneNumber = _phone.trim();
+    user.password = _password.trim();
+    user.typeUser = _userType.trim();
     return user;
-}
+  }
 
- Future<void> register() async{
+  Future<void> register() async {
     bool status = await AuthApiController().register(user: user);
     print('===========>$status');
     if(status){
-      if(_userType == 'buyer'){
-        Navigator.pushNamed(context, '/basic_buyer_screens');
-      }else {
-        Navigator.pushNamed(context, '/basic_seller_screens');
+      try {
+        _auth
+            .createUserWithEmailAndPassword(
+            email: _email.trim(), password: _password.trim())
+            .then((value) {
+          User? user = value.user;
+          user!.updateProfile(displayName: _name);
+          _firestore
+              .collection('Users')
+              .doc(_auth.currentUser!.uid)
+              .set({
+            "name": _name.trim(),
+            "email": _email.trim(),
+          });
+        });
+      } catch (e) {
+        print('error ====> $e');
       }
+      Navigator.pushNamed(context, '/login_register_screen');
     }
   }
-
-
 
   String? validateName(String? value) {
     if (value!.isEmpty) {
       return 'أدخل اسمك';
     } else {
-      if(value.length<3){
+      if (value.length < 3) {
         return 'أدخل اسم لا يقل عن ثلاث حروف';
       }
       return null;
@@ -232,16 +279,16 @@ User get user {
 
   String? validateEmail(String? value) {
     if (value!.isEmpty) {
+      return 'أدخل إيميلك';
+    }else{
       final RegExp regex = RegExp(
           r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)| (\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
       if (!regex.hasMatch(value!)) {
         return 'أدخل إيميل صحيح';
-      } else {
-        return 'أدخل إيميلك';
       }
-    } else {
-      return null;
     }
+      return null;
+
   }
 
   String? validatePhoneNum(String? value) {
@@ -249,8 +296,7 @@ User get user {
     RegExp regExp = RegExp(pattern);
     if (value!.isEmpty) {
       return 'أدخل رقم هاتفك';
-    }
-    else if (!regExp.hasMatch(value)) {
+    } else if (!regExp.hasMatch(value)) {
       return 'أدخل رقم هاتف صحيح';
     }
     return null;
@@ -262,7 +308,8 @@ User get user {
     } else {
       if (value.length < 6) {
         return 'يجب أن لا تقل كلمة السر عن 6 خانات';
-      }if(value.length >15){
+      }
+      if (value.length > 15) {
         return 'يجب أن لا تزيد كلمة السر عن 15 خانة';
       } else {
         return null;
@@ -270,4 +317,3 @@ User get user {
     }
   }
 }
-

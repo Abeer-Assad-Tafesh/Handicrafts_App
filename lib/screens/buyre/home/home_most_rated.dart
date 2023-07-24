@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:handcrafts/controller/recommended_product_controller.dart';
+import 'package:handcrafts/api/controllers/recommended_product_controller.dart';
 import 'package:handcrafts/screens/buyre/home/sub_home/most_rated_screen.dart';
 import 'package:handcrafts/screens/buyre/home/sub_home/product_details_screen.dart';
 import 'package:handcrafts/widgets/app_card.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
-class HomeMostRated extends StatelessWidget {
+class HomeMostRated extends StatefulWidget {
   const HomeMostRated({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  State<HomeMostRated> createState() => _HomeMostRatedState();
+}
 
-    return Container(
-      height: 370,
+class _HomeMostRatedState extends State<HomeMostRated> {
+  // RecommendedProductControllers _recommendedProductControllers = Get.put(RecommendedProductControllers());
+  RecommendedProductControllers _recommendedProductControllers = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 320.h,
       child: GetBuilder<RecommendedProductControllers>(
         builder: (controller) {
           return Column(
@@ -27,7 +34,7 @@ class HomeMostRated extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MostRatedScreen(),
+                        builder: (context) => const MostRatedScreen(),
                       ),
                     );
                   },
@@ -44,11 +51,13 @@ class HomeMostRated extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 300,
+                height: 250.h,
                 child: ListView.builder(
                   shrinkWrap: false,
                   scrollDirection: Axis.horizontal,
-                  itemCount: controller.recommendedProductList.length,
+                  itemCount: controller.recommendedProductList.isNotEmpty
+                      ? controller.recommendedProductList.length
+                      : 10,
                   itemBuilder: (BuildContext context, int index) =>
                       // Container()
                       GestureDetector(
@@ -56,15 +65,18 @@ class HomeMostRated extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ProductDetailsScreen(
-                            product: controller.recommendedProductList[index],
-                          ),
-                        ),
+                            builder: (context) => ProductDetailsScreen(
+                                product:
+                                controller.recommendedProductList[index],
+                                productId:
+                                    controller.recommendedProductList[index].id)),
                       );
                     },
-                    child: AppCard(
-                      product: controller.recommendedProductList[index],
-                    ),
+                    child: controller.recommendedProductList.isNotEmpty
+                        ? AppCard(
+                            product: controller.recommendedProductList[index],
+                          )
+                        : const AppCard2(),
                   ),
                 ),
               ),

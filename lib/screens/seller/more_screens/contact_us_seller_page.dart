@@ -3,6 +3,7 @@ import 'package:handcrafts/widgets/all_appBar.dart';
 import 'package:handcrafts/widgets/app_button.dart';
 import 'package:handcrafts/widgets/app_text_form_field.dart';
 import 'package:handcrafts/widgets/text_form_label.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class ContactUsSellerPage extends StatefulWidget {
@@ -49,7 +50,7 @@ class _ContactUsSellerPageState extends State<ContactUsSellerPage> {
               Expanded(
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.only(left:30, right:30,top: 40,bottom: 30),
+                    padding: EdgeInsets.only(left:30.w, right:30.w,top: 40.h,bottom: 30.h),
                     child: Form(
                       key: _formKey,
                       child: Column(
@@ -62,7 +63,7 @@ class _ContactUsSellerPageState extends State<ContactUsSellerPage> {
                             },
                             validator: validateName,
                           ),
-                          const SizedBox(height: 15),
+                          SizedBox(height: 15.h),
                           const TextFormLabel(icon: "assets/icons/message.svg", label: 'بريدك الإلكتروني'),
                           AppTextFormField(
                             controller: _emailController,
@@ -71,16 +72,16 @@ class _ContactUsSellerPageState extends State<ContactUsSellerPage> {
                             },
                             validator: validateEmail,
                           ),
-                          const SizedBox(height: 40),
+                          SizedBox(height: 40.h),
                           AppTextFormField(
                             controller: _messageController,
                             onChanged: (value) {
                               _name = value;
                             },
                             validator: validateMessage,
-                            height: 250,maxLines: 10,hintText: 'أدخل نص لا يزيد عن 70 حرف',
+                            height: 250.h,maxLines: 10,hintText: 'أدخل نص لا يزيد عن 70 حرف',
                           ),
-                          const SizedBox(height: 40),
+                          SizedBox(height: 40.h),
                           AppButton(text: 'إرسال',onPressed: (){
                             if(_formKey.currentState!.validate()){
                               Navigator.pushNamed(context, '/sent_successfully_screen');

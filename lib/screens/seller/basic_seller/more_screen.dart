@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:handcrafts/constants.dart';
+import 'package:handcrafts/api/controllers/auth_api_controller.dart';
+import 'package:handcrafts/utils/constants.dart';
+import 'package:handcrafts/widgets/small_text.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MoreScreen extends StatelessWidget {
   const MoreScreen({Key? key}) : super(key: key);
@@ -8,10 +11,10 @@ class MoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(top: 20,left: 10,right: 10),
+        padding: EdgeInsets.only(top: 20.h,left: 10.w,right: 10.w),
         child: Column(
           children: [
-            const SizedBox(height: 20,),
+            SizedBox(height: 20.h),
             InkWell(
               onTap: (){
                 Navigator.pushNamed(context, '/store_info_page');
@@ -22,16 +25,16 @@ class MoreScreen extends StatelessWidget {
                   Row(
                     children: [
                       SvgPicture.asset("assets/icons/store_info.svg"),
-                      SizedBox(width: 8,),
-                      Text('معلومات المتجر'),
+                      SizedBox(width: 8.w),
+                      SmallText(text:'معلومات المتجر',size: 15),
                     ],
                   ),
-                  const Icon(Icons.arrow_forward_ios,size: 18,),
+                  Icon(Icons.arrow_forward_ios,size: 18.w),
                 ],
               ),
             ),
             const Divider(),
-            const SizedBox(height: 10,),
+            SizedBox(height: 10.h),
             InkWell(
               onTap: (){
                 Navigator.pushNamed(context, '/my_store_page');
@@ -42,19 +45,16 @@ class MoreScreen extends StatelessWidget {
                   Row(
                     children: [
                       SvgPicture.asset("assets/icons/my_store.svg"),
-                      const SizedBox(width: 8,),
-                      const Text('متجري',
-                        style: TextStyle(
-                            fontSize: 15
-                        ),),
+                      SizedBox(width: 8.w),
+                      SmallText(text: 'متجري',size: 15)
                     ],
                   ),
-                  const Icon(Icons.arrow_forward_ios,size: 18,),
+                  Icon(Icons.arrow_forward_ios,size: 18.w),
                 ],
               ),
             ),
             const Divider(),
-            const SizedBox(height: 10,),
+            SizedBox(height: 10.h),
             InkWell(
               onTap: (){
                 Navigator.pushNamed(context, '/who_us_seller_page');
@@ -65,16 +65,16 @@ class MoreScreen extends StatelessWidget {
                   Row(
                     children: [
                       SvgPicture.asset("assets/icons/info_circle.svg"),
-                      SizedBox(width: 8,),
-                      Text('من نحن'),
+                      SizedBox(width: 8.w),
+                      SmallText(text:'من نحن',size: 15,),
                     ],
                   ),
-                  const Icon(Icons.arrow_forward_ios,size: 18,),
+                  Icon(Icons.arrow_forward_ios,size: 18.w),
                 ],
               ),
             ),
             const Divider(),
-            const SizedBox(height: 10,),
+            SizedBox(height: 10.h),
             InkWell(
               onTap: (){
                 Navigator.pushNamed(context, '/question_seller_page');
@@ -85,16 +85,16 @@ class MoreScreen extends StatelessWidget {
                   Row(
                     children: [
                       SvgPicture.asset("assets/icons/question.svg"),
-                      const SizedBox(width: 8,),
-                      Text('أسئلة'),
+                      SizedBox(width: 8.w),
+                      SmallText(text:'أسئلة',size: 15,),
                     ],
                   ),
-                  const Icon(Icons.arrow_forward_ios,size: 18,),
+                  Icon(Icons.arrow_forward_ios,size: 18.w),
                 ],
               ),
             ),
             const Divider(),
-            const SizedBox(height: 10,),
+            SizedBox(height: 10.h),
             InkWell(
               onTap: (){
                 Navigator.pushNamed(context, '/contact_us_seller_page');
@@ -105,26 +105,29 @@ class MoreScreen extends StatelessWidget {
                   Row(
                     children: [
                       SvgPicture.asset("assets/icons/contact_us.svg"),
-                      const SizedBox(width: 8,),
-                      Text('تواصل معنا'),
+                      SizedBox(width: 8.w),
+                      SmallText(text:'تواصل معنا',size: 15,),
                     ],
                   ),
-                  const Icon(Icons.arrow_forward_ios,size: 18,),
+                  Icon(Icons.arrow_forward_ios,size: 18.w),
                 ],
               ),
             ),
             const Divider(),
-            const SizedBox(height: 10,),
+            SizedBox(height: 10.h),
             InkWell(
-              onTap: (){},
+              onTap: () async{
+                bool loggedOut = await AuthApiController().logout();
+                if(loggedOut) Navigator.pushNamed(context, '/login_register_screen');
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
                       SvgPicture.asset("assets/icons/profile.svg"),
-                      SizedBox(width: 8,),
-                      Text('تسجيل خروج'),
+                      SizedBox(width: 8.w),
+                      SmallText(text:'تسجيل خروج',size: 15,),
                     ],
                   ),
                   SvgPicture.asset("assets/icons/logout.svg"),

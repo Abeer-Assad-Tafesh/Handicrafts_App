@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:handcrafts/constants.dart';
+import 'package:handcrafts/utils/constants.dart';
 import 'package:handcrafts/screens/seller/basic_seller/seller_orders_pages/all_orders_page.dart';
+import 'package:handcrafts/screens/seller/basic_seller/seller_orders_pages/completed_orders_page.dart';
+import 'package:handcrafts/screens/seller/basic_seller/seller_orders_pages/under_deliver_orders_page.dart';
+import 'package:handcrafts/screens/seller/basic_seller/seller_orders_pages/under_preparation_orders_page.dart';
+import 'package:handcrafts/screens/seller/basic_seller/seller_orders_pages/under_review_orders_page.dart';
 import 'package:handcrafts/widgets/big_text.dart';
 import 'package:handcrafts/widgets/small_text.dart';
 import 'package:handcrafts/widgets/timeline.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 class SellerOrdersScreen extends StatefulWidget {
   const SellerOrdersScreen({Key? key}) : super(key: key);
@@ -14,6 +20,13 @@ class SellerOrdersScreen extends StatefulWidget {
 }
 
 class _SellerOrdersScreenState extends State<SellerOrdersScreen> {
+  final List<String> pages = [
+    "كل الطلبات",
+    "قيد المراجعة",
+    "قيد التجهيز",
+    " قيد التوصيل",
+    "مكتملة",
+  ];
   final List<String> items = [
     "اختر حالة الطلب",
     "قيد المراجعة",
@@ -22,12 +35,12 @@ class _SellerOrdersScreenState extends State<SellerOrdersScreen> {
     "مكتملة",
   ];
   int current = 0;
-  late String selectedOption;
+  String selectedOption = "اختر حالة الطلب";
 
   @override
   void initState() {
     super.initState();
-    selectedOption = items[0];
+    // selectedOption = items[0];
   }
 
   @override
@@ -35,16 +48,16 @@ class _SellerOrdersScreenState extends State<SellerOrdersScreen> {
     return Container(
       height: double.infinity,
       width: double.infinity,
-      margin: const EdgeInsets.only(top: 10),
+      margin: EdgeInsets.only(top: 10.h),
       child: Column(
         children: [
           // Tab bar
           Container(
-            height: 60,
+            height: 60.h,
             width: double.infinity,
-            margin: const EdgeInsets.only(right: 10),
+            margin: EdgeInsets.only(right: 10.w),
             child: ListView.builder(
-              itemCount: items.length,
+              itemCount: pages.length,
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
               itemBuilder: (context, index) {
@@ -55,14 +68,14 @@ class _SellerOrdersScreenState extends State<SellerOrdersScreen> {
                     });
                   },
                   child: Container(
-                    margin: const EdgeInsets.all(5),
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                    margin: const EdgeInsets.all(5).r,
+                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
                     decoration: BoxDecoration(
                         color:
                             current == index ? Colors.white : kSecondaryColor,
-                        borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10)),
+                        borderRadius:  BorderRadius.only(
+                            topLeft: const Radius.circular(10).r,
+                            topRight: const Radius.circular(10).r),
                         boxShadow: current == index
                             ? [
                                 const BoxShadow(
@@ -83,8 +96,8 @@ class _SellerOrdersScreenState extends State<SellerOrdersScreen> {
                               ]),
                     child: Center(
                       child: BigText(
-                        text: items[index],
-                        size: 16,
+                        text: pages[index],
+                        size: 14.sp,
                       ),
                     ),
                   ),
@@ -94,10 +107,11 @@ class _SellerOrdersScreenState extends State<SellerOrdersScreen> {
           ),
           // Body
           current == 0
-              ? AllOrdersPage(items: items,selectedOption: selectedOption)
-              : current == 1 ? AllOrdersPage(items: items,selectedOption: selectedOption)
-              : current == 2 ? AllOrdersPage(items: items,selectedOption: selectedOption)
-              : AllOrdersPage(items: items,selectedOption: selectedOption)
+              ? AllOrdersPage(items: items,selectedOption: items[0])
+              : current == 1 ? UnderReviewOrdersPage(items: items,selectedOption: items[1])
+              : current == 2 ? UnderPreparationOrdersPage(items: items,selectedOption: items[2])
+              : current == 3 ?  UnderDeliverOrdersPage(items: items,selectedOption: items[3])
+              : CompletedOrdersPage(items: items,selectedOption: items[4])
         ],
       ),
     );

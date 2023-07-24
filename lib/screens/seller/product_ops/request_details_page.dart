@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:handcrafts/constants.dart';
+import 'package:handcrafts/utils/constants.dart';
 import 'package:handcrafts/widgets/all_appBar.dart';
 import 'package:handcrafts/widgets/app_button.dart';
 import 'package:handcrafts/widgets/app_text_form_field.dart';
 import 'package:handcrafts/widgets/big_text.dart';
 import 'package:handcrafts/widgets/small_text.dart';
 import 'package:handcrafts/widgets/text_form_label.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 class RequestDetailsPage extends StatefulWidget {
   const RequestDetailsPage({Key? key}) : super(key: key);
@@ -76,13 +78,13 @@ class _RequestDetailsPageState extends State<RequestDetailsPage> {
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 20,
-                  right: 20,top: 5),
+                  padding: EdgeInsets.only(left: 20.w,
+                  right: 20.w,top: 5.h),
                   child: Form(
                     key: _formKey,
                     child: Column(
                       children: [
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -91,77 +93,77 @@ class _RequestDetailsPageState extends State<RequestDetailsPage> {
                           ],
                         ),
                         SizedBox(
-                          height: 100,
-                          width: 100,
+                          height: 100.h,
+                          width: 100.w,
                           child: CircleAvatar(
                             backgroundColor: Colors.grey.shade300,
                             foregroundColor: Colors.grey,
-                            child: const Icon(
+                            child: Icon(
                               Icons.person_outline_rounded,
-                              size: 40,
+                              size: 40.w,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Text(
-                          'محمود أحمد منصور',
-                          style: TextStyle(color: kPrimaryColor, fontSize: 14),
+                        SizedBox(height: 10.h),
+                        SmallText(
+                          text:'محمود أحمد منصور',
+                          color: kPrimaryColor, size: 14,
                         ),
                         SmallText(text: 'ID: 276332',size: 14,color: kPrimaryColor,),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20.h),
                         AppTextFormField(
                           controller: _fullNameController,
                           prefixIcon: Padding(
-                            padding: EdgeInsets.all(13),
+                            padding: const EdgeInsets.all(13).r,
                               child: SvgPicture.asset("assets/icons/profile.svg"),
                           ),
                           onChanged: (value) {
                             _name = value;
                           },
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         AppTextFormField(
                           controller: _emailController,
                           prefixIcon: Padding(
-                              padding: EdgeInsets.all(13),
+                              padding: const EdgeInsets.all(13).r,
                               child: SvgPicture.asset("assets/icons/message.svg")),
                           onChanged: (value) {
                             _email = value;
                           },
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         AppTextFormField(
                           controller: _phoneNumController,
                           prefixIcon: Padding(
-                              padding: EdgeInsets.all(13),
+                              padding: const EdgeInsets.all(13).r,
                               child: SvgPicture.asset("assets/icons/call.svg")),
                           onChanged: (value) {
                             _phone = value;
                           },
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         AppTextFormField(
                           controller: _fullNameController,
                           prefixIcon: Padding(
-                              padding: EdgeInsets.all(13),
+                              padding: const EdgeInsets.all(13).r,
                               child: SvgPicture.asset("assets/icons/calendar.svg")
                           ),
                           onChanged: (value) {
                             _name = value;
                           },
                         ),
-                        SizedBox(height: 5),
+                        SizedBox(height: 5.h),
                         ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: 2,
                           itemBuilder: (context, index) {
                             return Container(
-                              margin: EdgeInsets.only(top: 15),
+                              margin: EdgeInsets.only(top: 15.h),
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
+                                  BorderRadius.all(const Radius.circular(10).r),
                                   border: Border.all(color: Colors.grey.shade300)
                               ),
                               child: Row(
@@ -169,12 +171,12 @@ class _RequestDetailsPageState extends State<RequestDetailsPage> {
                                   Expanded(
                                     flex:2,
                                     child: Padding(
-                                      padding: const EdgeInsets.all(5.0),
+                                      padding: const EdgeInsets.all(5.0).r,
                                       child: Image.asset(
                                         'assets/images/product5.png',
                                         fit: BoxFit.fill,
-                                        height: 90,
-                                        width: 100,
+                                        height: 90.h,
+                                        width: 100.w,
                                       ),
                                     ),
                                   ),
@@ -189,13 +191,12 @@ class _RequestDetailsPageState extends State<RequestDetailsPage> {
                                             SvgPicture.asset(
                                               "assets/icons/calendar.svg",
                                             ),
-                                            const SizedBox(
-                                              width: 6,
+                                            SizedBox(
+                                              width: 6.w,
                                             ),
-                                            Text(
-                                              'يومين عمل',
-                                              style: TextStyle(
-                                                  fontSize: 13, color: kPrimaryColor),
+                                            SmallText(
+                                              text:'يومين عمل',
+                                                size: 13, color: kPrimaryColor,
                                             ),
                                           ],
                                         ),
@@ -205,10 +206,10 @@ class _RequestDetailsPageState extends State<RequestDetailsPage> {
                                   Expanded(
                                     flex:2,
                                     child: Container(
-                                      height: 100,
+                                      height: 100.h,
                                       alignment: Alignment.center,
                                       color: kSecondaryColor,
-                                      child: BigText(text: '20\$'),
+                                      child: BigText(text: '20₪'),
                                     ),
                                   ),
                                 ],
@@ -216,22 +217,22 @@ class _RequestDetailsPageState extends State<RequestDetailsPage> {
                             );
                           },
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 20.h),
                         Align(
                           alignment: Alignment.topRight,
                           child: DropdownButtonHideUnderline(
                             child: Container(
-                              width: 180,
+                              width: 180.w,
                               alignment: Alignment.center,
                               child: DropdownButtonFormField<String>(
                                 value: selectedOption,
                                 iconSize: 35,
                                 icon: Icon(Icons.arrow_drop_down_sharp,color: kPrimaryColor,),
-                                decoration:  const InputDecoration(
+                                decoration:  InputDecoration(
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                                    borderRadius: BorderRadius.all(const Radius.circular(10).r),
                                   ),
-                                  contentPadding: EdgeInsets.only(right: 8),
+                                  contentPadding: EdgeInsets.only(right: 8.w),
                                 ),
                                 onChanged: (String? newValue) {
                                   setState(() {
@@ -248,33 +249,33 @@ class _RequestDetailsPageState extends State<RequestDetailsPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 30),
+                        SizedBox(height: 30.h),
                         Column(
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
-                                Text('المجموع'),
-                                Text('60\$'),
+                              children:[
+                                SmallText(text:'المجموع',size: 16,),
+                                SmallText(text:'60₪',size: 16,),
                               ],
                             ),
                             const Divider(),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
-                                Text('التوصيل'),
-                                Text('4\$'),
+                              children: [
+                                SmallText(text:'التوصيل',size: 16,),
+                                SmallText(text:'4₪',size: 16,),
                               ],
                             ),
                             const Divider(),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
-                                Text('الإجمالي'),
-                                Text('64\$'),
+                              children: [
+                                SmallText(text:'الإجمالي',size: 16,),
+                                SmallText(text:'64₪',size: 16,),
                               ],
                             ),
-                            const SizedBox(height: 10,),
+                            SizedBox(height: 10.h,),
                           ],
                         ),
 

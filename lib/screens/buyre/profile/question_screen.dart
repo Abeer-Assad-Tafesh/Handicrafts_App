@@ -20,18 +20,20 @@ class _QuestionScreenState extends State<QuestionScreen> {
             children: [
               AllAppBar(text: 'أسئلة',back: true,),
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 10,top: 30),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 10,top: 30),
+                    child: Column(
+                      children: [
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
                             itemBuilder: (context, index) =>
                                 QuestionContainer(),
-                          itemCount: 5,
+                          itemCount: 10,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -89,7 +91,12 @@ class _QuestionContainerState extends State<QuestionContainer> {
                     ),
                   ),
                 ),
-                SvgPicture.asset("assets/icons/down_arrow.svg",width: 10,height: 10,),
+                showAnswer ?
+                Transform.rotate(
+                  angle: 3.14,
+                  child: SvgPicture.asset("assets/icons/down_arrow.svg",width: 10,height: 10,),
+                ) : SvgPicture.asset("assets/icons/down_arrow.svg",width: 10,height: 10,)
+
               ],
             ),
           ),

@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../constants.dart';
+import '../utils/constants.dart';
 
 class CodeBox extends StatelessWidget {
   const CodeBox({
     super.key,
+    required this.textEditingController,
+    required this.onChanged,
+    required this.focusNode,
   });
+
+  final TextEditingController textEditingController;
+  final void Function(String value) onChanged;
+  final FocusNode focusNode;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
+      height: 100,
       width: 80,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -26,7 +33,11 @@ class CodeBox extends StatelessWidget {
         ],
       ),
       child: TextField(
-          style: TextStyle(color: kPrimaryColor,fontSize: 35,fontWeight: FontWeight.w400 ),
+        controller: textEditingController,
+        focusNode: focusNode,
+        onChanged: onChanged,
+        style: TextStyle(
+            color: kPrimaryColor, fontSize: 35, fontWeight: FontWeight.w400),
         keyboardType: TextInputType.number,
         textAlign: TextAlign.center,
         decoration: const InputDecoration(

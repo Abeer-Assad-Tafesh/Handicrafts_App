@@ -1,12 +1,13 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:handcrafts/constants.dart';
+import 'package:handcrafts/utils/constants.dart';
 import 'package:handcrafts/screens/sent_successfully_screen.dart';
 import 'package:handcrafts/widgets/all_appBar.dart';
 import 'package:handcrafts/widgets/app_button.dart';
 import 'package:handcrafts/widgets/app_text_form_field.dart';
 import 'package:handcrafts/widgets/text_form_label.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 
@@ -61,7 +62,7 @@ class _AddProductPageState extends State<AddProductPage> {
               children: [
                 AllAppBar(text: 'إضافة منتج',back: true,logo: false,),
                 Padding(
-                  padding: const EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.all(15.0).r,
                   child: Column(
                     children: [
                       Row(
@@ -76,35 +77,35 @@ class _AddProductPageState extends State<AddProductPage> {
                                 child: DottedBorder(
                                   color: kPrimaryColor,
                                   strokeWidth: 2,
-                                  radius: Radius.circular(20),
-                                  dashPattern: [7,7,7,7],
-                                  padding: EdgeInsets.symmetric(horizontal: 40,vertical: 40),
-                                  child: Center(child: SvgPicture.asset('assets/icons/cloud.svg',height: 25,width: 25,)),
+                                  radius: const Radius.circular(20).r,
+                                  dashPattern: const [7,7,7,7],
+                                  padding: EdgeInsets.symmetric(horizontal: 40.w,vertical: 40.h),
+                                  child: Center(child: SvgPicture.asset('assets/icons/cloud.svg',height: 25.h,width: 25.w,)),
                                 ),
                               ),
-                              SizedBox(height: 12,),
+                              const SizedBox(height: 12,),
                               InkWell(
                                 onTap: (){},
                                 child: DottedBorder(
                                   color: kPrimaryColor,
                                   strokeWidth: 2,
-                                  radius: Radius.circular(20),
-                                  dashPattern: [7,7,7,7],
-                                  padding: EdgeInsets.symmetric(horizontal: 40,vertical: 40),
-                                  child: Center(child: SvgPicture.asset('assets/icons/cloud.svg',height: 25,width: 25,)),
+                                  radius: const Radius.circular(20).r,
+                                  dashPattern: const [7,7,7,7],
+                                  padding: EdgeInsets.symmetric(horizontal: 40.w,vertical: 40.h),
+                                  child: Center(child: SvgPicture.asset('assets/icons/cloud.svg',height: 25.h,width: 25.w,)),
                                 ),
                               ),
-                              SizedBox(height:12,),
+                              SizedBox(height:12.h,),
                               InkWell(
                                 onTap: (){
                                 },
                                 child: DottedBorder(
                                   color: kPrimaryColor,
                                   strokeWidth: 2,
-                                  radius: Radius.circular(20),
-                                  dashPattern: [7,7,7,7],
-                                  padding: EdgeInsets.symmetric(horizontal: 40,vertical: 40),
-                                  child: Center(child: SvgPicture.asset('assets/icons/cloud.svg',height: 25,width: 25,)),
+                                  radius: const Radius.circular(20).r,
+                                  dashPattern: const [7,7,7,7],
+                                  padding: EdgeInsets.symmetric(horizontal: 40.w,vertical: 40.h),
+                                  child: Center(child: SvgPicture.asset('assets/icons/cloud.svg',height: 25.h,width: 25.w,)),
                                 ),
                               ),
                             ],
@@ -115,15 +116,15 @@ class _AddProductPageState extends State<AddProductPage> {
                             child: DottedBorder(
                               color: kPrimaryColor,
                               strokeWidth: 2,
-                              radius: Radius.circular(20),
-                              dashPattern: [10,10,10,10],
-                              padding: EdgeInsets.symmetric(horizontal: 100,vertical: 150),
-                              child: Center(child: SvgPicture.asset('assets/icons/cloud.svg',height: 40,width: 40,)),
+                              radius: const Radius.circular(20).r,
+                              dashPattern: [10.w,10.w,10.w,10.w],
+                              padding: EdgeInsets.symmetric(horizontal: 100.w,vertical: 150.h),
+                              child: Center(child: SvgPicture.asset('assets/icons/cloud.svg',height: 40.h,width: 40.w,)),
                             ),
                           )
                         ],
                       ),
-                      SizedBox(height: 20,),
+                      SizedBox(height: 20.h),
                       Form(
                         key: _formKey,
                         child: Column(
@@ -135,13 +136,13 @@ class _AddProductPageState extends State<AddProductPage> {
                             ),
                             AppTextFormField(
                               controller: _productNameController,
-                              onChanged: (value) {
+                              onChanged: (value){
                                 _productName = value;
                               },
                               validator: validateName,
                               hintText: 'أدخل اسم المنتج',
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: 10.h),
                             const TextFormLabel(
                                 icon: "assets/icons/descreption.svg",
                                 label: 'الوصف',
@@ -155,7 +156,7 @@ class _AddProductPageState extends State<AddProductPage> {
                               validator: validateName,
                               height: 150,maxLines: 10,hintText: 'أدخل نص لا يزيد عن 70 حرف',
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: 10.h),
                             const TextFormLabel(
                                 icon: "assets/icons/price.svg",
                                 label: 'السعر',
@@ -169,7 +170,7 @@ class _AddProductPageState extends State<AddProductPage> {
                               validator: validateName,
                               hintText: 'أدخل سعر المنتج',
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: 10.h),
                             const TextFormLabel(
                                 icon: "assets/icons/timer.svg",
                                 label: 'مدة التسليم',
@@ -184,7 +185,7 @@ class _AddProductPageState extends State<AddProductPage> {
                               validator: validateName,
                             ),
 
-                            const SizedBox(height: 40),
+                            SizedBox(height: 40.h),
                             AppButton(
                               text: 'تقديم المنتج',
                               onPressed: () {
@@ -197,7 +198,7 @@ class _AddProductPageState extends State<AddProductPage> {
                                 }
                               },
                             ),
-                            const SizedBox(height: 40),
+                            SizedBox(height: 40.h),
                           ],
                         ),
                       ),

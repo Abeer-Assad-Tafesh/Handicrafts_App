@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:handcrafts/constants.dart';
+import 'package:handcrafts/utils/constants.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 class AppTextFormField extends StatelessWidget {
 
@@ -14,6 +16,7 @@ class AppTextFormField extends StatelessWidget {
   final String? Function(String) onChanged;
   final String? Function(String?)? validator;
   final Widget? prefixIcon;
+  final bool enabled;
 
 
 
@@ -25,19 +28,20 @@ class AppTextFormField extends StatelessWidget {
     this.width = double.infinity,
     this.obscureText = false,
     this.textInputField = TextInputType.text,
-    this.height = 55,
+    this.height = 60,
     required this.controller,
     required this.onChanged,
     this.validator,
     this.prefixIcon,
+    this.enabled = true,
 
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: height,
-      width: width,
+      height: height.h,
+      width: width.w,
       child: TextFormField(
         controller: controller,
         onChanged: onChanged,
@@ -45,10 +49,14 @@ class AppTextFormField extends StatelessWidget {
         maxLines: maxLines,
         keyboardType: textInputField,
         obscureText: obscureText,
+        // autovalidateMode: AutovalidateMode.onUserInteraction,
+        enabled: enabled,
+        style: const TextStyle(fontSize: 13),
         decoration: InputDecoration(
           hintText: hintText,
           prefixIcon: prefixIcon,
-          hintStyle: const TextStyle(fontSize: 12,color: Colors.grey),
+          contentPadding: const EdgeInsets.only(bottom: 15.0,left: 5,right: 5), // Apply padding at the bottom
+          hintStyle: TextStyle(fontSize: 12.sp,color: Colors.grey),
           filled: true,
           fillColor: Colors.grey.shade50,
           suffixIcon: Icon(
@@ -68,6 +76,6 @@ class AppTextFormField extends StatelessWidget {
         borderSide: BorderSide(
           color: Colors.grey.shade200,
         ),
-        borderRadius: BorderRadius.circular(10));
+        borderRadius: BorderRadius.circular(10).r);
   }
 }

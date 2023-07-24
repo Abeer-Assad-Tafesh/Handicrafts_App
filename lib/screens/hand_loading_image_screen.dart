@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:handcrafts/widgets/all_appBar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HandLoadingImageScreen extends StatelessWidget {
 
@@ -14,12 +15,12 @@ class HandLoadingImageScreen extends StatelessWidget {
           children: [
             AllAppBar(back: false),
             Padding(
-              padding: const EdgeInsets.only(top: 200),
+              padding: EdgeInsets.only(top: 200.h),
               child: Center(
                 child: InteractiveViewer(
                     child: SvgPicture.asset('assets/images/hand_loading.svg',
-                      height: 300,
-                      width: 300,
+                      height: 300.h,
+                      width: 300.w,
                     ),
                 ),
               ),

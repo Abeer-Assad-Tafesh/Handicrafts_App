@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class LaunchScreen extends StatefulWidget {
@@ -15,7 +16,7 @@ class _LaunchScreenState extends State<LaunchScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacementNamed(context, '/out_boarding_screen');
     });
   }
@@ -26,11 +27,11 @@ class _LaunchScreenState extends State<LaunchScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          Image.asset('assets/images/bg_splash.png' ,width: double.infinity,fit: BoxFit.cover),
+          Image.asset('assets/images/bg_screens.png' ,width: double.infinity,fit: BoxFit.cover),
           Center(
             child: SizedBox(
-              height: 160,
-              width: 160,
+              height: 160.h,
+              width: 160.w,
               child: SvgPicture.asset('assets/images/logo_image.svg'),
             ),
           ),

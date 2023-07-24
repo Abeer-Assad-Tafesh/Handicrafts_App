@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:handcrafts/constants.dart';
+import 'package:get/get.dart';
+import 'package:handcrafts/api/models/user.dart';
+import 'package:handcrafts/utils/constants.dart';
+import 'package:handcrafts/prefs/shared_pref_controller.dart';
 import 'package:handcrafts/widgets/all_appBar.dart';
 import 'package:handcrafts/widgets/app_button.dart';
 import 'package:handcrafts/widgets/app_text_form_field.dart';
@@ -12,25 +15,32 @@ class BuyerInfoScreen extends StatefulWidget {
   @override
   State<BuyerInfoScreen> createState() => _BuyerInfoScreenState();
 }
-
 class _BuyerInfoScreenState extends State<BuyerInfoScreen> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController _fullNameController;
-  late TextEditingController _emailController;
-  late TextEditingController _phoneNumController;
+  TextEditingController _fullNameController = TextEditingController(
+    text: SharedPrefController().name
+  );
+  TextEditingController _emailController = TextEditingController(
+      text: SharedPrefController().email
+  );
+  TextEditingController _phoneNumController = TextEditingController(
+      text: SharedPrefController().phone
+  );
   late TextEditingController _passwordController;
   late String _name;
   late String _email;
   late String _password;
   late String _phone;
 
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _fullNameController = TextEditingController();
-    _emailController = TextEditingController();
-    _phoneNumController = TextEditingController();
+    // _fullNameController = TextEditingController();
+    // _emailController = TextEditingController();
+    // _phoneNumController = TextEditingController();
     _passwordController = TextEditingController();
   }
 
@@ -108,11 +118,13 @@ class _BuyerInfoScreenState extends State<BuyerInfoScreen> {
                             _email = value;
                           },
                           validator: validateEmail,
-                        ),                        const SizedBox(height: 10),
+                        ),
+                        const SizedBox(height: 10),
                         const TextFormLabel(
                             icon: "assets/icons/call.svg", label: 'رقم الجوال'),
                         AppTextFormField(
                           controller: _phoneNumController,
+                          hintText: '059/056',
                           onChanged: (value){
                             _phone = value;
                           },

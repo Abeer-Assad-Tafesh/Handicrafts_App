@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:handcrafts/constants.dart';
+import 'package:handcrafts/utils/constants.dart';
 import 'package:handcrafts/widgets/all_appBar.dart';
 import 'package:handcrafts/widgets/app_button.dart';
 import 'package:handcrafts/widgets/app_text_form_field.dart';
+import 'package:handcrafts/widgets/small_text.dart';
 import 'package:handcrafts/widgets/text_form_label.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 class MyStorePage extends StatefulWidget {
   const MyStorePage({Key? key}) : super(key: key);
@@ -61,35 +64,34 @@ class _MyStorePageState extends State<MyStorePage> {
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20).r,
                   child: Form(
                     key: _formKey,
                     child: Column(
                       children: [
                         SizedBox(
-                          height: 100,
-                          width: 100,
+                          height: 100.h,
+                          width: 100.w,
                           child: CircleAvatar(
                             backgroundColor: Colors.grey.shade300,
                             foregroundColor: Colors.grey,
-                            child: const Icon(
+                            child: Icon(
                               Icons.person_outline_rounded,
-                              size: 40,
+                              size: 40.w,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 15),
+                        SizedBox(height: 15.h),
                         InkWell(
                           onTap: () {
                             // open gallery to reset the photo
                           },
-                          child: Text(
-                            'تعيين صورة المتجر',
-                            style:
-                            TextStyle(color: kPrimaryColor, fontSize: 14),
+                          child: SmallText(
+                            text:'تعيين صورة المتجر',
+                              color: kPrimaryColor, size: 14
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20.h),
                         const TextFormLabel(
                             icon: "assets/icons/who_us.svg",
                             label: 'من نحن'),
@@ -102,7 +104,7 @@ class _MyStorePageState extends State<MyStorePage> {
                           },
                           validator: validateName,
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const TextFormLabel(
                             icon: "assets/icons/message.svg",
                             label: 'البريد الإلكتروني'),
@@ -113,17 +115,18 @@ class _MyStorePageState extends State<MyStorePage> {
                           },
                           validator: validateName,
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const TextFormLabel(
                             icon: "assets/icons/call.svg", label: 'رقم الجوال'),
                         AppTextFormField(
                           controller: _instagramController,
+                          hintText: '059/056',
                           onChanged: (value) {
                             _tiktok = value;
                           },
                           validator: validateName,
                         ),
-                        const SizedBox(height: 40),
+                        SizedBox(height: 40.h),
                         AppButton(
                           text: 'حفظ',
                           onPressed: () {

@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:handcrafts/constants.dart';
+import 'package:get/get.dart';
+import 'package:handcrafts/api/get/home_getx_controller.dart';
+import 'package:handcrafts/api/models/all_products.dart';
+import 'package:handcrafts/utils/constants.dart';
 import 'package:handcrafts/screens/buyre/shop/about_shop_page.dart';
 import 'package:handcrafts/screens/buyre/shop/shop_page.dart';
 
 
-
 class ShopScreen extends StatefulWidget {
-  const ShopScreen({Key? key}) : super(key: key);
+   AllProducts? product;
+   ShopScreen({Key? key,this.product}) : super(key: key);
 
   @override
   State<ShopScreen> createState() => _ShopScreenState();
 }
 
 class _ShopScreenState extends State<ShopScreen> with TickerProviderStateMixin {
+  // HomeGetXController _shopPageController = Get.put(HomeGetXController());
+  HomeGetXController _homeGetXController = Get.find<HomeGetXController>();
   late TabController _tabController;
 
   @override
@@ -66,7 +71,7 @@ class _ShopScreenState extends State<ShopScreen> with TickerProviderStateMixin {
             Expanded(
                 child: TabBarView(
                   controller: _tabController,
-                  children: const [ShopPage(), AboutShopPage()],
+                  children:  [ShopPage(product: widget.product,), AboutShopPage(product: widget.product,)],
                 ))
           ],
         ),

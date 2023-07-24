@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:handcrafts/controller/cart_controller.dart';
+import 'package:handcrafts/api/controllers/cart_controller.dart';
 import 'package:handcrafts/utils/app_constant.dart';
 import 'package:handcrafts/widgets/all_appBar.dart';
 import 'package:handcrafts/widgets/big_text.dart';
-import 'package:handcrafts/widgets/no_products_yet.dart';
+import 'package:handcrafts/widgets/not_yet.dart';
 import 'package:handcrafts/widgets/small_text.dart';
 import 'package:intl/intl.dart';
 
@@ -73,8 +73,11 @@ class BuyerCartHistoryScreen extends StatelessWidget {
                     var cartItems = controller.getHistoryCartItems().length;
                     return cartItems <= 0
                         ? const Center(
-                            child: NoProductsYet(
+                            child: NotYet(
                               image: 'assets/images/no_cart.svg',
+                              text:  'عذرًا! لا يوجد منتجات',
+                              textButton: 'تسوق الآن',
+                              route: '/home_screen',
                             ),
                           )
                         : MediaQuery.removePadding(

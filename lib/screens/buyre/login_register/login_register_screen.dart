@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:handcrafts/constants.dart';
+import 'package:handcrafts/utils/constants.dart';
 import 'package:handcrafts/screens/buyre/login_register/buyer_login_page.dart';
 import 'package:handcrafts/screens/buyre/login_register/buyer_register_page.dart';
 
 class LoginRegisterScreen extends StatefulWidget {
-  const LoginRegisterScreen({Key? key}) : super(key: key);
+  const LoginRegisterScreen({
+    Key? key,
+    this.page1 = 0,
+    this.page2 = 1
+  }) : super(key: key);
+
+  final int page1;
+  final int page2;
 
   @override
   State<LoginRegisterScreen> createState() => _LoginRegisterScreenState();
@@ -30,6 +37,11 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen>
 
   BuyerLoginPage? loginPage ;
   BuyerRegisterPage? registerPage ;
+
+  List pages = [
+    BuyerLoginPage(),
+    BuyerRegisterPage(),
+  ];
 
 
   @override
@@ -70,7 +82,7 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen>
                 Expanded(
                     child: TabBarView(
                       controller: _tabController,
-                      children: const [BuyerLoginPage(), BuyerRegisterPage()],
+                      children: [pages[widget.page1], pages[widget.page2]],
                 ))
               ],
             ),

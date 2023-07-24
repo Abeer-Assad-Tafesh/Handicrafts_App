@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:handcrafts/constants.dart';
+import 'package:handcrafts/utils/constants.dart';
 
 import '../api/models/user.dart';
 
@@ -28,55 +28,76 @@ class AllAppBar extends StatelessWidget {
         ],
       ),
       child: Padding(
-        padding: back ? const EdgeInsets.only(top: 8, bottom: 8) : const EdgeInsets.all(8) ,
+        padding: back
+            ? const EdgeInsets.only(top: 8, bottom: 8)
+            : const EdgeInsets.all(8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: back
-                    ? SizedBox(
-                      width: size/3,
-                      child: Row(
-                          children: [
-                            const SizedBox(width: 8,),
-                            InkWell(
-                              onTap: (){
-                                Navigator.pop(context);
-                              },
-                                child: SvgPicture.asset("assets/icons/back_arrow.svg",)
-                            ),
-                          const SizedBox(width: 8,),
-                          Text(text,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: kPrimaryColor
-                          ),),
-                        ]
-                      ),
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: back
+                  ? SizedBox(
+                      width: size / 3,
+                      child: Row(children: [
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: SvgPicture.asset(
+                              "assets/icons/back_arrow.svg",
+                            )),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          text,
+                          style: TextStyle(fontSize: 14, color: kPrimaryColor),
+                        ),
+                      ]),
                     )
-                    : SvgPicture.asset("assets/icons/search.svg")),
-            logo ?SizedBox(
-                width: size/3,
-                child: SvgPicture.asset("assets/icons/logo.svg",height: 70, width: 70,),
-            ) : SizedBox(),
-            back ? SizedBox(
-              width: size/3,
-              height: 40,
-            ) :
-            InkWell(
-                onTap: () {
-                    User user = User();
+                  : InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, '/search_screen');
+                      },
+                      child: SvgPicture.asset("assets/icons/search.svg"),
+                    ),
+            ),
+            logo
+                ? SizedBox(
+                    width: size / 3,
+                    child: SvgPicture.asset(
+                      "assets/icons/logo.svg",
+                      height: 70,
+                      width: 70,
+                    ),
+                  )
+                : SizedBox(),
+            back
+                ? SizedBox(
+                    width: size / 3,
+                    height: 40,
+                  )
+                : InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, '/seller_notifications_screen');
+
+                      /*User user = User();
                     if(user.typeUser == 'buyer'){
                       Navigator.pushNamed(context, '/buyer_notifications_screen');
                     }
                     else{
                       Navigator.pushNamed(context, '/seller_notifications_screen');
-                    }
-                },
-                child: SvgPicture.asset("assets/icons/notifications.svg")),
+                    }*/
+                    },
+                    child: SvgPicture.asset("assets/icons/notifications.svg")),
           ],
         ),
       ),

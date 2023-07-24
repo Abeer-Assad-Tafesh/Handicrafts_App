@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import '../data/repository/cart_repo.dart';
-import '../models/cart_model.dart';
-import '../models/product_model.dart';
+import 'package:handcrafts/api/models/all_products.dart';
+import 'package:handcrafts/api/repository/cart_repo.dart';
+import '../../models/cart_model.dart';
 
 class CartController extends GetxController {
   final CartRepo cartRepo;
@@ -12,11 +12,14 @@ class CartController extends GetxController {
 
   Map<int, CartModel> get items => _items;
 
+  bool isLoading = false;
+
   static CartController get to => Get.find();
   List<CartModel> storedCartItems = [];
 
+
   // when press Add to cart btn
-  void addItemToCart(ProductModel product, int quantity) {
+  void addItemToCart(AllProducts product, int quantity) {
     //if product exists => update it
     if (_items.containsKey(product.id)) {
       int totalQuantity = 0;
@@ -34,6 +37,7 @@ class CartController extends GetxController {
       });
       if (totalQuantity <= 0) {
         _items.remove(product.id);
+        update();
       }
     } else {
       //if product not exists => create it
@@ -44,7 +48,7 @@ class CartController extends GetxController {
               id: product.id,
               name: product.name,
               price: product.price,
-              img: product.img,
+              img: product.imageUrl,
               quantity: quantity,
               isExist: true,
               time: DateTime.now().toString(),
@@ -55,12 +59,11 @@ class CartController extends GetxController {
             duration: const Duration(seconds: 2));
       }
     }
-
     cartRepo.addToCartList(getItems);
     update();
   }
 
-  bool existInCart(ProductModel product) {
+  bool existInCart(AllProducts product) {
     if (_items.containsKey(product.id)) {
       return true;
     } else {
@@ -68,7 +71,7 @@ class CartController extends GetxController {
     }
   }
 
-  int getQuantity(ProductModel product) {
+  int getQuantity(AllProducts product) {
     var quantity = 0;
     if (_items.containsKey(product.id)) {
       _items.forEach((key, value) {
@@ -106,8 +109,11 @@ class CartController extends GetxController {
 
 
   void addItemsToHistory(){
+    isLoading = true;
     cartRepo.addToCartHistoryList();
     clear();
+    isLoading = false;
+    update();
   }
 
   List<CartModel> getHistoryCartItems(){
@@ -118,7 +124,6 @@ class CartController extends GetxController {
     _items = {};
     update();
   }
-
 
   // remove when logout
   void clearCartHistory(){

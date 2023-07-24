@@ -5,8 +5,8 @@ class AppConstants{
   static const int APP_VERSION = 1;
   static const String TOKEN = "DBtoken";
 
-  // static const String BASE_URL = "http://mvs.bslmeiyu.com";
-  static const String BASE_URL = "http://mvs.bsl.com";
+  static const String BASE_URL = "http://mvs.bslmeiyu.com";
+  // static const String BASE_URL = "http://mvs.bsl.com"; // رابط خطأ للتجريب فقط
   static const String POPULAR_PRODUCT_URI= "/api/v1/products/popular";
   static const String RECOMMENDED_PRODUCT_URI = "/api/v1/products/recommended";
   static const String Upload_URI = "/uploads/";

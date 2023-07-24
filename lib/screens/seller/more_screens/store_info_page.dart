@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:handcrafts/constants.dart';
+import 'package:handcrafts/utils/constants.dart';
 import 'package:handcrafts/widgets/all_appBar.dart';
 import 'package:handcrafts/widgets/app_button.dart';
 import 'package:handcrafts/widgets/app_text_form_field.dart';
 import 'package:handcrafts/widgets/text_form_label.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 class StoreInfoPage extends StatefulWidget {
   const StoreInfoPage({Key? key}) : super(key: key);
@@ -75,7 +77,7 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(30),
+                  padding: const EdgeInsets.all(30).r,
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -90,7 +92,7 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
                           },
                           validator: validateName,
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const TextFormLabel(
                             icon: "assets/icons/message.svg",
                             label: 'البريد الإلكتروني'),
@@ -101,17 +103,18 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
                           },
                           validator: validateEmail,
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const TextFormLabel(
                             icon: "assets/icons/call.svg", label: 'رقم الجوال'),
                         AppTextFormField(
                           controller: _phoneNumController,
+                          hintText: '059/056',
                           onChanged: (value) {
                             _phone = value;
                           },
                           validator: validatePhoneNum,
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const TextFormLabel(
                             icon: "assets/icons/add_user.svg",
                             label: 'الاسم التجاري'),
@@ -122,7 +125,7 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
                           },
                           validator: validateName,
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const TextFormLabel(
                             icon: "assets/icons/open_category.svg",
                             label: 'التصنيف'),
@@ -134,7 +137,7 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
                           },
                           validator: validateName,
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const TextFormLabel(
                             icon: "assets/icons/country.svg",
                             label: 'الدولة'),
@@ -145,7 +148,7 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
                           },
                           validator: validateName,
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const TextFormLabel(
                             icon: "assets/icons/location.svg",
                             label: 'المدينة'),
@@ -156,7 +159,7 @@ class _StoreInfoPageState extends State<StoreInfoPage> {
                           },
                           validator: validateName,
                         ),
-                        const SizedBox(height: 40),
+                        SizedBox(height: 40.h),
                         AppButton(
                           text: 'تعديل',
                           onPressed: () {

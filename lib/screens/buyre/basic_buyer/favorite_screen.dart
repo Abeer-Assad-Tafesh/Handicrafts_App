@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:handcrafts/prefs/shared_pref_controller.dart';
+import 'package:handcrafts/widgets/app_card.dart';
+import 'package:handcrafts/widgets/not_yet.dart';
 
 class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({Key? key}) : super(key: key);
@@ -18,58 +21,24 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: SizedBox(
-          height: 800,
-          child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 300,
-                  childAspectRatio: 3 / 4,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10),
-              itemCount: myProducts.length,
-              itemBuilder: (BuildContext ctx, index) {
-                return Card(
-                  elevation: 4,
-                  // margin: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Stack(
-                    children: [
-                      SvgPicture.asset('assets/images/register.svg'),
-                      Positioned(
-                          right: 10,
-                          top: 10,
-                          child: Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade300,
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.favorite_rounded,
-                                  color: _favoriteColor,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    if (_favoriteColor == Colors.white) {
-                                      _favoriteColor = Colors.red.shade900;
-                                    } else {
-                                      _favoriteColor = Colors.white;
-                                    }
-                                  });
-                                },
-                              ))),
-                      // const Positioned(
-                      //     left: 10,
-                      //     bottom: 10,
-                      //     child: Text('متجر الشيماء')),
-                    ],
-                  ),
-                );
-              }),
-        ),
-      );
+        child: SharedPrefController().loggedIn
+            ? GridView.builder(
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 200,
+                    childAspectRatio: 3 / 4,
+                    crossAxisSpacing: 2,
+                    mainAxisSpacing: 0),
+                itemCount: 30,
+                itemBuilder: (BuildContext ctx, index) {
+                  return AppCard2(
+                    topMargin: 10,
+                  );
+                })
+            : const NotYet(
+                image: 'assets/images/no_cart.svg',
+                text: 'عذرًا! لم تسجل دخول',
+                textButton: 'سجل دخول لرؤية عناصرك المفضلة',
+                route: '/login_register_screen',
+              ));
   }
 }

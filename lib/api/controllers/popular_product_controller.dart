@@ -1,23 +1,26 @@
 import 'package:get/get.dart';
-import 'package:handcrafts/controller/cart_controller.dart';
-import '../data/repository/popular_product_repo.dart';
-import '../models/cart_model.dart';
-import '../models/product_model.dart';
-
+import 'package:handcrafts/api/api_helper.dart';
+import 'package:handcrafts/api/controllers/home_api_controller.dart';
+import 'package:handcrafts/api/models/all_products.dart';
+import 'package:handcrafts/api/controllers/cart_controller.dart';
+import '../../models/cart_model.dart';
+import 'package:http/http.dart' as http;
 
 // 3- controllers get the response from repos and then processing it to models(objects)
-class PopularProductControllers extends GetxController {
-  final PopularProductRepo popularProductRepo;
-  PopularProductControllers({required this.popularProductRepo});
+class PopularProductControllers extends GetxController with ApiHelper{
+  /*final PopularProductRepo popularProductRepo;
+  PopularProductControllers({required this.popularProductRepo});*/
 
-  List<dynamic> _popularProductList = [];
+  final HomeApiController _apiController = HomeApiController();
+
+  RxList<AllProducts> _popularProductList = <AllProducts>[].obs;
   // a simple method to return the list from ui, because the above one is private
-  List<dynamic> get popularProductList => _popularProductList;
+  List<AllProducts> get popularProductList => _popularProductList;
 
   late CartController _cart;
 
-  bool _isLoaded = false;
-  bool get isLoaded => _isLoaded;
+  RxBool _isLoaded = false.obs;
+  bool get isLoaded => _isLoaded.value;
 
   int _quantity = 0;
   int get quantity => _quantity;
@@ -25,25 +28,40 @@ class PopularProductControllers extends GetxController {
   int _inCartSameProductItems = 0;
   int get inCartSameProductItems => _inCartSameProductItems + _quantity;
 
+  @override
+  void onInit(){
+    getPopularProductList();
+    super.onInit();
+  }
+
   Future<void> getPopularProductList() async {
+    print('5555kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+    _isLoaded.value = true;
+    var productsList = await _apiController.showHome();
+    _popularProductList.value = productsList.where((element) => element.featured == 1 ).toList();
+    print('========$_popularProductList========');
+    _isLoaded.value = false;
+    update();
+/*
     // response is json
-    Response response = await popularProductRepo.getPopularProductList();
+    var response = await http.get(AppConstants.POPULAR_PRODUCT_URI as Uri, headers:headers);
+    // Response response = await popularProductRepo.getPopularProductList();
+    print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+
     if (response.statusCode == 200) {
       print('got products');
       _popularProductList = [];
       // it takes a list of objects (products)
       // response.body is a json(map)
       // .products => is to access _products
-      _popularProductList.addAll(Product.fromJson(response.body).products);
+      _popularProductList.addAll(Product.fromJson(response.body as Map<String, dynamic>).products);
       print('$_popularProductList');
       _isLoaded = true;
       update(); // instead of setState(){}
     } else {
       print('not got products ${response.statusCode}');
-
-    }
+    }*/
   }
-
 
   // we can reuse this below codes in RecommendedProductDetail()
   // cart work
@@ -73,7 +91,7 @@ class PopularProductControllers extends GetxController {
     }
   }
 
-  void initProduct(ProductModel product, CartController cart) {
+  void initProduct(AllProducts product, CartController cart) {
     _quantity = 0;
     _inCartSameProductItems = 0;
     _cart = cart;
@@ -85,15 +103,21 @@ class PopularProductControllers extends GetxController {
     print('quantity in cart is ${_inCartSameProductItems.toString()}');
   }
 
-  void addItem(ProductModel product) {
+  void addItem(AllProducts product) {
+    print('============${product.price}');
       _cart.addItemToCart(product, _quantity);
       _quantity = 0;
       _inCartSameProductItems = _cart.getQuantity(product);
+    print('quantity in cart is ${_inCartSameProductItems.toString()}');
       _cart.items.forEach((key, value) {
         print('The key is ${value.id.toString()} and the quantity is ${value.quantity.toString()}');
       });
+      if(_inCartSameProductItems == 0){
+        update();
+      }else{
       Get.snackbar('Good', 'product added successfully',duration: const Duration(seconds: 2));
       update();
+      }
   }
 
 

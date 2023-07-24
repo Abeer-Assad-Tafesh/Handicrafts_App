@@ -1,3 +1,4 @@
+/*
 class Product{
   int? _totalSize;
   int? _typeId;
@@ -83,4 +84,4 @@ class ProductModel{
     };
   }
 
-}
+}*/

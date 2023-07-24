@@ -4,6 +4,7 @@ import 'package:handcrafts/widgets/all_appBar.dart';
 import 'package:handcrafts/widgets/app_button.dart';
 import 'package:handcrafts/widgets/app_text_form_field.dart';
 import 'package:handcrafts/widgets/text_form_label.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class EditProductPage extends StatefulWidget {
@@ -57,13 +58,13 @@ class _EditProductPageState extends State<EditProductPage> {
             children: [
               AllAppBar(text: 'تعديل منتج',back: true,logo: false,),
               Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.all(15.0).r,
                 child: Column(
                   children: [
                     Row(
                       children: [
                         SizedBox(
-                          height: 350,
+                          height: 350.h,
                           width: MediaQuery.of(context).size.width / 3.4,
                           child: ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
@@ -80,15 +81,15 @@ class _EditProductPageState extends State<EditProductPage> {
                                 );
                               },
                               child: Container(
-                                height: 107,
-                                margin: const EdgeInsets.only(
-                                    left: 15, bottom: 14.5),
+                                height: 107.h,
+                                margin: EdgeInsets.only(
+                                    left: 15.w, bottom: 14.5.h),
                                 decoration: BoxDecoration(
                                   color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(8).r,
                                 ),
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(8).r,
                                   child: Image.asset(
                                     'assets/images/product2.png',
                                     fit: BoxFit.cover,
@@ -110,15 +111,15 @@ class _EditProductPageState extends State<EditProductPage> {
                             );
                           },
                           child: Container(
-                            height: 350,
+                            height: 350.h,
                             width:
                             MediaQuery.of(context).size.width / 1.58,
                             decoration: BoxDecoration(
                               color: Colors.grey,
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(8).r,
                             ),
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(8).r,
                               child: Image.asset('assets/images/product2.png',
                                 fit: BoxFit.fitHeight,
                               ),
@@ -127,7 +128,7 @@ class _EditProductPageState extends State<EditProductPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(height: 20.h),
                     Form(
                       key: _formKey,
                       child: Column(
@@ -145,7 +146,7 @@ class _EditProductPageState extends State<EditProductPage> {
                             validator: validateName,
                             hintText: 'أدخل اسم المنتج',
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: 10.h),
                           const TextFormLabel(
                             icon: "assets/icons/descreption.svg",
                             label: 'الوصف',
@@ -159,7 +160,7 @@ class _EditProductPageState extends State<EditProductPage> {
                             validator: validateName,
                             height: 150,maxLines: 10,hintText: 'أدخل نص لا يزيد عن 70 حرف',
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: 10.h),
                           const TextFormLabel(
                             icon: "assets/icons/price.svg",
                             label: 'السعر',
@@ -173,7 +174,7 @@ class _EditProductPageState extends State<EditProductPage> {
                             validator: validateName,
                             hintText: 'أدخل سعر المنتج',
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: 10.h),
                           const TextFormLabel(
                             icon: "assets/icons/timer.svg",
                             label: 'مدة التسليم',
@@ -188,7 +189,7 @@ class _EditProductPageState extends State<EditProductPage> {
                             validator: validateName,
                           ),
 
-                          const SizedBox(height: 40),
+                          SizedBox(height: 40.h),
                           AppButton(
                             text: 'تعديل المنتج',
                             onPressed: () {
@@ -197,7 +198,7 @@ class _EditProductPageState extends State<EditProductPage> {
                               }
                             },
                           ),
-                          const SizedBox(height: 40),
+                          SizedBox(height: 40.h),
                         ],
                       ),
                     ),

@@ -3,7 +3,7 @@ import 'package:handcrafts/api/models/user.dart';
 class ApiBaseResponse {
   late String message;
   late bool success;
-  late User user;
+  late UserApi user;
   late String token;
 
   ApiBaseResponse({
@@ -16,7 +16,7 @@ class ApiBaseResponse {
   ApiBaseResponse.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     success = json['success'];
-    user = User.fromJson(json['user']);
+    user = UserApi.fromJson(json['user']);
     token = json['token'];
   }
 }

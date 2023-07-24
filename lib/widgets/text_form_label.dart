@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:handcrafts/constants.dart';
+import 'package:handcrafts/utils/constants.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TextFormLabel extends StatelessWidget {
 
@@ -29,15 +30,15 @@ class TextFormLabel extends StatelessWidget {
           SvgPicture.asset(
             icon,
             color: kPrimaryColor,
-            height: iconH,
-            width: iconW,
+            height: iconH.h,
+            width: iconW.w,
           ),
-          const SizedBox(
-            width: 6,
+          SizedBox(
+            width: 6.w,
           ),
           Text(
             label,
-            style: TextStyle(fontSize: fontSize, color: Colors.grey),
+            style: TextStyle(fontSize: fontSize.sp, color: Colors.grey),
           )
         ],
       ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:handcrafts/widgets/out_boarding_indicator.dart';
+import 'package:handcrafts/widgets/small_text.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OutBoardingContent extends StatelessWidget {
 
@@ -14,30 +16,25 @@ class OutBoardingContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.min,
       children: [
         Expanded(
           flex: 3,
-            child: SvgPicture.asset(image)),
-        // const SizedBox(height: 10,),
-        // const SizedBox(height: 10,),
+            child: SvgPicture.asset(image,height: 300.h,width: 300.w,)),
         Expanded(
           flex: 1,
-          child: Text(title,
-            style: const TextStyle(
-                fontSize: 35,
-                fontWeight: FontWeight.bold
-            ),),
+          child: SmallText(text:title,
+              size: 35,
+              fontWeight: FontWeight.bold),
         ),
         Expanded(
           flex: 1,
-          child: Text(describe,
+          child: SmallText(text: describe,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-                fontSize: 16,
+            size: 16,
                 fontWeight: FontWeight.w500
-            ),),
+            ),
         ),
         Expanded(
           flex: 1,
