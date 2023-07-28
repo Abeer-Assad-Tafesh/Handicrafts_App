@@ -4,6 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:handcrafts/api/get/home_getx_controller.dart';
 import 'package:handcrafts/api/models/all_products.dart';
+import 'package:handcrafts/screens/buyre/login_register/login_register_screen.dart';
+import 'package:handcrafts/screens/chat/chat_screen.dart';
 import 'package:handcrafts/utils/constants.dart';
 import 'package:handcrafts/widgets/not_yet.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -98,9 +100,16 @@ class _AboutShopPageState extends State<AboutShopPage> {
                         InkWell(
                           onTap: (){
                             print('${_auth.currentUser}   ===========>');
-                            Navigator.pushNamed(context,
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                _auth.currentUser != null ? ChatScreen(
+                                store_Name: widget.product!.store.name,
+                                  store_Id: widget.product!.store.id.toString(),)
+                                    : LoginRegisterScreen()
+                            ));
+                            /*Navigator.pushNamed(context,
                                 _auth.currentUser != null ? '/chat_screen' :'/login_register_screen'
-                            );
+                            );*/
 
                           },
                           child: SvgPicture.asset(

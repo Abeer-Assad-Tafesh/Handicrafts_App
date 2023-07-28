@@ -72,6 +72,10 @@ dependencies:
   image_picker: ^1.0.1
   uuid: ^3.0.7
 
+  avatar_glow: ^2.0.2
+  random_color: ^1.0.5
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

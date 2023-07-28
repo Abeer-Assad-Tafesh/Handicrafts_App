@@ -24,9 +24,10 @@ class BasicBuyerScreens extends StatefulWidget {
 
 class _BasicBuyerScreensState extends State<BasicBuyerScreens>
     with TickerProviderStateMixin, ApiHelper {
-
-  PopularProductControllers _popularProductControllers = Get.put(PopularProductControllers());
-  RecommendedProductControllers _recommendedProductControllers = Get.put(RecommendedProductControllers());
+  PopularProductControllers _popularProductControllers =
+      Get.put(PopularProductControllers());
+  RecommendedProductControllers _recommendedProductControllers =
+      Get.put(RecommendedProductControllers());
 
   late final TabController _tabController;
   int pageIndex = 0;
@@ -36,7 +37,7 @@ class _BasicBuyerScreensState extends State<BasicBuyerScreens>
   void initState() {
     _tabController = TabController(length: 4, vsync: this);
     _tabController.animation!.addListener(
-          () {
+      () {
         final value = _tabController.animation!.value.round();
         if (value != currentPage && mounted) {
           changePage(value);
@@ -62,93 +63,73 @@ class _BasicBuyerScreensState extends State<BasicBuyerScreens>
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Stack(children: [
+        child: Stack(
+          children: [
             Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              AllAppBar(
-                back: false,
-              ),
-              Expanded(
-                child: FutureBuilder<bool>(
-                  future: checkInternetConnectivity(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<bool> snapshot) {
-                    if(snapshot.connectionState == ConnectionState.none){
-                      return const NotYet(
-                        image: 'assets/images/verif_code.svg',title: 'لا يتوفرانترنت!' ,text: ' أعد محاولة الاتصال بالانترنت',);
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AllAppBar(
+                  back: false,
+                ),
+                Expanded(
+                  child: FutureBuilder<bool>(
+                    future: checkInternetConnectivity(),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.none) {
+                        return const NotYet(
+                          image: 'assets/images/verif_code.svg',
+                          title: 'لا يتوفرانترنت!',
+                          text: ' أعد محاولة الاتصال بالانترنت',
+                        );
                       } else {
-                      if (_recommendedProductControllers.isLoaded &&
-                          _popularProductControllers.isLoaded) {
-                        // Display content when both conditions are met
-                        return Center(
-                          child: InteractiveViewer(
-                            child: SvgPicture.asset(
-                              'assets/images/hand_loading.svg',
-                              height: 300.h,
-                              width: 300.w,
+                        if (_recommendedProductControllers.isLoaded &&
+                            _popularProductControllers.isLoaded) {
+                          // Display content when both conditions are met
+                          return Center(
+                            child: InteractiveViewer(
+                              child: SvgPicture.asset(
+                                'assets/images/hand_loading.svg',
+                                height: 300.h,
+                                width: 300.w,
+                              ),
                             ),
-                          ),
-                        );
-                      } else {
-                        return TabBarView(
-                          controller: _tabController,
-                          physics: const NeverScrollableScrollPhysics(),
-                          children: const [
-                            HomeScreen(),
-                            CartScreen(),
-                            FavoriteScreen(),
-                            AccountScreen(),
-                          ],
-                        );
+                          );
+                        } else {
+                          return TabBarView(
+                            controller: _tabController,
+                            physics: const NeverScrollableScrollPhysics(),
+                            children: const [
+                              HomeScreen(),
+                              CartScreen(),
+                              FavoriteScreen(),
+                              AccountScreen(),
+                            ],
+                          );
+                        }
                       }
-                    }
-                  },
+                    },
+                  ),
                 ),
+              ],
+            ),
+            Positioned(
+              left: 1,
+              right: 1,
+              bottom: 5,
+              child: AppTabBar(
+                tabController: _tabController,
+                currentPage: currentPage,
+                icon1: 'assets/icons/home.svg',
+                icon2: 'assets/icons/buy.svg',
+                icon3: 'assets/icons/heart.svg',
+                icon4: 'assets/icons/category.svg',
               ),
-                ],
-              ),
-              Positioned(
-                left: 1,
-                right: 1,
-                bottom: 5,
-                child: AppTabBar(
-                  tabController: _tabController,
-                  currentPage: currentPage,
-                  icon1: 'assets/icons/home.svg',
-                  icon2: 'assets/icons/buy.svg',
-                  icon3: 'assets/icons/heart.svg',
-                  icon4: 'assets/icons/category.svg',
-                ),
-              )
-            ]),
+            )
+          ],
+        ),
       ),
     );
   }
 }
 
-
-/*
-checkInternetConnectivity() ?
-_recommendedProductControllers.isLoaded &&
-_popularProductControllers.isLoaded
-? Center(
-child: InteractiveViewer(
-child: SvgPicture.asset(
-'assets/images/hand_loading.svg',
-height: 300.h,
-width: 300.w,
-),
-),
-)
-: TabBarView(
-controller: _tabController,
-physics: const NeverScrollableScrollPhysics(),
-children: const [
-HomeScreen(),
-CartScreen(),
-FavoriteScreen(),
-AccountScreen(),
-],
-)
-    : NotYet(image: 'assets/images/verif_code.svg'),*/

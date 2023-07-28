@@ -199,7 +199,7 @@ class _MyAppState extends State<MyApp> {
             '/question_seller_page': (context) => const QuestionSellerPage(),
             '/contact_us_seller_page': (context) => const ContactUsSellerPage(),
 
-            '/chat_screen': (context) => ChatScreen('Ali','2'),
+            '/chat_screen': (context) => ChatScreen(),
           },
         );
       },

@@ -28,7 +28,7 @@ class AppCardState extends State<AppCard> {
   Widget build(BuildContext context) {
     return Container(
       height: 100,
-      width: 200,
+      width: 180,
       margin: EdgeInsets.fromLTRB(10, widget.topMargin, 10, 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
@@ -47,83 +47,8 @@ class AppCardState extends State<AppCard> {
         image: DecorationImage(
           fit: BoxFit.cover,
           image: NetworkImage(
-                widget.product.imageUrl!,
+            widget.product.imageUrl,
           ),
-        ),
-      ),
-      child: Stack(
-        children: [
-          Positioned(
-              right: 10,
-              top: 10,
-              child: Container(
-                  height: 45,
-                  width: 45,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  child: IconButton(
-                    icon: Icon(Icons.favorite_rounded,
-                        color: _favoriteColor, size: 30),
-                    onPressed: () {
-                      setState(() {
-                        if (_favoriteColor == Colors.white) {
-                          _favoriteColor = Colors.red.shade900;
-                        } else {
-                          _favoriteColor = Colors.white;
-                        }
-                      });
-                    },
-                  ))),
-          Positioned(
-              left: 10, bottom: 10, child: Text('₪${widget.product.price}')),
-        ],
-      ),
-    );
-  }
-}
-
-
-class AppCard2 extends StatefulWidget {
-  const AppCard2({
-    super.key,
-    this.topMargin = 0,
-  });
-
-  // final ProductModel product;
-  final double topMargin;
-
-  @override
-  State<AppCard2> createState() => AppCard2State();
-}
-
-class AppCard2State extends State<AppCard2> {
-  Color _favoriteColor = Colors.white;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 100,
-      width: 180,
-      margin: EdgeInsets.fromLTRB(10, widget.topMargin, 10, 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: Colors.green.shade100,
-        boxShadow: [
-          // BoxShadow(color: Colors.grey,spreadRadius: 0.1,blurRadius: 3),
-          // BoxShadow(color: Colors.grey,spreadRadius: 0.1,blurRadius: 5),
-          // BoxShadow(color: Colors.grey,spreadRadius: 0.1,blurRadius: 5),
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 4,
-            offset: const Offset(0, 3), // changes position of shadow
-          ),
-        ],
-        image: DecorationImage(
-          fit: BoxFit.fill,
-          image: AssetImage('assets/images/product2.png'),
         ),
       ),
       child: Stack(
@@ -153,7 +78,6 @@ class AppCard2State extends State<AppCard2> {
               ),
             ),
           ),
-          Positioned(left: 10, bottom: 10, child: Text('₪5')),
           Positioned(
             top: 0,
             left: 0,
@@ -177,6 +101,24 @@ class AppCard2State extends State<AppCard2> {
             ),
           ),
           Positioned(
+            right: 10.w,
+            bottom: 10.h,
+            child: SmallText(
+              text: '...${widget.product.name.substring(0, 8)}',
+              size: 13,
+              color: Colors.white,
+            ),
+          ),
+          Positioned(
+            left: 10.w,
+            bottom: 10.h,
+            child: SmallText(
+              text: '₪${widget.product.price}',
+              size: 13,
+              color: Colors.white,
+            ),
+          ),
+          /*Positioned(
               left: 8.w,
               right: 8.w,
               bottom: 10.h,
@@ -194,15 +136,103 @@ class AppCard2State extends State<AppCard2> {
                     color: Colors.white,
                   ),
                 ],
-              )),
+              )),*/
+        ],
+      ),
+    );
+
+  }
+}
+
+class AppCard2 extends StatefulWidget {
+  const AppCard2({
+    super.key,
+    this.topMargin = 0,
+  });
+
+  // final ProductModel product;
+  final double topMargin;
+
+  @override
+  State<AppCard2> createState() => AppCard2State();
+}
+
+class AppCard2State extends State<AppCard2> {
+  Color _favoriteColor = Colors.white;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 100,
+      width: 200,
+      margin: EdgeInsets.fromLTRB(10, widget.topMargin, 10, 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: Colors.green.shade100,
+        boxShadow: [
+          // BoxShadow(color: Colors.grey,spreadRadius: 0.1,blurRadius: 3),
+          // BoxShadow(color: Colors.grey,spreadRadius: 0.1,blurRadius: 5),
+          // BoxShadow(color: Colors.grey,spreadRadius: 0.1,blurRadius: 5),
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 4,
+            offset: const Offset(0, 3), // changes position of shadow
+          ),
+        ],
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: NetworkImage(
+            'widget.product.imageUrl!',
+          ),
+        ),
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+              right: 10,
+              top: 10,
+              child: Container(
+                  height: 45,
+                  width: 45,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.favorite_rounded,
+                        color: _favoriteColor, size: 30),
+                    onPressed: () {
+                      setState(() {
+                        if (_favoriteColor == Colors.white) {
+                          _favoriteColor = Colors.red.shade900;
+                        } else {
+                          _favoriteColor = Colors.white;
+                        }
+                      });
+                    },
+                  ))),
+          Positioned(
+            right: 10,
+            bottom: 10,
+            child: SmallText(
+              text: '...{widget.product.name.substring(0, 8)}',
+              size: 13,
+            ),
+          ),
+          Positioned(
+            left: 10,
+            bottom: 10,
+            child: SmallText(
+              text: '₪{widget.product.price}',
+              size: 13,
+            ),
+          ),
         ],
       ),
     );
   }
 }
-
-
-
 
 class AppCard3 extends StatefulWidget {
   const AppCard3({
@@ -226,7 +256,7 @@ class AppCard3State extends State<AppCard3> {
       height: 100,
       width: 260,
       margin: EdgeInsets.fromLTRB(10, widget.topMargin, 10, 10),
-      padding:  const EdgeInsets.all(15),
+      padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         color: Colors.white,
@@ -238,7 +268,7 @@ class AppCard3State extends State<AppCard3> {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 2,
             blurRadius: 4,
-            offset: const Offset(0,2), // changes position of shadow
+            offset: const Offset(0, 2), // changes position of shadow
           ),
         ],
       ),
@@ -248,28 +278,30 @@ class AppCard3State extends State<AppCard3> {
           Container(
             height: 150,
             width: 120,
-            margin: const EdgeInsets.fromLTRB(5,0, 0, 0),
+            margin: const EdgeInsets.fromLTRB(5, 0, 0, 0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(13),
               color: Colors.green.shade100,
-              image:  DecorationImage(
+              image: DecorationImage(
                 fit: BoxFit.fill,
                 image: AssetImage('assets/images/product1.png'),
               ),
             ),
           ),
-          const SizedBox(width: 5,),
+          const SizedBox(
+            width: 5,
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               SmallText(
-                text:"اسم المتجر",
+                text: "اسم المتجر",
                 size: 16,
-                maxLines:1,
+                maxLines: 1,
               ),
               SmallText(
-                text:"تطريز",
+                text: "تطريز",
                 size: 14,
               ),
               Row(
@@ -282,7 +314,7 @@ class AppCard3State extends State<AppCard3> {
                     width: 5,
                   ),
                   SmallText(
-                    text:"4.5",
+                    text: "4.5",
                     size: 14,
                     color: kPrimaryColor,
                   ),
@@ -298,9 +330,8 @@ class AppCard3State extends State<AppCard3> {
                     width: 5,
                   ),
                   SmallText(
-                    text:"فلسطين_غزة",
+                    text: "فلسطين_غزة",
                   ),
-
                 ],
               ),
             ],

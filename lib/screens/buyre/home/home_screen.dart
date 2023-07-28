@@ -13,9 +13,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       child: Column(
-        children: const [
+        children: [
           SizedBox(height: 10,),
           HomeStores(),
           HomeMostRequested(),

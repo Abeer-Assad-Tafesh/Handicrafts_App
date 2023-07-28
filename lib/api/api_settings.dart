@@ -1,7 +1,7 @@
 
 class ApiSettings{
   // Be sure that laptop ip is still the same when u use local server
-  static const String _baseUrl = "http://192.168.0.108/";
+  static const String _baseUrl = "http://192.168.0.104/";
   static const String _apiUrl = _baseUrl + "api/";
 
   static const String register = _apiUrl + "auth/register";

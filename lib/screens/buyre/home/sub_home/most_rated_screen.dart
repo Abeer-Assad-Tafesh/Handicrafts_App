@@ -56,13 +56,13 @@ class _MostRatedScreenState extends State<MostRatedScreen> {
                                   ),
                                 ));
                           },
-                          child: controller.recommendedProductList.length != 0
+                          child: controller.recommendedProductList.isNotEmpty
                               ? AppCard(
                                   product:
                                       controller.recommendedProductList[index],
                                   topMargin: 10,
                                 )
-                              : AppCard2(
+                              : const AppCard2(
                                   topMargin: 10,
                                 ),
                         );

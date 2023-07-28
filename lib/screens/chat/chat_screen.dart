@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -7,15 +8,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:handcrafts/prefs/shared_pref_controller.dart';
 import 'package:handcrafts/utils/constants.dart';
+import 'package:handcrafts/widgets/small_text.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:random_color/random_color.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class ChatScreen extends StatefulWidget {
-  String owner_Name;
-  String property_Id;
-  ChatScreen(this.owner_Name,this.property_Id,{Key? key}) : super(key: key);
+  String? store_Name;
+  String? store_Id;
+
+  ChatScreen({
+    Key? key,
+    this.store_Name,
+    this.store_Id,
+  }) : super(key: key);
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -23,6 +31,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   final FocusNode inputFocusNode = FocusNode();
+
   // final _collectionMessages = 'ChatRooms/Owner(${ownerName})/PropertyId()/Messages';
   final TextEditingController _messageController = TextEditingController();
   final _auth = FirebaseAuth.instance;
@@ -31,28 +40,60 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   bool showImageBeforeSend = false;
   XFile? xFile;
   File? imageFile;
-  String? ownerName;
-  String? propertyId;
-
-  List<String>? chatLocalMessages ;
+  String? storeName;
+  String? storeId;
+  List<String>? chatLocalMessages;
+  File? _imageFile;
+  String? _firstName;
+  RandomColor _randomColor = RandomColor();
+  AvatarGlow? avatarGlow;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    SharedPrefController().clear();
+    _getProfileImage();
+    // SharedPrefController().clear();
     loadChatMessages(); // Load chat messages when the screen is initialized.
     WidgetsBinding.instance.addObserver(this);
-    ownerName = widget.owner_Name;
-    propertyId = widget.property_Id;
+    storeName = widget.store_Name;
+    storeId = widget.store_Id;
   }
 
+  void _getProfileImage() {
+    // Combine the first letter of the name and a random background color
+    String initial = SharedPrefController().name.substring(0, 1).toUpperCase();
+    print('=================>$initial');
+    Color randomColor = _randomColor.randomColor(colorBrightness: ColorBrightness.dark);
+
+    // Add the glowing effect using AvatarGlow widget
+     avatarGlow =  AvatarGlow(
+      startDelay: const Duration(milliseconds: 1000),
+      glowColor: randomColor,
+      endRadius: 20.0,
+      duration: const Duration(milliseconds: 2000),
+      repeat: true,
+      showTwoGlows: true,
+      repeatPauseDuration: const Duration(milliseconds: 100),
+      child: Material(
+        elevation: 8.0,
+        shape: const CircleBorder(),
+        child: CircleAvatar(
+          backgroundColor: randomColor,
+          radius: 50.0,
+          child: Text(
+            initial,
+            style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+        ),
+      ),
+    );
+  }
 
   Future<void> loadChatMessages() async {
     chatLocalMessages = SharedPrefController().chatMessages;
     print('${chatLocalMessages}');
   }
-
 
   Future getImage() async {
     ImagePicker _picker = ImagePicker();
@@ -67,13 +108,12 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     });
   }
 
-
   Future uploadImage() async {
     int status = 1;
     String fileName = const Uuid().v1();
-    var messageRef =  _firestore.collection('ChatRooms/PropertyId($propertyId)/Messages');
-    await messageRef
-        .doc(fileName).set({
+    var messageRef =
+        _firestore.collection('ChatRooms/StoreId($storeId)/Messages');
+    await messageRef.doc(fileName).set({
       'sendby': _auth.currentUser!.displayName,
       'message': '',
       'type': 'img',
@@ -91,9 +131,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
     if (status == 1) {
       String imageUrl = await uploadTask.ref.getDownloadURL();
-      await messageRef
-          .doc(fileName)
-          .update({'message': imageUrl});
+      await messageRef.doc(fileName).update({'message': imageUrl});
       print('======>$imageUrl');
       setState(() {
         imageFile = null;
@@ -102,13 +140,15 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   }
 
   void onSendMessage() async {
-    var messageRef = _firestore.collection('ChatRooms/PropertyId($propertyId)/Messages');
+    var messageRef =
+        _firestore.collection('ChatRooms/StoreId($storeId)/Messages');
     if (_messageController.text.isNotEmpty) {
       SharedPrefController().saveChatMessage(_messageController.text);
       var message = {
         'sendby': _auth.currentUser!.displayName,
         'message': _messageController.text,
         'type': 'text',
+        // 'userImageProfile': '',
         'time': FieldValue.serverTimestamp()
       };
       _messageController.clear();
@@ -118,7 +158,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    var messageRef = _firestore.collection('ChatRooms/PropertyId($propertyId)/Messages');
+    var messageRef =
+        _firestore.collection('ChatRooms/StoreId($storeId)/Messages');
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
@@ -127,13 +168,17 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             SvgPicture.asset(
               "assets/icons/chat.svg",
               color: Colors.white,
-              height: 30.h,
-              width: 30.w,
+              height: 20.h,
+              width: 20.w,
             ),
             SizedBox(
               width: 4.w,
             ),
-            const Text(' تشات '),
+            SmallText(
+              text: ' متجر $storeName ',
+              size: 15,
+              color: Colors.white,
+            ),
           ],
         ),
       ),
@@ -143,97 +188,72 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             flex: 11,
             child: showImageBeforeSend
                 ? SizedBox(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: Image.file(
-                imageFile!,
-                fit: BoxFit.cover,
-              ),
-            )
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    child: Image.file(
+                      imageFile!,
+                      fit: BoxFit.cover,
+                    ),
+                  )
                 : Container(
-              // padding: const EdgeInsets.only(top: 15),
-              height: MediaQuery.of(context).size.height / 1.25,
-              width: MediaQuery.of(context).size.width,
-              alignment: AlignmentDirectional.topStart,
-              child: StreamBuilder<QuerySnapshot>(
-                stream: messageRef
-                    .orderBy('time', descending: false)
-                    .snapshots(),
-                builder:
-                    (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  List<String> allMessages = [];
-                  allMessages.addAll(chatLocalMessages ?? []); // Existing messages from shared preferences
-                  print('Gooooooooooo$allMessages');
+                    // padding: const EdgeInsets.only(top: 15),
+                    height: MediaQuery.of(context).size.height / 1.25,
+                    width: MediaQuery.of(context).size.width,
+                    alignment: AlignmentDirectional.topStart,
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: messageRef
+                          .orderBy('time', descending: false)
+                          .snapshots(),
+                      builder:
+                          (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.data != null) {
+                          var messages = snapshot.data!.docs.reversed;
 
-                  if (snapshot.data!.docs != null ) {
-                    print('7777777${snapshot.data!.docs}777777');
-                    print(snapshot.data!.docs.reversed);
-                    var messages = snapshot.data!.docs.reversed;
-                    // var messagesTexts = [];
-                    var messagesSenders = [];
-                    var messagesTimes = [];
-                    var messagesTypes = [];
+                          var messagesTexts = [];
+                          var messagesSenders = [];
+                          var messagesTimes = [];
+                          var messagesTypes = [];
+                          // var messagesUserImageProfile = [];
 
-                    for (var m in messages) {
-                      final messageText = m.get('message');
-                      final messageSender = m.get('sendby');
-                      final messageType = m.get('type');
-                      final messageTime = m.get('time') == null
-                          ? DateTime.now()
-                          : m.get('time').toDate();
-                      DateTime now = messageTime;
-                      String formattedDate =
-                      DateFormat('yyyy-MM-dd – kk:mm').format(now);
+                          for (var m in messages) {
+                            final messageText = m.get('message');
+                            final messageSender = m.get('sendby');
+                            final messageType = m.get('type');
+                            // final messageUserImageProfile = m.get('userImageProfile');
+                            final messageTime = m.get('time') == null
+                                ? DateTime.now()
+                                : m.get('time').toDate();
+                            DateTime now = messageTime;
+                            String formattedDate =
+                                DateFormat('yyyy-MM-dd – kk:mm').format(now);
+                            messagesTexts.add(messageText);
+                            messagesSenders.add(messageSender);
+                            messagesTimes.add(formattedDate);
+                            messagesTypes.add(messageType);
+                            // messageUserImageProfile.add(messageUserImageProfile);
 
-                      allMessages.add(messageText); // Messages from Firestore
-                      // messagesTexts.add(messageText);
-                      messagesSenders.add(messageSender);
-                      messagesTimes.add(formattedDate);
-                      messagesTypes.add(messageType);
-                    }
-                    return ListView.builder(
-                        reverse: true,
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          return messageContainer(
-                              allMessages[index],
-                              messagesSenders[index],
-                              messagesTimes[index],
-                              messagesTypes[index],
-                              context);
-                        });
-                  } else {
-                    if(allMessages.length < 1){
-                      SharedPrefController().saveChatMessage('مرحباً بك في متجرنا!');
-                      loadChatMessages();
-                      print('Gooooooooooooooooooooooooooooooood');
-                      var messagesSenders = [];
-                      var messagesTimes = [];
-                      var messagesTypes = [];
-                      messagesSenders.add('');
-                      messagesTimes.add( DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.now()));
-                      messagesTypes.add('text');
-                      return ListView.builder(
-                          reverse: true,
-                          itemCount: allMessages.length,
-                          itemBuilder: (context, index) {
-                            return messageContainer(
-                                allMessages[index],
-                                messagesSenders[index],
-                                messagesTimes[index],
-                                messagesTypes[index],
-                                context);
-                          });
-                    }else{
-                      return const SizedBox();
-                    }
-                  }
-                },
-              ),
-            )
+                          }
+                          return ListView.builder(
+                              reverse: true,
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                                return messageContainer(
+                                    messagesTexts[index],
+                                    messagesSenders[index],
+                                    messagesTimes[index],
+                                    messagesTypes[index],
+                                    // messagesUserImageProfile[index],
+                                    context);
+                              });
+                        } else {
+                          return const SizedBox();
+                        }
+                      },
+                    ),
+                  ),
           ),
           SizedBox(
-            height: 70,
+            height: 70.h,
             width: MediaQuery.of(context).size.width,
             child: Row(
               children: [
@@ -246,11 +266,11 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                       expands: true,
                       maxLines: null,
                       decoration: InputDecoration(
-                        hintText: 'Type here ...',
-                        contentPadding: const EdgeInsets.symmetric(vertical: 5 ,horizontal: 15),
+                        hintText: 'مراسلة ...',
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 15),
                         suffixIcon: IconButton(
-                          icon:  Icon(Icons.photo_outlined
-                          ,color: inputFocusNode.hasFocus ? kPrimaryColor :Colors.grey,),
+                          icon: Icon(Icons.photo_outlined,color: inputFocusNode.hasFocus ? kPrimaryColor: Colors.grey,),
                           onPressed: () {
                             getImage();
                           },
@@ -260,8 +280,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                           borderSide: const BorderSide(color: Colors.grey),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: kPrimaryColor, width: 2),
+                          borderSide: const BorderSide(
+                              color: Color(0xC57D8D7B), width: 2),
                           borderRadius: BorderRadius.circular(40),
                         ),
                       ),
@@ -278,7 +298,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                         uploadImage();
                       }
                     },
-                    icon: const Icon(Icons.send)),
+                    icon: Icon(Icons.send,color: inputFocusNode.hasFocus ? kPrimaryColor: Colors.grey,)),
               ],
             ),
           ),
@@ -287,167 +307,176 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     );
   }
 
-  Widget messageContainer(
-      var message, var sender, var time, var type, BuildContext context) {
+  Widget messageContainer(var message, var sender, var time, var type, BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return type == 'text'
         ? Container(
-            margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+            margin: EdgeInsets.only(top: 4.h,bottom: 2.h,left: 40.w,right: 5.w),
             alignment: sender == _auth.currentUser?.displayName
-                ? Alignment.centerLeft
-                : Alignment.centerRight,
+                ? Alignment.centerRight
+                : Alignment.centerLeft,
+            child: Column(
+              crossAxisAlignment: sender == _auth.currentUser?.displayName
+                  ? CrossAxisAlignment.start
+                  : CrossAxisAlignment.end,
+              // mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  '$sender',
+                        style: TextStyle(fontSize: 10, color: Colors.grey[500]),
+                      ),
+                const SizedBox(),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    // sender == _auth.currentUser?.displayName
+                    //     ? avatarGlow!
+                    //     : Flexible(child: SizedBox(width: 20.w,height: 20.h,)),
+                    // const SizedBox(width: 8),
+                    Flexible(
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: sender == _auth.currentUser?.displayName
+                                ? Color(0xC57D8D7B)
+                                : Colors.grey[400]!,
+                            borderRadius: sender == _auth.currentUser?.displayName
+                                ?  BorderRadius.only(
+                                    topLeft: Radius.circular(20.0.r),
+                                    topRight: Radius.circular(20.0.r),
+                                    bottomLeft: Radius.circular(20.0.r),
+                                  )
+                                : BorderRadius.only(
+                                    topLeft: Radius.circular(20.0.r),
+                                    topRight: Radius.circular(20.0.r),
+                                    bottomRight: Radius.circular(20.0.r),
+                                  )),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 0.h, horizontal: 14.w),
+                          child: Column(
+                            crossAxisAlignment:
+                                sender == _auth.currentUser?.displayName
+                                    ? CrossAxisAlignment.start
+                                    : CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                message,
+                                style: TextStyle(
+                                  color: sender == _auth.currentUser?.displayName
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 14.sp,
+                                ),
+                              ),
+                              Text(
+                                '$time',
+                                style: TextStyle(
+                                    fontSize: 9.sp, color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          )
+        : Container(
+            margin:  EdgeInsets.symmetric(vertical: 4.h, horizontal: 10.w),
+      alignment: sender == _auth.currentUser?.displayName
+          ? Alignment.centerRight
+          : Alignment.centerLeft,
             child: Column(
               crossAxisAlignment: sender == _auth.currentUser?.displayName
                   ? CrossAxisAlignment.start
                   : CrossAxisAlignment.end,
               children: [
                 Text(
-                        '$sender',
-                        style: TextStyle(fontSize: 10, color: Colors.grey[500]),
-                      ),
-                const SizedBox(),
-                Container(
-                  decoration: BoxDecoration(
-                      color: sender == _auth.currentUser?.displayName
-                          ? kPrimaryColor
-                          : Colors.grey[400]!,
-                      borderRadius: sender == _auth.currentUser?.displayName
-                          ? const BorderRadius.only(
-                              topLeft: Radius.circular(20.0),
-                              topRight: Radius.circular(20.0),
-                              bottomRight: Radius.circular(20.0),
-                            )
-                          : const BorderRadius.only(
-                              topLeft: Radius.circular(20.0),
-                              topRight: Radius.circular(20.0),
-                              bottomLeft: Radius.circular(20.0),
-                            )),
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 0, horizontal: 14),
-                    child: Column(
-                      crossAxisAlignment:
-                          sender == _auth.currentUser?.displayName
-                              ? CrossAxisAlignment.start
-                              : CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          message,
-                          style: TextStyle(
-                            color: sender == _auth.currentUser?.displayName
-                                ? Colors.white
-                                : Colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
-                        Text(
-                          '$time',
-                          style:
-                              const TextStyle(fontSize: 9, color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )
-        : Container(
-            margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-            child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Align(
-                alignment: sender == _auth.currentUser?.displayName
-                    ? Alignment.centerLeft
-                    : Alignment.centerRight,
-                child: Text(
                   '$sender',
-                  style: TextStyle(fontSize: 12, color: Colors.grey[500]),
+                  style: TextStyle(fontSize: 10.sp, color: Colors.grey[500]),
                 ),
-              ),
-              Stack(
-                children: [
+                Stack(children: [
                   Container(
-                  height: size.height / 2.5,
-                  width: size.width,
-                  // margin: const EdgeInsets.all(10),
-                  alignment: sender == _auth.currentUser?.displayName
-                      ? Alignment.centerLeft
-                      : Alignment.centerRight,
-                  child: InkWell(
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => ShowImage(imageUrl: message),
+                    height: size.height / 2.5,
+                    width: size.width,
+                    // margin: const EdgeInsets.all(10),
+                    alignment: sender == _auth.currentUser?.displayName
+                        ? Alignment.centerRight
+                        : Alignment.centerLeft,
+                    child: InkWell(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => ShowImage(imageUrl: message),
+                        ),
                       ),
-                    ),
-                    child: Container(
-                      height: size.height / 2.5,
-                      width: size.width / 2,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                            width: 3,
-                            color: sender == _auth.currentUser?.displayName
-                                ? kPrimaryColor
-                                : Colors.grey[400]!),
-                      ),
-                      child: message != ''
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(7),
-                              child: Image.network(
-                                message,
-                                fit: BoxFit.cover,
-                              ),
-                            )
-                          : const Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(),
-                                ),
-                              ],
-                            )
+                      child: Container(
+                          height: size.height / 2.5,
+                          width: size.width / 2,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.r),
+                            border: Border.all(
+                                width: 3.w,
+                                color: sender == _auth.currentUser?.displayName
+                                    ? const Color(0xC57D8D7B)
+                                    : Colors.grey[400]!),
+                          ),
+                          child: message != ''
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(7),
+                                  child: Image.network(
+                                    message,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height: 20.h,
+                                      width: 20.w,
+                                      child: const CircularProgressIndicator(),
+                                    ),
+                                  ],
+                                )),
                     ),
                   ),
-                ),
                   Positioned(
-                    bottom: 10,
-                    left: 15,
+                    bottom: 10.h,
+                    right: 15.w,
                     child: Container(
-                      padding: const EdgeInsets.all(0),
+                      padding: const EdgeInsets.all(0).r,
                       color: Colors.black.withAlpha(30).withOpacity(0.3),
                       child: Text(
                         '$time',
-                        style: const TextStyle(fontSize: 9, color: Colors.white),
+                        style:
+                         TextStyle(fontSize: 9.sp, color: Colors.white),
                       ),
                     ),
                   ),
-               ]
-              ),
-            ],
-              ),
+                ]),
+              ],
+            ),
           );
   }
-
-/*  @override
+/*
+  @override
   void didChangeMetrics() {
     super.didChangeMetrics();
     final value = WidgetsBinding.instance.window.viewInsets.bottom;
     if (value == 0) {
       inputFocusNode.unfocus();
     }
-  }
+  }*/
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     inputFocusNode.dispose();
     super.dispose();
-  }*/
+  }
 }
 
 class ShowImage extends StatelessWidget {
