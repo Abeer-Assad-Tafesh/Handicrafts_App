@@ -51,7 +51,7 @@ class AppTextFormField extends StatelessWidget {
         obscureText: obscureText,
         // autovalidateMode: AutovalidateMode.onUserInteraction,
         enabled: enabled,
-        style: const TextStyle(fontSize: 13),
+        style: const TextStyle(fontSize: 13,color: Colors.black),
         decoration: InputDecoration(
           hintText: hintText,
           prefixIcon: prefixIcon,

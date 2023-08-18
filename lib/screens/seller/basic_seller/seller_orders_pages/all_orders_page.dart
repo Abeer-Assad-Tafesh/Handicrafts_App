@@ -108,13 +108,13 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
                             children: [
                               SmallText(
                                   text: widget.items[1], color: kPrimaryColor, size: 10),
-                              SizedBox(width: 38.w),
+                              SizedBox(width: 30.w),
                               SmallText(
                                   text: widget.items[2], color: kPrimaryColor, size: 10),
-                              SizedBox(width: 40.w),
+                              SizedBox(width: 35.w),
                               SmallText(
                                   text: widget.items[3], color: kPrimaryColor, size: 10),
-                              SizedBox(width: 60.w),
+                              SizedBox(width: 55.w),
                               SmallText(
                                   text: widget.items[4], color: kPrimaryColor, size: 10),
                             ],

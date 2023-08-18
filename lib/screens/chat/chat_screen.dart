@@ -114,6 +114,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     var messageRef =
         _firestore.collection('ChatRooms/StoreId($storeId)/Messages');
     await messageRef.doc(fileName).set({
+/*'sendby': SharedPrefController().typeUser == 'buyer' ? _auth.currentUser!.displayName
+            :storeName,*/
       'sendby': _auth.currentUser!.displayName,
       'message': '',
       'type': 'img',
@@ -175,7 +177,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
               width: 4.w,
             ),
             SmallText(
-              text: ' متجر $storeName ',
+              text: '$storeName',
               size: 15,
               color: Colors.white,
             ),
@@ -208,13 +210,11 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                           (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (snapshot.data != null) {
                           var messages = snapshot.data!.docs.reversed;
-
                           var messagesTexts = [];
                           var messagesSenders = [];
                           var messagesTimes = [];
                           var messagesTypes = [];
                           // var messagesUserImageProfile = [];
-
                           for (var m in messages) {
                             final messageText = m.get('message');
                             final messageSender = m.get('sendby');

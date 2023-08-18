@@ -126,7 +126,7 @@ class _RequestDetailsPageState extends State<RequestDetailsPage> {
                           controller: _emailController,
                           prefixIcon: Padding(
                               padding: const EdgeInsets.all(13).r,
-                              child: SvgPicture.asset("assets/icons/message.svg")),
+                              child: SvgPicture.asset("assets/icons/email.svg")),
                           onChanged: (value) {
                             _email = value;
                           },

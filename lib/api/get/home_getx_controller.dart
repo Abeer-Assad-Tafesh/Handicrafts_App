@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:handcrafts/api/controllers/home_api_controller.dart';
-import 'package:handcrafts/api/models/all_products.dart';
+import 'package:handcrafts/api/models/product.dart';
 
 class HomeGetXController extends GetxController {
-  RxList<AllProducts> productsList = <AllProducts>[].obs;
+  List<Product> productsList = <Product>[];
   bool loading = false;
   final HomeApiController _apiController = HomeApiController();
 
@@ -15,7 +15,7 @@ class HomeGetXController extends GetxController {
 
   Future<void> getHome() async {
     loading = true;
-    productsList.value = await _apiController.showHome();
+    productsList = await _apiController.showHome();
     loading = false;
     update();
   }

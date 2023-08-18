@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:get/get.dart';
-import '../../models/cart_model.dart';
-import '../../utils/app_constant.dart';
+import '../models/cart_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 //2- repositories is to call methods from Api client to get response of request
@@ -28,7 +27,7 @@ class CartRepo extends GetxService{
 
   }
 
-
+/*
   // below code is to store checked out cart products in cart history
   void addToCartHistoryList() {
 
@@ -63,7 +62,7 @@ class CartRepo extends GetxService{
     storedCart = [];
     storedHistoryCart = [];
     sharedPreferences.remove(AppConstants.CART_HISTORY_LIST);
-  }
+  }*/
 
 
 }

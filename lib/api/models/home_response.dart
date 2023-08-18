@@ -1,14 +1,14 @@
 import 'package:handcrafts/api/models/api_base_response.dart';
-import 'package:handcrafts/api/models/all_products.dart';
+import 'package:handcrafts/api/models/product.dart';
 
 class HomeResponse extends ApiBaseResponse {
-  late List<AllProducts> allProducts;
+  late List<Product> allProducts;
 
   HomeResponse.fromJson(Map<String, dynamic> json) : super.fromJson(json){
     if (json['data'] != null) {
-      allProducts = <AllProducts>[];
+      allProducts = <Product>[];
       json['data'].forEach((v) {
-        allProducts.add(AllProducts.fromJson(v));
+        allProducts.add(Product.fromJson(v));
       });
     }
   }

@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:handcrafts/utils/constants.dart';
 import 'package:handcrafts/widgets/all_appBar.dart';
 import 'package:handcrafts/widgets/app_button.dart';
@@ -6,6 +9,9 @@ import 'package:handcrafts/widgets/app_text_form_field.dart';
 import 'package:handcrafts/widgets/small_text.dart';
 import 'package:handcrafts/widgets/text_form_label.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../../prefs/shared_pref_controller.dart';
 
 
 class MyStorePage extends StatefulWidget {
@@ -22,11 +28,7 @@ class _MyStorePageState extends State<MyStorePage> {
   late TextEditingController _instagramController;
   late TextEditingController _tiktokController;
 
-
-  late String _whoUs;
-  late String _faceBook;
-  late String _instagram;
-  late String _tiktok;
+  File? _imageFile;
 
 
   @override
@@ -69,22 +71,34 @@ class _MyStorePageState extends State<MyStorePage> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        SizedBox(
-                          height: 100.h,
-                          width: 100.w,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.grey.shade300,
-                            foregroundColor: Colors.grey,
-                            child: Icon(
-                              Icons.person_outline_rounded,
-                              size: 40.w,
-                            ),
-                          ),
-                        ),
+                        // SizedBox(
+                        //   height: 100.h,
+                        //   width: 100.w,
+                        //   child: user!.profile?.imgProfile == null ?
+                        //   CircleAvatar(
+                        //     backgroundColor: Colors.indigo,
+                        //     foregroundColor: Colors.deepPurpleAccent,
+                        //     backgroundImage: _imageFile != null
+                        //         ? FileImage(File(_imageFile!.path))
+                        //         : null,
+                        //     child: _imageFile == null ? Text(
+                        //       SharedPrefController().name.substring(0, 1).toUpperCase(),
+                        //       style: TextStyle(fontSize: 40.0.sp, fontWeight: FontWeight.bold, color: Colors.white),
+                        //     ): null,
+                        //   )
+                        //       : CircleAvatar(
+                        //     backgroundColor: Colors.grey.shade300,
+                        //     foregroundColor: Colors.grey,
+                        //     backgroundImage: _imageFile != null
+                        //         ? FileImage(File(_imageFile!.path))
+                        //         : FileImage(File(user.profile!.imgProfile!)),
+                        //   ),
+                        //
+                        // ),
                         SizedBox(height: 15.h),
                         InkWell(
                           onTap: () {
-                            // open gallery to reset the photo
+                            _pickImage();
                           },
                           child: SmallText(
                             text:'تعيين صورة المتجر',
@@ -99,52 +113,31 @@ class _MyStorePageState extends State<MyStorePage> {
                           controller: _whoUsController,
                           maxLines: 15,
                           height: 200,
-                          onChanged: (value) {
-                            _whoUs = value;
-                          },
-                          validator: validateName,
+                          onChanged: (value) {},
                         ),
                         SizedBox(height: 10.h),
                         const TextFormLabel(
-                            icon: "assets/icons/message.svg",
-                            label: 'البريد الإلكتروني'),
+                            icon: "assets/icons/facebook.svg",
+                            label: 'الفيس بوك'),
                         AppTextFormField(
                           controller: _facebookController,
-                          onChanged: (value) {
-                            _faceBook = value;
-                          },
-                          validator: validateName,
+                          onChanged: (value) {},
+                          hintText: 'قم بإدخال رابط إن وجد',
                         ),
                         SizedBox(height: 10.h),
                         const TextFormLabel(
-                            icon: "assets/icons/call.svg", label: 'رقم الجوال'),
+                            icon: "assets/icons/instagram.svg", label: 'الانستجرام'),
                         AppTextFormField(
                           controller: _instagramController,
-                          hintText: '059/056',
-                          onChanged: (value) {
-                            _tiktok = value;
-                          },
-                          validator: validateName,
+                          hintText: 'قم بإدخال رابط إن وجد',
+                          onChanged: (value) {},
                         ),
                         SizedBox(height: 40.h),
                         AppButton(
                           text: 'حفظ',
                           onPressed: () {
-                            if (_formKey.currentState!.validate()) {
                               Navigator.pushNamed(
                                   context, '/basic_seller_screens');
-                              /*print('login');
-                              AuthHelper.authHelper
-                                  .login(email, password)
-                                  .then((value) => () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder:(context) =>  HomePageUi()
-                                  ),
-                                );
-                              });*/
-                            }
                           },
                         ),
                       ],
@@ -159,11 +152,30 @@ class _MyStorePageState extends State<MyStorePage> {
     );
   }
 
-  String? validateName(String? value) {
-    if (value!.isEmpty) {
-      return null;
+  // Function to handle image selection from gallery
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
     } else {
-      return null;
     }
   }
+
+  final RegExp regex = RegExp(
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)| (\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+
+  bool checkData() {
+    if (_whoUsController.text.isEmpty) {
+      Get.snackbar('مهلاً', 'أدخل ايميلك ', colorText: Colors.red);
+      return false;
+    } else if (_imageFile == null) {
+      Get.snackbar('مهلاً', 'اختر صورة للبروفايل', colorText: Colors.red);
+      return false;
+    }
+    return true;
+  }
+
 }

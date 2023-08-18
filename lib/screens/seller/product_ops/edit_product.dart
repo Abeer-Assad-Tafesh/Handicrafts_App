@@ -1,14 +1,28 @@
+import 'dart:io';
+
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:handcrafts/api/get/product_getx_controller.dart.dart';
+import 'package:handcrafts/api/models/product.dart';
 import 'package:handcrafts/screens/full_image_screen.dart';
+import 'package:handcrafts/screens/sent_successfully_screen.dart';
+import 'package:handcrafts/utils/constants.dart';
 import 'package:handcrafts/widgets/all_appBar.dart';
 import 'package:handcrafts/widgets/app_button.dart';
 import 'package:handcrafts/widgets/app_text_form_field.dart';
 import 'package:handcrafts/widgets/text_form_label.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../../api/models/product_images.dart';
 
 
 class EditProductPage extends StatefulWidget {
-  const EditProductPage({Key? key}) : super(key: key);
+
+  Product? product;
+  EditProductPage({Key? key, this.product}) : super(key: key);
 
   @override
   State<EditProductPage> createState() => _EditProductPageState();
@@ -16,25 +30,31 @@ class EditProductPage extends StatefulWidget {
 
 class _EditProductPageState extends State<EditProductPage> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController _productNameController;
-  late TextEditingController _productDescriptionController;
-  late TextEditingController _productPriceController;
-  late TextEditingController _productDelivaryTimeController;
+  TextEditingController _productNameController = TextEditingController();
+  TextEditingController _productDescriptionController = TextEditingController();
+  TextEditingController _productPriceController = TextEditingController();
+  TextEditingController _productDeliveryTimeController = TextEditingController();
 
-  late String _productName;
-  late String _productDisc;
-  late String _productPrice;
-  late String _productDelivaryTime;
+  List<XFile?> _imageList = List.generate(4, (index) => null);
 
+  final picker = ImagePicker();
+
+  Future getImage(int index) async {
+    XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _imageList[index] = pickedFile;
+      });
+    }
+  }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _productNameController = TextEditingController();
-    _productDescriptionController = TextEditingController();
-    _productPriceController = TextEditingController();
-    _productDelivaryTimeController = TextEditingController();
+    _productNameController.text = widget.product?.name ?? '';
+    _productDescriptionController.text = widget.product?.description ?? '';
+    _productPriceController.text = widget.product?.price?.toString() ?? '';
+    _productDeliveryTimeController.text = widget.product?.deliveryPeriod.toString() ?? '';
   }
 
   @override
@@ -43,7 +63,7 @@ class _EditProductPageState extends State<EditProductPage> {
     _productNameController.dispose();
     _productDescriptionController.dispose();
     _productPriceController.dispose();
-    _productDelivaryTimeController.dispose();
+    _productDeliveryTimeController.dispose();
     super.dispose();
   }
 
@@ -62,70 +82,119 @@ class _EditProductPageState extends State<EditProductPage> {
                 child: Column(
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(
-                          height: 350.h,
-                          width: MediaQuery.of(context).size.width / 3.4,
-                          child: ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: 3,
-                            itemBuilder: (context, index) => InkWell(
+                        Column(
+                          children: [
+                            InkWell(
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => FullImageScreen(
-                                      image: 'assets/images/product2.png',
-                                    ),
-                                  ),
-                                );
+                                getImage(3);
                               },
-                              child: Container(
-                                height: 107.h,
-                                margin: EdgeInsets.only(
-                                    left: 15.w, bottom: 14.5.h),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(8).r,
+                              child: DottedBorder(
+                                color: kPrimaryColor,
+                                strokeWidth: 2,
+                                radius: const Radius.circular(20).r,
+                                dashPattern: const [7, 7, 7, 7],
+                                // padding: EdgeInsets.symmetric(horizontal: 40.w,vertical: 40.h),
+                                child: SizedBox(
+                                  height: 102,
+                                  width: 130,
+                                  child: _imageList[3] != null
+                                      ? Image.file(
+                                    File(_imageList[3]!.path),
+                                    fit: BoxFit.cover,
+                                  )
+                                      : Image.file(
+                                          File(
+                                              widget.product!.productImages![3].imageUrl),
+                                          fit: BoxFit.cover,
+                                        ),
                                 ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8).r,
-                                  child: Image.asset(
-                                    'assets/images/product2.png',
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                getImage(2);
+                              },
+                              child: DottedBorder(
+                                color: kPrimaryColor,
+                                strokeWidth: 2,
+                                radius: const Radius.circular(20).r,
+                                dashPattern: const [7, 7, 7, 7],
+                                // padding: EdgeInsets.symmetric(horizontal: 40.w,vertical: 40.h),
+                                child: SizedBox(
+                                  height: 102,
+                                  width: 130,
+                                  child: _imageList[2] != null
+                                      ? Image.file(
+                                    File(_imageList[2]!.path),
+                                    fit: BoxFit.cover,
+                                  )
+                                      : Image.file(
+                                    File(widget.product!.productImages![2].imageUrl),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
                             ),
-                          ),
+                            SizedBox(
+                              height: 12.h,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                getImage(1);
+                              },
+                              child: DottedBorder(
+                                color: kPrimaryColor,
+                                strokeWidth: 2,
+                                radius: const Radius.circular(20).r,
+                                dashPattern: const [7, 7, 7, 7],
+                                // padding: EdgeInsets.symmetric(horizontal: 40.w,vertical: 40.h),
+                                child: SizedBox(
+                                  height: 102,
+                                  width: 130,
+                                  child: _imageList[1] != null
+                                      ? Image.file(
+                                    File(_imageList[1]!.path),
+                                    fit: BoxFit.cover,
+                                  )
+                                      : Image.file(
+                                    File(widget.product!.productImages![1].imageUrl),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         InkWell(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => FullImageScreen(
-                                  image: 'assets/images/product2.png',
-                                ),
-                              ),
-                            );
+                            getImage(0);
                           },
-                          child: Container(
-                            height: 350.h,
-                            width:
-                            MediaQuery.of(context).size.width / 1.58,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(8).r,
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8).r,
-                              child: Image.asset('assets/images/product2.png',
-                                fit: BoxFit.fitHeight,
+                          child: DottedBorder(
+                            color: kPrimaryColor,
+                            strokeWidth: 2,
+                            radius: const Radius.circular(20).r,
+                            dashPattern: [10.w, 10.w, 10.w, 10.w],
+                            // padding: EdgeInsets.symmetric(horizontal: 100.w,vertical: 150.h),
+                            child: SizedBox(
+                              height: 335.h,
+                              width: 225.w,
+                              child: _imageList[0] != null
+                                  ? Image.file(
+                                File(_imageList[0]!.path),
+                                fit: BoxFit.fitWidth,
+                              )
+                                  :Image.file(
+                                File(widget.product!.productImages![0].imageUrl),
+                                fit: BoxFit.cover,
                               ),
                             ),
                           ),
-                        ),
+                        )
                       ],
                     ),
                     SizedBox(height: 20.h),
@@ -141,9 +210,7 @@ class _EditProductPageState extends State<EditProductPage> {
                           AppTextFormField(
                             controller: _productNameController,
                             onChanged: (value) {
-                              _productName = value;
                             },
-                            validator: validateName,
                             hintText: 'أدخل اسم المنتج',
                           ),
                           SizedBox(height: 10.h),
@@ -155,9 +222,7 @@ class _EditProductPageState extends State<EditProductPage> {
                           AppTextFormField(
                             controller: _productDescriptionController,
                             onChanged: (value){
-                              _productDisc = value;
                             },
-                            validator: validateName,
                             height: 150,maxLines: 10,hintText: 'أدخل نص لا يزيد عن 70 حرف',
                           ),
                           SizedBox(height: 10.h),
@@ -169,9 +234,7 @@ class _EditProductPageState extends State<EditProductPage> {
                           AppTextFormField(
                             controller: _productPriceController,
                             onChanged: (value){
-                              _productPrice = value;
                             },
-                            validator: validateName,
                             hintText: 'أدخل سعر المنتج',
                           ),
                           SizedBox(height: 10.h),
@@ -182,20 +245,17 @@ class _EditProductPageState extends State<EditProductPage> {
                           ),
                           AppTextFormField(
                             hintText: 'مثال 2 يوم',
-                            controller: _productDelivaryTimeController,
+                            controller: _productDeliveryTimeController,
                             onChanged: (value){
-                              _productDelivaryTime = value;
                             },
-                            validator: validateName,
                           ),
 
                           SizedBox(height: 40.h),
                           AppButton(
                             text: 'تعديل المنتج',
                             onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                Navigator.pushNamed(context, '/basic_seller_screens');
-                              }
+                              _updateProduct();
+                                // Navigator.pushNamed(context, '/basic_seller_screens');
                             },
                           ),
                           SizedBox(height: 40.h),
@@ -212,11 +272,56 @@ class _EditProductPageState extends State<EditProductPage> {
     );
   }
 
-  String? validateName(String? value) {
-    if (value!.isEmpty) {
-      return 'أدخل النص المطلوب';
-    } else {
-      return null;
+
+  bool checkData() {
+    for (int i = 0; i < _imageList.length; i++) {
+      if (_imageList[i] == null) {
+        Get.snackbar('مهلاً', 'الرجاء ملء حقل الصور رقم ${i + 1} ',
+            colorText: kPrimaryColor);
+        return false;
+      }
+    }
+    if (_productNameController.text.isNotEmpty &&
+        _productDescriptionController.text.isNotEmpty &&
+        _productPriceController.text.isNotEmpty) {
+      return true;
+    }
+    Get.snackbar('مهلاً', 'الرجاء ملء باقي الحقول', colorText: kPrimaryColor);
+    return false;
+  }
+
+  Product get product {
+    Product newProduct = Product();
+    newProduct.name = _productNameController.text;
+    newProduct.description = _productDescriptionController.text;
+    newProduct.price = double.parse(_productPriceController.text);
+    newProduct.quantity = int.parse('0');
+    // newProduct.: int.parse(_productDeliveryTimeController.text);
+    newProduct.productImages = _imageList.map((image) => ProductImage(imageUrl: image!.path)).toList();
+    return newProduct;
+  }
+
+  Future<void> _updateProduct() async {
+    if (checkData()) {
+      bool created =
+      await ProductGetXController.to.updateProduct(product: product);
+      if (created) {
+        navigate();
+      }
     }
   }
+
+  void navigate(){
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SentSuccessfullyScreen(
+          mainText: 'تم تقديم طلب الاعتماد',
+          subText: 'سيتم مراجعة الطلب خلال 24 ساعة',
+        ),
+      ),
+    );
+  }
+
+
 }

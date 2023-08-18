@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:handcrafts/utils/constants.dart';
 import 'package:handcrafts/api/controllers/cart_controller.dart';
-import 'package:handcrafts/models/cart_model.dart';
+import 'package:handcrafts/api/models/cart_model.dart';
 import 'package:handcrafts/widgets/small_text.dart';
 import '../widgets/all_appBar.dart';
 import '../widgets/app_button.dart';
@@ -23,13 +23,40 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
   late TextEditingController _addressController;
   late TextEditingController _deliveryTimeController;
   late TextEditingController _deliveryDateController;
-   TextEditingController _payMethodController = TextEditingController(text: 'عند الإستلام');
-  late String _address;
-  late String _deliveryTime;
-  late String _deliveryDate;
-  late String _payMethod;
+  final TextEditingController _payMethodController = TextEditingController(text: 'عند الإستلام');
+
+  final CartController _cartController = Get.find();
 
 
+  Map<String, double> get totalCartProductsPriceByStore {
+    Map<String, double> totalPriceByStore = {};
+
+    Map<String, List<CartModel>> itemsByStore = _cartController.getItemsByStore();
+
+    // Loop through the itemsByStore map to calculate the total price for each store
+    itemsByStore.forEach((storeId, itemsInStore) {
+      double totalPriceForStore = 0;
+      for (var item in itemsInStore) {
+        totalPriceForStore += item.quantity! * item.price!;
+      }
+      totalPriceByStore[storeId] = totalPriceForStore;
+    });
+    return totalPriceByStore;
+  }
+
+/*  double calculateTotalDeliveryPrice() {
+    double totalDeliveryPrice = 0;
+
+    Map<String, double> totalPriceByStore = totalCartProductsPriceByStore;
+
+    // Loop through the totalPriceByStore map and sum up the delivery prices for all stores
+    totalPriceByStore.forEach((storeId, totalPrice) {
+      double deliveryPriceForStore = calculateDeliveryPriceForStore(storeId);
+      totalDeliveryPrice += deliveryPriceForStore;
+    });
+
+    return totalDeliveryPrice;
+  }*/
 
   @override
   void initState() {
@@ -61,7 +88,11 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
             children: [
               Column(
                 children: [
-                  AllAppBar(back: true, text: 'شراء',),
+                  AllAppBar(
+                    back: true,
+                    text: 'شراء',
+                  // spaceBeforeLogo: 65,
+                  ),
                   SingleChildScrollView(
                     child: Padding(
                       padding: EdgeInsets.only(left: 30.w, right: 30.w,top: 20.h),
@@ -76,9 +107,7 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
                             AppTextFormField(
                               controller: _addressController,
                               onChanged: (value) {
-                                _address = value;
                               },
-                              validator: validateName,
                               maxLines: 3,
                             ),
                             SizedBox(height: 22.h),
@@ -95,9 +124,7 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
                                       AppTextFormField(
                                         controller: _deliveryDateController,
                                         onChanged: (value) {
-                                          _deliveryDate = value;
                                         },
-                                        validator: validateName,
                                         hintText: '22/10/2023',
                                       ),
                                     ],
@@ -116,9 +143,7 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
                                       AppTextFormField(
                                         controller: _deliveryTimeController,
                                         onChanged: (value) {
-                                          _deliveryTime = value;
                                         },
-                                        validator: validateName,
                                         hintText: '2:30 Am',
                                       ),
                                     ],
@@ -134,9 +159,7 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
                               controller: _payMethodController,
                               enabled: false,
                               onChanged: (value) {
-                                _payMethod = value;
                               },
-                              validator: validateName,
                               maxLines: 1,
                             ),
                             SizedBox(height: 12.h),
@@ -164,13 +187,14 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
                           text: TextSpan(
                             children: <TextSpan>[
                               TextSpan(
-                                text: '16',
-                                style: TextStyle(fontSize: 20.0,
+                                text: '${_cartController.totalCartProductsPrice}',
+                                style: TextStyle(
+                                  fontSize: 20.0,
                                   color: kPrimaryColor,
                                 ),
                               ),
                               TextSpan(
-                                text: '₪',
+                                text: ' ₪',
                                 style: TextStyle(fontSize: 14.0,
                                   color: kPrimaryColor,
                                 ),
@@ -198,7 +222,7 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
                                 ),
                               ),
                               TextSpan(
-                                text: '₪',
+                                text: ' ₪',
                                 style: TextStyle(fontSize: 14.0,
                                   color: kPrimaryColor,
                                 ),
@@ -215,22 +239,23 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
                         SmallText(
                           text: 'الإجمالي',
                           size: 14.sp,
+                          fontWeight: FontWeight.bold,
                         ),
                         RichText(
-                          text: TextSpan(
+                          text: const TextSpan(
                             children: <TextSpan>[
                               TextSpan(
                                 text: '38',
                                 style: TextStyle(
                                   fontSize: 22.0,
                                   fontWeight: FontWeight.bold,
-                                  color: kPrimaryColor
+                                  color: Colors.black
                                 ),
                               ),
                               TextSpan(
-                                text: '₪',
+                                text: ' ₪',
                                 style: TextStyle(fontSize: 16.0,
-                                    color: kPrimaryColor
+                                    color: Colors.black
                                 ),
                               ),
                             ],
@@ -247,12 +272,11 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
               GetBuilder<CartController>(builder: (controller){
                 return AppButton(
                   onPressed: () {
-                    if(_formKey.currentState!.validate()){
-                      double productsPrice = controller.totalCartProductsPrice;
+                      /*double productsPrice = controller.totalCartProductsPrice;
                       List<CartModel> products = controller.getItems;
                       confirmOrder(products,productsPrice);
-                      controller.addItemsToHistory();
-                    }
+                      controller.addItemsToHistory();*/
+
                   },
                   text:
                   'تأكيد الطلب',
@@ -265,18 +289,24 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
     );
   }
 
+  bool checkData() {
+    if (_addressController.text.isNotEmpty &&
+        _deliveryTimeController.text.isNotEmpty &&
+        _deliveryDateController.text.isNotEmpty
+    ) {
+      return true;
+    }
+    Get.snackbar('مهلاً', 'الرجاء ملء باقي الحقول', colorText: kPrimaryColor);
+    return false;
+  }
 
   confirmOrder(List<CartModel> products, double productsPrice){
     print('$products    $productsPrice');
-    // ارسال كل الحقول مع البارميترات باستخدام api
-  }
+    if(checkData()){
+      // ارسال كل الحقول مع البارميترات باستخدام api
 
-  String? validateName(String? value) {
-    if (value!.isEmpty) {
-      return 'الرجاء ملء الحقل';
-    } else {
-      return null;
     }
+
   }
 
 }

@@ -4,6 +4,8 @@ import 'package:handcrafts/api/controllers/cart_controller.dart';
 import 'package:handcrafts/widgets/statistics_card.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../prefs/shared_pref_controller.dart';
+
 
 class StatisticsScreen extends StatefulWidget {
   const StatisticsScreen({Key? key}) : super(key: key);

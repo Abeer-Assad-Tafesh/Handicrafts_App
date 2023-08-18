@@ -17,6 +17,7 @@ class SellerNotificationsScreen extends StatelessWidget {
             AllAppBar(
               back: true,
               text: 'الإشعارات',
+              logo: false,
             ),
             Expanded(
               child: SingleChildScrollView(

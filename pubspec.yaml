@@ -71,10 +71,11 @@ dependencies:
   modal_progress_hud_nsn: ^0.4.0
   image_picker: ^1.0.1
   uuid: ^3.0.7
-
   avatar_glow: ^2.0.2
   random_color: ^1.0.5
 
+  firebase_messaging: ^14.6.5
+  flutter_local_notifications: ^15.1.0+1
 
 dev_dependencies:
   flutter_test:

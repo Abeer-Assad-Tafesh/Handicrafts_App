@@ -1,25 +1,20 @@
 import 'package:get/get.dart';
-import 'package:handcrafts/api/models/all_products.dart';
+import 'package:handcrafts/api/models/product.dart';
 import 'package:handcrafts/api/repository/cart_repo.dart';
-import '../../models/cart_model.dart';
+import '../models/cart_model.dart';
 
 class CartController extends GetxController {
   final CartRepo cartRepo;
-
   CartController({required this.cartRepo});
 
   Map<int, CartModel> _items = {};
-
   Map<int, CartModel> get items => _items;
-
   bool isLoading = false;
-
   static CartController get to => Get.find();
   List<CartModel> storedCartItems = [];
 
-
   // when press Add to cart btn
-  void addItemToCart(AllProducts product, int quantity) {
+  void addItemToCart(Product product, int quantity) {
     //if product exists => update it
     if (_items.containsKey(product.id)) {
       int totalQuantity = 0;
@@ -43,7 +38,6 @@ class CartController extends GetxController {
       //if product not exists => create it
       if (quantity > 0) {
         _items.putIfAbsent(product.id!, () {
-          // print('add item id' + product.id.toString() + ' quantity $quantity');
           return CartModel(
               id: product.id,
               name: product.name,
@@ -55,7 +49,7 @@ class CartController extends GetxController {
               product: product);
         });
       } else {
-        Get.snackbar('Note', 'You should at least add an item to cart',
+        Get.snackbar('ملاحظة', 'يجب عليك إضافة عنصر واحد على الأقل إلى السلة',
             duration: const Duration(seconds: 2));
       }
     }
@@ -63,7 +57,7 @@ class CartController extends GetxController {
     update();
   }
 
-  bool existInCart(AllProducts product) {
+  bool existInCart(Product product) {
     if (_items.containsKey(product.id)) {
       return true;
     } else {
@@ -71,7 +65,7 @@ class CartController extends GetxController {
     }
   }
 
-  int getQuantity(AllProducts product) {
+  int getQuantity(Product product) {
     var quantity = 0;
     if (_items.containsKey(product.id)) {
       _items.forEach((key, value) {
@@ -94,10 +88,30 @@ class CartController extends GetxController {
 
   // cart page
   List<CartModel> get getItems {
-    // (e) is key and value (int, CartModel) and we need just the objects
     return _items.entries.map((e) => e.value).toList();
   }
 
+  // cart page
+  Map<String, List<CartModel>> getItemsByStore() {
+    Map<String, List<CartModel>> itemsByStore = {};
+
+    // Iterate through all items in the cart
+    _items.forEach((productId, cartModel) {
+      // Get the store ID of the product
+      String storeId = cartModel.product!.storeId.toString();
+
+      // Check if the store ID already exists in the map
+      if (itemsByStore.containsKey(storeId)) {
+        // If the store ID exists, add the product to the existing list
+        itemsByStore[storeId]!.add(cartModel);
+      } else {
+        // If the store ID doesn't exist, create a new list and add the product to it
+        itemsByStore[storeId] = [cartModel];
+      }
+    });
+
+    return itemsByStore;
+  }
 
   double get totalCartProductsPrice{
     double total = 0;
@@ -107,8 +121,13 @@ class CartController extends GetxController {
     return total;
   }
 
+  void clear(){
+    _items = {};
+    update();
+  }
 
-  void addItemsToHistory(){
+
+/*  void addItemsToHistory(){
     isLoading = true;
     cartRepo.addToCartHistoryList();
     clear();
@@ -120,14 +139,9 @@ class CartController extends GetxController {
     return cartRepo.getCartHistoryList();
   }
 
-  void clear(){
-    _items = {};
-    update();
-  }
-
   // remove when logout
   void clearCartHistory(){
     cartRepo.removeHistoryCart();
     update();
-  }
+  }*/
 }

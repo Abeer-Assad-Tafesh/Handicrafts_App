@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:handcrafts/firebase/fb_notifications.dart';
+
+import '../prefs/shared_pref_controller.dart';
 
 
 class LaunchScreen extends StatefulWidget {
@@ -10,14 +13,23 @@ class LaunchScreen extends StatefulWidget {
   State<LaunchScreen> createState() => _LaunchScreenState();
 }
 
-class _LaunchScreenState extends State<LaunchScreen> {
+class _LaunchScreenState extends State<LaunchScreen> with FbNotifications {
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, '/out_boarding_screen');
+
+    //FCM Messaging
+    requestNotificationPermissions();
+    initializeForegroundNotificationForAndroid();
+    manageNotificationAction();
+
+    Future.delayed(const Duration(seconds: 1), () {
+     var route =  SharedPrefController().loggedIn ?
+      SharedPrefController().typeUser == 'buyer' ? '/out_boarding_screen' : '/basic_seller_screens'
+      : '/out_boarding_screen';
+      Navigator.pushReplacementNamed(context, route);
     });
   }
 

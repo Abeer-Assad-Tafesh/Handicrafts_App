@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:handcrafts/widgets/all_appBar.dart';
 import 'package:handcrafts/widgets/app_button.dart';
 import 'package:handcrafts/widgets/app_text_form_field.dart';
 import 'package:handcrafts/widgets/text_form_label.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../api/controllers/contact_us_api_controller.dart';
+import '../../../prefs/shared_pref_controller.dart';
 
 
 class ContactUsSellerPage extends StatefulWidget {
@@ -18,9 +22,6 @@ class _ContactUsSellerPageState extends State<ContactUsSellerPage> {
   late TextEditingController _fullNameController;
   late TextEditingController _emailController;
   late TextEditingController _messageController;
-  late String _name;
-  late String _email;
-  late String _message;
 
   @override
   void initState() {
@@ -58,46 +59,29 @@ class _ContactUsSellerPageState extends State<ContactUsSellerPage> {
                           const TextFormLabel(icon: "assets/icons/profile.svg", label: 'اسمك'),
                           AppTextFormField(
                             controller: _fullNameController,
-                            onChanged: (value) {
-                              _name = value;
-                            },
-                            validator: validateName,
+                            onChanged: (value) {},
                           ),
                           SizedBox(height: 15.h),
-                          const TextFormLabel(icon: "assets/icons/message.svg", label: 'بريدك الإلكتروني'),
+                          const TextFormLabel(icon: "assets/icons/email.svg", label: 'بريدك الإلكتروني'),
                           AppTextFormField(
                             controller: _emailController,
-                            onChanged: (value) {
-                              _email = value;
-                            },
-                            validator: validateEmail,
+                            onChanged: (value) {},
                           ),
                           SizedBox(height: 40.h),
                           AppTextFormField(
                             controller: _messageController,
-                            onChanged: (value) {
-                              _name = value;
-                            },
-                            validator: validateMessage,
+                            onChanged: (value) {},
                             height: 250.h,maxLines: 10,hintText: 'أدخل نص لا يزيد عن 70 حرف',
                           ),
                           SizedBox(height: 40.h),
-                          AppButton(text: 'إرسال',onPressed: (){
-                            if(_formKey.currentState!.validate()){
-                              Navigator.pushNamed(context, '/sent_successfully_screen');
-                              /*print('login');
-                              AuthHelper.authHelper
-                                  .login(email, password)
-                                  .then((value) => () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder:(context) =>  HomePageUi()
-                                  ),
-                                );
-                              });*/
-                            }
-                          },),
+                          AppButton(text: 'إرسال',
+                            onPressed: () async {
+                              bool status = await sendMessage();
+                              if(status){
+                                Navigator.pushNamed(context, '/sent_successfully_screen');
+                              }
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -110,37 +94,50 @@ class _ContactUsSellerPageState extends State<ContactUsSellerPage> {
     );
   }
 
-  String? validateName(String? value) {
-    if (value!.isEmpty) {
-      return 'أدخل اسمك';
-    } else {
-      return null;
-    }
-  }
+  Future<bool> sendMessage() async {
+    if(checkData()){
+      String email = _emailController.text.trim();
+      String name = _fullNameController.text.trim();
+      String message = _messageController.text.trim();
 
-  String? validateEmail(String? value) {
-    if (value!.isEmpty) {
-      final RegExp regex = RegExp(
-          r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)| (\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
-      if (!regex.hasMatch(value!)) {
-        return 'أدخل إيميل صحيح';
-      } else {
-        return null;
-      }
-    } else {
-      return 'أدخل إيميل صحيح';
-    }
-  }
-
-  String? validateMessage(String? value) {
-    if (value!.isEmpty) {
-      return 'أدخل رسالتك';
-    } else {
-      if (value.length > 70) {
-        return 'الحد الأقصى لطول الراسلة هو 70 حرف';
-      } else {
-        return null;
+      bool status = await ContactUsApiController().sendApiMessage(email: email, name: name, message: message);
+      if(status){
+        return true;
+      }else{
+        return false;
       }
     }
+    return false;
   }
+
+  final RegExp regex = RegExp(
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)| (\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+  final RegExp regExp = RegExp(r'(^(?:05[96])?[0-9]{7}$)');
+
+  bool checkData() {
+    if (_fullNameController.text.trim().isEmpty) {
+      Get.snackbar('مهلاً', 'أدخل اسمك ', colorText: Colors.red);
+      return false;
+    } else if (_fullNameController.text.trim() != SharedPrefController().name) {
+      Get.snackbar('مهلاً', 'اسمك الذي أدخلته غير صحيح', colorText: Colors.red);
+      return false;
+    }else if (_emailController.text.trim().isEmpty) {
+      Get.snackbar('مهلاً', 'أدخل ايميلك ', colorText: Colors.red);
+      return false;
+    } else if (!regex.hasMatch(_emailController.text.trim()!)) {
+      Get.snackbar('مهلاً', 'أدخل إيميل صحيح ', colorText: Colors.red);
+      return false;
+    }else if (_emailController.text.trim() != SharedPrefController().email) {
+      Get.snackbar('مهلاً', 'الإيميل الذي أدخلته غير صحيح', colorText: Colors.red);
+      return false;
+    } else if (_messageController.text.trim().isEmpty) {
+      Get.snackbar('مهلاً', 'أدخل رسالتك ', colorText: Colors.red);
+      return false;
+    }else if (_messageController.text.trim().length > 70) {
+      Get.snackbar('مهلاً', 'الحد الأقصى لطول الرسالة هو 70 حرف ', colorText: Colors.red);
+      return false;
+    }
+    return true;
+  }
+
 }

@@ -1,43 +1,49 @@
-import 'package:handcrafts/api/models/all_products.dart';
+import 'package:handcrafts/api/models/product.dart';
 
 class Store {
-  late int id;
-  late String name;
-  late String slug;
-  late String description;
-  late String logoImage;
-  late String coverImage;
-  late String status;
-  late String createdAt;
-  late String updatedAt;
+  late int? id;
+  late String? name;
+  late int? userId;
+  late String? description;
+  late String? phoneWhatsapp;
+  late String? urlFacebook;
+  late String? urlInstagram;
+  late String? logoImage;
+  late String? coverImage;
+  late String? status;
+  late int? deliveryPrice;
   // late List<AllProducts> products;
 
-
+  Store();
 
   Store.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    slug = json['slug'];
-    description = json['description'];
-    logoImage = json['logo_image'];
-    coverImage = json['cover_image'];
-    status = json['status'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+    id= json['id'];
+    name= json['name'];
+    userId= json['user_id'];
+    description= json['description'];
+    phoneWhatsapp= json['phone_whatsapp'];
+    urlFacebook= json['url_facebook'];
+    urlInstagram= json['url_instegram'];
+    logoImage= json['logo_image'];
+    coverImage= json['cover_image'];
+    status= json['status'];
+    deliveryPrice= json['delivery_price'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['slug'] = slug;
-    data['description'] = description;
-    data['logo_image'] = logoImage;
-    data['cover_image'] = coverImage;
-    data['status'] = status;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
-    return data;
+    return {
+      'id': id,
+      'name': name,
+      'user_id': userId,
+      'description': description,
+      'phone_whatsapp': phoneWhatsapp,
+      'url_facebook': urlFacebook,
+      'url_instegram': urlInstagram,
+      'logo_image': logoImage,
+      'cover_image': coverImage,
+      'status': status,
+      'delivery_price': deliveryPrice,
+    };
   }
 
 /*
