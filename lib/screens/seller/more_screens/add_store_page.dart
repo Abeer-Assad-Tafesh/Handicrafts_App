@@ -117,6 +117,7 @@ class _AddStorePageState extends State<AddStorePage> {
                             label: 'الاسم بالكامل'),
                         AppTextFormField(
                           controller: _fullNameController,
+                          enabled: false,
                           onChanged: (value) {},
                         ),
                         SizedBox(height: 10.h),
@@ -133,6 +134,7 @@ class _AddStorePageState extends State<AddStorePage> {
                             label: 'البريد الإلكتروني'),
                         AppTextFormField(
                           controller: _emailController,
+                          enabled: false,
                           onChanged: (value) {},
                         ),
                         SizedBox(height: 10.h),
@@ -141,6 +143,7 @@ class _AddStorePageState extends State<AddStorePage> {
                         AppTextFormField(
                           controller: _phoneNumController,
                           hintText: '059/056',
+                          enabled: false,
                           onChanged: (value) {},
                         ),
 
@@ -204,6 +207,7 @@ class _AddStorePageState extends State<AddStorePage> {
                         AppButton(
                           text: 'إنشاء متجر',
                           onPressed: () async {
+                            print('Hi');
                             await _addNewStore();
                           },
                         ),
@@ -223,12 +227,21 @@ class _AddStorePageState extends State<AddStorePage> {
   Store get store {
     Store store = Store();
     store.name = manipulateString(_fullNameController.text.trim());
-    // store.email = _emailController.text.trim();
-    // store.phoneNumber = _phoneNumController.text.trim();
-    // store.category = _categoryNameController.text.trim();
-    // store.storeName = _storeNameController.text.trim();
-    //إضافة باقي الخصائص .... الاسم التجاري و التصنيف
+    store.category = _categoryNameController.text.trim();
+    store.storeOwner = _storeNameController.text.trim();
+    store.urlInstagram = _instagramController.text.trim();
+    store.urlFacebook = _facebookController.text.trim();
+    store.description = _whoUsController.text.trim();
+    store.logoImage = _imageFile!.path;
     return store;
+  }
+
+  UserApi get user {
+    UserApi user = UserApi();
+    user.email = _emailController.text.trim();
+    user.phoneNumber = _phoneNumController.text.trim();
+    user.name = _fullNameController.text.trim();
+    return user;
   }
 
     String manipulateString(String input) {
@@ -241,9 +254,13 @@ class _AddStorePageState extends State<AddStorePage> {
 
     Future<void> _addNewStore() async {
     if(checkData()){
-      bool status = await StoreGetXController.to.addNewStore(store);
+      print('SUCCESS 1');
+      bool status = await StoreGetXController.to.addNewStore(store,user);
       if(status){
-        Navigator.pushNamed(context, '/basic_seller_screens');
+        print('SUCCESS 2');
+        Get.snackbar('متجرك جاهز', 'سجل دخول لرؤية متجرك الخاص',
+            duration: const Duration(seconds: 2));
+        Navigator.pushNamed(context, '/login_register_screen');
       }else {
 
       }

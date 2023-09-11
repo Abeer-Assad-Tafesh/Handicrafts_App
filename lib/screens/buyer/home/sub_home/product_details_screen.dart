@@ -40,17 +40,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    _showProductRating(widget.productId); // Call _showProductRating here
   }
 
-  Future<void> _showProductRating(int? productId) async {
-    print('Done');
-    final rating = await ProductGetXController().showProductRating( productId: productId!);
-    print('Rating => $rating');
-    setState(() {
-      productRating = rating;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,8 +55,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             ),
             Expanded(
                 child: GetBuilder<HomeGetXController>(builder: (controller) {
-              Product? product = controller.productsList
+                  // print('######${controller.productsList.length}#######');
+                  Product? product = controller.productsList
                   .firstWhere((product) => product.id == widget.productId);
+              // print('77777777777$product 7777777777');
               if (product != null) {
                 Get.find<PopularProductControllers>()
                     .initProduct(product, Get.find<CartController>());
@@ -86,37 +79,50 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 child: ListView.builder(
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemCount: product.productImages!.length,
-                                  itemBuilder: (context, index) => InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) => FullImageScreen(
-                                            image: ApiSettings.getImageUrl(
-                                                product.productImages![index]
-                                                    .imageUrl),
+                                  itemBuilder: (context, index)
+                                  {
+                                    if(index == 3){
+                                      return null;
+                                    }
+                                    return InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) => FullImageScreen(
+                                              image: ApiSettings.getImageUrl(
+                                                  product
+                                                      .productImages![index + 1]!
+                                                      .imageUrl
+                                                      .replaceFirst(
+                                                          'uploads/', '')),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        height: 107,
+                                        margin: const EdgeInsets.only(
+                                            left: 15, bottom: 14.5),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: Image.network(
+                                            ApiSettings.getImageUrl(product
+                                                .productImages![index + 1]!
+                                                .imageUrl
+                                                .replaceFirst('uploads/', '')),
+                                            fit: BoxFit.cover,
                                           ),
                                         ),
-                                      );
-                                    },
-                                    child: Container(
-                                      height: 107,
-                                      margin: const EdgeInsets.only(
-                                          left: 15, bottom: 14.5),
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey,
-                                        borderRadius: BorderRadius.circular(8),
                                       ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: Image.network(
-                                          ApiSettings.getImageUrl(product
-                                              .productImages![index].imageUrl),
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                    );
+                                  },
                                 ),
                               ),
                               InkWell(
@@ -126,7 +132,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     MaterialPageRoute(
                                       builder: (_) => FullImageScreen(
                                         image: ApiSettings.getImageUrl(
-                                            product.productImages![0].imageUrl),
+                                            product.productImages![0]!.imageUrl.replaceFirst('uploads/', '')),
                                       ),
                                     ),
                                   );
@@ -143,7 +149,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     borderRadius: BorderRadius.circular(8),
                                     child: Image.network(
                                       ApiSettings.getImageUrl(
-                                          product.productImages![0].imageUrl),
+                                          product.productImages![0]!.imageUrl.replaceFirst('uploads/', '')),
                                       fit: BoxFit.fill,
                                     ),
                                   ),
@@ -167,7 +173,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   );
                                 },
                                 child: SmallText(
-                                    text: product.store.name!,
+                                    text: product.store!.storeOwner!,
                                     size: 14,
                                     color: kPrimaryColor,
                                     decoration: TextDecoration.underline),
@@ -217,12 +223,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     onTap: () async {
                                       DynamicLinksService.createDynamicLink(
                                               product.id, 0,
-                                              image: product.productImages![0].imageUrl.replaceFirst('uploads/', 'https://handcraft.website/storage/uploads/'))
+                                              image: product.productImages![0]!.imageUrl.replaceFirst('uploads/', 'https://handcraft.website/storage/uploads/'))
                                           .then((value) {
                                         //Sharing the content on other applications
                                         DynamicLinksService.shareData(
                                             context,
-                                            product.productImages![0].imageUrl.replaceFirst('uploads/', 'https://handcraft.website/storage/uploads/'),
+                                            product.productImages![0]!.imageUrl.replaceFirst('uploads/', 'https://handcraft.website/storage/'),
                                             value);
                                       });
                                     },
@@ -234,9 +240,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     width: 10,
                                   ),
                                   InkWell(
-                                    // onTap: () async => await updateFavorite(),
+                                    onTap: () async {
+                                      if (SharedPrefController().loggedIn){
+                                        await updateFavorite(product);
+                                      }else{
+                                        Get.snackbar('مهلاً', 'سجل دخولك لإضافة عناصرك إالى المفضلة');
+                                        Navigator.pushNamed(context, '/login_register_screen');
+                                      }
+                                      },
                                     child: SvgPicture.asset(
                                       "assets/icons/white_heart.svg",
+                                      color: FavoriteGetXController.to.isFavorite(product.id) ? Colors.red : Colors.grey,
                                       // color: product.isFavorite ? Colors.red : Colors.white,
                                     ),
                                   )
@@ -250,7 +264,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               SmallText(
-                                  text: product.category.name,
+                                  text: product.category!.name,
                                   size: 14,
                                   color: kPrimaryColor),
                               SmallText(text: "ID: ${product.id}", size: 16),
@@ -452,6 +466,32 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       },
     );
   }
+
+  Future<void> updateFavorite(Product product) async {
+    if(product.isFavorite == 0){
+      setState(() {
+        product.isFavorite = 1;
+      });
+      bool status = await FavoriteGetXController.to.addFavorite(product: product);
+      if(status){
+        setState(() {
+          product.isFavorite = 1;
+        });
+      }
+    }else{
+      setState(() {
+        product.isFavorite = 0;
+      });
+      bool status = await FavoriteGetXController.to.removeFavorite(product: product);
+      if(status){
+        setState(() {
+          product.isFavorite = 0;
+        });
+      }
+    }
+
+  }
+
 
 /*  Future<void> updateFavorite() async {
     bool status = await FavoriteGetXController.to.updateFavorite(product: widget.product!);

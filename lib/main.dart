@@ -42,7 +42,7 @@ import 'package:handcrafts/screens/hand_loading_image_screen.dart';
 import 'package:handcrafts/screens/buyer/buyer_notifications_screen.dart';
 import 'package:handcrafts/screens/launch_screen.dart';
 import 'package:handcrafts/screens/out_boarding_screen.dart';
-import 'package:handcrafts/screens/purchase_details_screen.dart';
+import 'package:handcrafts/screens/buyer/purchase_details_screen.dart';
 import 'package:handcrafts/screens/seller/basic_seller/basic_seller_screens.dart';
 import 'package:handcrafts/screens/seller/basic_seller/more_screen.dart';
 import 'package:handcrafts/screens/search_page.dart';
@@ -141,7 +141,6 @@ class _MyAppState extends State<MyApp> {
             '/out_boarding_screen': (context) => const OutBoardingScreen(),
             '/verification_code_screen': (context) => VerificationCodeScreen(),
             '/reset_password_screen': (context) => ResetPasswordScreen(),
-
             '/basic_buyer_screens': (context) => const BasicBuyerScreens(),
             '/home_screen': (context) => const HomeScreen(),
             '/hand_loading_image_screen': (context) =>
@@ -163,7 +162,7 @@ class _MyAppState extends State<MyApp> {
             '/buyer_password_edit_screen': (context) =>
                 const BuyerPasswordInfoScreen(),
             '/contact_us_screen': (context) => const ContactUsScreen(),
-            '/who_us_screen': (context) => const WhoUsScreen(),
+            '/who_us_screen': (context) =>  WhoUsScreen(),
             '/question_screen': (context) => const QuestionScreen(),
             '/most_requested_screen': (context) => const MostRequestedScreen(),
             '/most_rated_screen': (context) => const MostRatedScreen(),
@@ -186,16 +185,14 @@ class _MyAppState extends State<MyApp> {
             '/request_details_page': (context) => const RequestDetailsPage(),
             '/add_product_page': (context) => const AddProductPage(),
             '/edit_product_page': (context) => EditProductPage(),
-
             '/search_screen': (context) => SearchScreen(),
-
             '/store_info_page': (context) => const StoreInfoPage(),
             '/add_store_page': (context) => const AddStorePage(),
             '/my_store_page': (context) => const MyStorePage(),
-            '/who_us_seller_page': (context) => const WhoUsSellerPage(),
+            '/who_us_seller_page': (context) =>  WhoUsSellerPage(),
             '/question_seller_page': (context) => const QuestionSellerPage(),
             '/contact_us_seller_page': (context) => const ContactUsSellerPage(),
-
+            
             '/chat_screen': (context) => ChatScreen(),
           },
         );
@@ -203,3 +200,18 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

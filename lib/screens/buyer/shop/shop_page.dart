@@ -57,7 +57,7 @@ class _ShopPageState extends State<ShopPage> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(100),
                                 child: Image.network(
-                                  ApiSettings.getImageUrl(widget.store!.logoImage!),
+                                  ApiSettings.getImageUrl(widget.store!.logoImage!.replaceFirst('uploads/', '')),
                                   fit: BoxFit.cover, // You can adjust the fit mode as per your requirement
                                   height: 100,
                                   width: 100,
@@ -73,7 +73,7 @@ class _ShopPageState extends State<ShopPage> {
                               // mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Text(
-                                  widget.store!.name!,
+                                  widget.store!.storeOwner!,
                                   style: TextStyle(
                                       fontSize: 18, color: kPrimaryColor),
                                 ),
@@ -89,7 +89,7 @@ class _ShopPageState extends State<ShopPage> {
                                       width: 6,
                                     ),
                                     SmallText(
-                                      text: 'totalRating',
+                                      text: '4.5',
                                       size: 12,
                                     ),
                                   ],
@@ -191,8 +191,8 @@ class _ShopPageState extends State<ShopPage> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(100),
                                 child: Image.network(
-                                  widget.product!.store.logoImage!,
-                                  fit: BoxFit.cover, // You can adjust the fit mode as per your requirement
+                                  ApiSettings.getImageUrl(widget.product!.store!.logoImage!),
+                                  fit: BoxFit.cover, 
                                   height: 100,
                                   width: 100,
                                 ),
@@ -207,7 +207,7 @@ class _ShopPageState extends State<ShopPage> {
                               // mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Text(
-                                  widget.product!.store.name!,
+                                  widget.product!.store!.name!,
                                   style: TextStyle(
                                       fontSize: 18, color: kPrimaryColor),
                                 ),

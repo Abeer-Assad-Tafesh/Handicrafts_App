@@ -31,7 +31,8 @@ class _BasicSellerScreensState extends State<BasicSellerScreens>
   int currentPage = 0;
 
   Future<void> getStoreProducts() async {
-    await ProductGetXController.to.getStoreProducts(storeId: widget.storeId);
+    print('22222    ${int.parse(SharedPrefController().craftsmanStoreId)}');
+    await ProductGetXController.to.getStoreProducts(storeId: int.parse(SharedPrefController().craftsmanStoreId));
   }
 
   @override

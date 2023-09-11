@@ -1,7 +1,7 @@
 
 class ApiSettings{
   // Be sure that laptop ip is still the same when u use local server
-  // static const String _baseUrl = "http://192.168.0.105/";
+  // static const String _baseUrl = "http://192.168.0.107/";
 
   static const String _baseUrl = "https://handcraft.website/";
   static const String _apiUrl = _baseUrl + "api/";
@@ -18,18 +18,29 @@ class ApiSettings{
   static const String resetForgetPassword = _apiUrl + "auth/password/reset";  //
   static const String updateProfilePassword = _apiUrl + "user/password/update";
   static const String getProfile = _apiUrl + "profile";
-  static const String updateProfile = _apiUrl + "user/profile/update";
+  static const String updateProfile = _apiUrl + "user/update/profile";
 
   static const String product = _apiUrl + "product/{id}";
+  static const String productImages = _apiUrl + "product_images";
+  static const String updateProductImages = _apiUrl + "update-product-images";
 
 
-  static const String favorite = _apiUrl + "product/favorites"; //تحتاج تعديل
-  static const String stores = _apiUrl + "store/{id}"; //تحتاج تعديل
+  static const String favorite = _apiUrl + "product/favorites";
+  static const String stores = _apiUrl + "store/{id}";
+  static const String updateStore = _apiUrl + "update-store/{id}";
 
-  static const String rateProduct = _apiUrl + "rating";
+  static const String order = _apiUrl + "order/{id}";
+  static const String orderItems = _apiUrl + "order_items";
+  static const String updateOrderStatus = _apiUrl + "update-order/{id}";
 
+
+  static const String rateProduct = _apiUrl + "make/product/rate/{id}";
+
+  static const String whoUs = _apiUrl + "get/setting/data";
   static const String commonQuestion = _apiUrl + "common-quastions";
   static const String contactUs = _apiUrl + "contact-us";
+
+
 
 
 

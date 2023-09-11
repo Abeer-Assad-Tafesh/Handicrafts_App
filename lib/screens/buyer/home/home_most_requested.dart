@@ -18,6 +18,8 @@ class HomeMostRequested extends StatefulWidget {
 }
 
 class _HomeMostRequestedState extends State<HomeMostRequested> {
+  final PopularProductControllers _popularProductControllers = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -48,8 +50,7 @@ class _HomeMostRequestedState extends State<HomeMostRequested> {
             height: 250.h,
             child: GetBuilder<PopularProductControllers>(
               builder: (controller) {
-                print(
-                    '==>_popularProductList ${controller.popularProductList.length}');
+                // print('==>_popularProductList ${controller.popularProductList.length}');
                 if (controller.popularProductList.isNotEmpty) {
                   return ListView.builder(
                     shrinkWrap: false,
@@ -58,8 +59,7 @@ class _HomeMostRequestedState extends State<HomeMostRequested> {
                     itemBuilder: (BuildContext context, int index) =>
                         GestureDetector(
                       onTap: () {
-                        print(
-                            '========here====>${controller.popularProductList.length}');
+                        // print('========here====>${controller.popularProductList[index].id}');
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -71,9 +71,11 @@ class _HomeMostRequestedState extends State<HomeMostRequested> {
                           ),
                         );
                       },
-                      child: ProductCard(
-                        product: controller.popularProductList[index],
-                      ),
+                      child:controller.popularProductList.isNotEmpty
+                          ? ProductCard(
+                        product:  controller.popularProductList[index])
+                            : AppCard2()
+                        ,
                     ),
                   );
                 } else {

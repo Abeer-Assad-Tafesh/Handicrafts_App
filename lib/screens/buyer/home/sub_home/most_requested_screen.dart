@@ -24,6 +24,7 @@ class _MostRequestedScreenState extends State<MostRequestedScreen> {
             AllAppBar(
               back: true,
               text: 'الأكثر طلباً',
+              spaceBeforeLogo: 25,
             ),
             Expanded(
               child: Padding(

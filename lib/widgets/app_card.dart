@@ -26,9 +26,11 @@ class ProductCard extends StatefulWidget {
 }
 
 class ProductCardState extends State<ProductCard> {
+  bool _isPressed = false;
+
   @override
   Widget build(BuildContext context) {
-    print('####################  ${widget.product.productImages![0].imageUrl}');
+    // print('####################  ${widget.product.productImages![0].imageUrl.replaceFirst('uploads/', '')}');
     return Container(
       height: 100,
       width: 180,
@@ -47,7 +49,7 @@ class ProductCardState extends State<ProductCard> {
         image: DecorationImage(
           fit: BoxFit.cover,
           image: NetworkImage(
-            ApiSettings.getImageUrl(widget.product.productImages![0].imageUrl),
+             ApiSettings.getImageUrl(widget.product.productImages![0]!.imageUrl.replaceFirst('uploads/', '')),
           ),
            /*NetworkImage(
             ApiSettings.getImageUrl(widget.product.imageUrl),
@@ -56,34 +58,6 @@ class ProductCardState extends State<ProductCard> {
       ),
       child: Stack(
         children: [
-          Positioned(
-            right: 10,
-            top: 10,
-            child: Container(
-              height: 45,
-              width: 45,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: IconButton(
-                icon: const Icon(
-                    Icons.favorite_rounded,
-                  // color: isFavorite ? Colors.red : Colors.white, size: 30,
-                  color: Colors.white, size: 30,
-                ),
-                onPressed: () async {
-                 if(SharedPrefController().loggedIn){
-                   await updateFavorite();
-                 }else{
-                   Get.snackbar('مهلاً', 'سجل دخولك لإضافة عناصرك المفضلة الخاصة بك');
-                   Navigator.pushNamed(context, '/login_register_screen');
-                 }
-                },
-                // onPressed: () async => await updateFavorite(),
-              ),
-            ),
-          ),
           Positioned(
             top: 0,
             left: 0,
@@ -110,7 +84,7 @@ class ProductCardState extends State<ProductCard> {
             right: 10.w,
             bottom: 10.h,
             child: SmallText(
-              text: '...${widget.product.name.substring(0, 8)}',
+              text:  widget.product.name.length > 9 ? '${widget.product.name.substring(0, 9)}...' : widget.product.name,
               size: 13,
               color: Colors.white,
             ),
@@ -124,31 +98,102 @@ class ProductCardState extends State<ProductCard> {
               color: Colors.white,
             ),
           ),
+          Positioned(
+            right: 10,
+            top: 10,
+            child: Container(
+              height: 45,
+              width: 45,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: InkWell(
+                child:  Icon(
+                  Icons.favorite_rounded,
+                  color: FavoriteGetXController.to.isFavorite(widget.product.id) ? Colors.red : Colors.white, size: 30,
+                  // color: widget.product.isFavorite == 1 ? Colors.red : Colors.white, size: 30,
+                  // color: _isPressed ? Colors.red : Colors.white, size: 30,
+                ),
+                onTap: () async {
+                  if(SharedPrefController().loggedIn){
+                    await updateFavorite();
+                  }else{
+                    Get.snackbar('مهلاً', 'سجل دخولك لإضافة عناصرك المفضلة الخاصة بك');
+                    Navigator.pushNamed(context, '/login_register_screen');
+                  }
+                },
+                // onPressed: () async => await updateFavorite(),
+              ),
+            ),
+          ),
+
         ],
       ),
     );
   }
 
-  Future<void> updateFavorite() async {
-    bool status = await FavoriteGetXController.to.addFavorite(product: widget.product);
-    if(status){
-      setState(() {
 
-        // widget.product.isFavorite =  !widget.product.isFavorite;
+
+  Future<void> updateFavorite() async {
+    if(widget.product.isFavorite == 0){
+      setState(() {
+        widget.product.isFavorite = 1;
       });
+      bool status = await FavoriteGetXController.to.addFavorite(product: widget.product);
+      if(status){
+        setState(() {
+          widget.product.isFavorite = 1;
+        });
+      }
     }else{
-      await FavoriteGetXController.to.removeFavorite(product: widget.product);
+      setState(() {
+        widget.product.isFavorite = 0;
+      });
+      bool status = await FavoriteGetXController.to.removeFavorite(product: widget.product);
+      if(status){
+        setState(() {
+          widget.product.isFavorite = 0;
+        });
+      }
     }
+
   }
 
-/*  Future<void> updateFavorite() async {
-    bool status = await FavoriteGetXController.to.updateFavorite(product: widget.product);
-    if(status){
+
+
+/*
+  Future<void> updateFavorite() async {
+    print('Iam here');
+    if(_isPressed == false){
       setState(() {
-        widget.product.isFavorite =  !widget.product.isFavorite;
+        _isPressed = true;
+        print(_isPressed);
       });
+      bool status = await FavoriteGetXController.to.addFavorite(product: widget.product);
+      if(status){
+        setState(() {
+          widget.product.isFavorite = 1;
+        });
+      }
+    }else{
+ setState(() {
+        widget.product.isFavorite = 0;
+      });
+
+      setState(() {
+        _isPressed = false;
+      });
+      bool status = await FavoriteGetXController.to.removeFavorite(product: widget.product);
+      if(status){
+        setState(() {
+          widget.product.isFavorite = 0;
+        });
+      }
     }
-  }*/
+
+  }
+*/
 
 }
 
@@ -170,7 +215,7 @@ class StoreCard extends StatefulWidget {
 class StoreCardState extends State<StoreCard> {
   @override
   Widget build(BuildContext context) {
-    print('##########Store##########  ${widget.store.logoImage}');
+    // print('##########Store##########  ${widget.store.logoImage}');
 
     return Container(
       // height: 100,
@@ -205,7 +250,7 @@ class StoreCardState extends State<StoreCard> {
               image: DecorationImage(
                 fit: BoxFit.fill,
                 image: NetworkImage(
-                  ApiSettings.getImageUrl(widget.store.logoImage!),
+                  ApiSettings.getImageUrl(widget.store.logoImage?.replaceFirst('uploads/', '')?? ''),
                 ),
               ),
             ),
@@ -219,7 +264,7 @@ class StoreCardState extends State<StoreCard> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 SmallText(
-                  text: widget.store.name!,
+                  text: widget.store.storeOwner!,
                   size: 16,
                   maxLines: 1,
                 ),

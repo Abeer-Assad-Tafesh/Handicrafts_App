@@ -15,6 +15,7 @@ class MostRatedScreen extends StatefulWidget {
 }
 
 class _MostRatedScreenState extends State<MostRatedScreen> {
+  // final RecommendedProductControllers _recommendedProductControllers = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +26,7 @@ class _MostRatedScreenState extends State<MostRatedScreen> {
             AllAppBar(
               back: true,
               text: 'الأعلى تقييماً',
+              spaceBeforeLogo: 5,
             ),
             Expanded(
               child: Padding(

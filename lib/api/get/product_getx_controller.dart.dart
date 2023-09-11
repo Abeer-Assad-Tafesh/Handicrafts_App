@@ -5,6 +5,8 @@ import 'package:handcrafts/api/controllers/store_api_controller.dart.dart';
 import 'package:handcrafts/api/models/product.dart';
 import 'package:handcrafts/api/models/store.dart';
 
+import '../../prefs/shared_pref_controller.dart';
+
 class ProductGetXController extends GetxController {
   RxList<Product?> storeProductsList = <Product>[].obs;
   bool loading = false;
@@ -19,9 +21,11 @@ class ProductGetXController extends GetxController {
   }
 
   Future<void> getStoreProducts({int? storeId}) async {
+    print('${int.parse(SharedPrefController().craftsmanStoreId)}');
     loading = true;
     storeProductsList.value =
-        await _apiController.getStoreProducts(storeId: storeId!);
+        await _apiController.getStoreProducts(storeId: int.parse(SharedPrefController().craftsmanStoreId) );
+    print('ttttttttttt    ${storeProductsList.value}');
     loading = false;
     update();
   }
@@ -30,8 +34,10 @@ class ProductGetXController extends GetxController {
     loading = true;
     bool created = await _apiController.createProduct(product: product);
     loading = false;
+    update();
     if (created) {
-      storeProductsList.add(product);
+      await getStoreProducts();
+      // storeProductsList.add(product);
       update();
     }
     return created;
@@ -41,11 +47,12 @@ class ProductGetXController extends GetxController {
     loading = true;
     bool updated = await _apiController.updateProduct(product: product);
     loading = false;
+    print('$updated');
     if (updated) {
       int index =
           storeProductsList.indexWhere((element) => element?.id == product.id);
       if (index != -1) {
-        storeProductsList.replaceRange(index, index + 1, [product]);
+        await getStoreProducts();
       }
       update();
     }
@@ -57,11 +64,7 @@ class ProductGetXController extends GetxController {
     bool updated = await _apiController.deleteProduct(productId: productId);
     loading = false;
     if (updated) {
-      int index =
-          storeProductsList.indexWhere((element) => element?.id == productId);
-      if (index != -1) {
-        storeProductsList.removeAt(index);
-      }
+      await getStoreProducts();
       update();
     }
     return updated;

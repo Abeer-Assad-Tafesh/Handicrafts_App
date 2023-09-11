@@ -6,6 +6,7 @@ import 'package:handcrafts/api/controllers/recommended_product_controller.dart';
 import 'package:handcrafts/api/get/store_getx_controller.dart.dart';
 import 'package:handcrafts/screens/buyer/home/sub_home/product_details_screen.dart';
 import 'package:handcrafts/screens/buyer/shop/shop_page.dart';
+import 'package:handcrafts/screens/buyer/shop/shop_screen.dart';
 import 'package:handcrafts/widgets/all_appBar.dart';
 import 'package:handcrafts/widgets/app_card.dart';
 
@@ -18,6 +19,8 @@ class HandicraftsStoresScreen extends StatefulWidget {
 }
 
 class _HandicraftsStoresScreenState extends State<HandicraftsStoresScreen> {
+
+  // final StoreGetXController _storeGetXController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +30,7 @@ class _HandicraftsStoresScreenState extends State<HandicraftsStoresScreen> {
             AllAppBar(
               back: true,
               text: 'الحرفيين',
+              spaceBeforeLogo: 40,
             ),
             Expanded(
               child: Padding(
@@ -48,7 +52,7 @@ class _HandicraftsStoresScreenState extends State<HandicraftsStoresScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ShopPage(
+                                  builder: (context) => ShopScreen(
                                    store: controller.storesList[index],
                                   ),
                                 ));

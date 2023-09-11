@@ -19,6 +19,5 @@ class HomeApiController with ApiHelper{
     }else{
       return [];
     }
-
   }
 }

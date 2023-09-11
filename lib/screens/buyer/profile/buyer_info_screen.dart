@@ -34,6 +34,8 @@ class _BuyerInfoScreenState extends State<BuyerInfoScreen> {
   String? image;
   File? _imageFile;
 
+  bool isLoading = false;
+
   late TextEditingController _fullNameController = TextEditingController(text: _authGetXController.userApi?.name ?? '');
   late TextEditingController _emailController  = TextEditingController(text: _authGetXController.userApi?.email ?? '');
   late TextEditingController _phoneNumController = TextEditingController(text: _authGetXController.userApi?.phoneNumber ?? '');
@@ -41,10 +43,7 @@ class _BuyerInfoScreenState extends State<BuyerInfoScreen> {
   @override
   void initState() {
     super.initState();
-    /*_fullNameController = TextEditingController(text: _authGetXController.userApi?.name ?? '');
-    _emailController = TextEditingController(text: _authGetXController.userApi?.email ?? '');
-    _phoneNumController = TextEditingController(text: _authGetXController.userApi?.phoneNumber ?? '');
-  */}
+  }
 
   @override
   void dispose() {
@@ -73,99 +72,111 @@ class _BuyerInfoScreenState extends State<BuyerInfoScreen> {
               spaceBeforeLogo: 30,
             ),
             Expanded(
-              child: SingleChildScrollView(
-                child: GetBuilder<AuthGetXController>(
-                  builder: (controller) {
-                    var user = controller.userApi;
-                    if(controller.userApi != null){
-                     return Padding(
-                       padding: const EdgeInsets.all(30),
-                       child: Form(
-                         key: _formKey,
-                         child: Column(
-                           children: [
-                             const SizedBox(height: 10),
-                             SizedBox(
-                               height: 100.h,
-                               width: 100.w,
-                               child: user!.profile?.imgProfile == null ?
-                               CircleAvatar(
-                                 backgroundColor: Colors.indigo,
-                                 foregroundColor: Colors.deepPurpleAccent,
-                                 backgroundImage: _imageFile != null
-                                     ? FileImage(File(_imageFile!.path))
-                                     : null,
-                                 child: _imageFile == null ? Text(
-                                   SharedPrefController().name.substring(0, 1).toUpperCase(),
-                                 style: TextStyle(fontSize: 40.0.sp, fontWeight: FontWeight.bold, color: Colors.white),
-                               ): null,
-                               )
-                                : CircleAvatar(
-                                 backgroundColor: Colors.grey.shade300,
-                                 foregroundColor: Colors.grey,
-                                 backgroundImage: _imageFile != null
-                                     ? FileImage(File(_imageFile!.path))
-                                     : FileImage(File(user.profile!.imgProfile!)),
-                               ),
+              child: Stack(
+                children : [
+                  SingleChildScrollView(
+                    child: GetBuilder<AuthGetXController>(
+                      builder: (controller) {
+                        var user = controller.userApi;
+                        print(user!.id);
+                        if(controller.userApi != null){
+                          return Padding(
+                            padding: const EdgeInsets.all(30),
+                            child: Form(
+                              key: _formKey,
+                              child: Column(
+                                children: [
+                                  const SizedBox(height: 10),
+                                  SizedBox(
+                                    height: 100.h,
+                                    width: 100.w,
+                                    child: user!.profile?.imgProfile == null ?
+                                    CircleAvatar(
+                                      backgroundColor: Colors.indigo,
+                                      foregroundColor: Colors.deepPurpleAccent,
+                                      backgroundImage: _imageFile != null
+                                          ? FileImage(File(_imageFile!.path))
+                                          : null,
+                                      child: _imageFile == null ? Text(
+                                        SharedPrefController().name.substring(0, 1).toUpperCase(),
+                                        style: TextStyle(fontSize: 40.0.sp, fontWeight: FontWeight.bold, color: Colors.white),
+                                      ): null,
+                                    )
+                                        : CircleAvatar(
+                                      backgroundColor: Colors.grey.shade300,
+                                      foregroundColor: Colors.grey,
+                                      backgroundImage: _imageFile != null
+                                          ? FileImage(File(_imageFile!.path))
+                                          : FileImage(File(user.profile!.imgProfile!)),
+                                    ),
 
-                             ),
-                             const SizedBox(height: 20),
-                             InkWell(
-                               onTap: () {
-                                 // open gallery to reset the photo
-                                 _pickImage();
-                               },
-                               child: Text(
-                                 'إعادة تعيين الصورة',
-                                 style: TextStyle(
-                                     color: kPrimaryColor, fontSize: 14),
-                               ),
-                             ),
-                             const SizedBox(height: 50),
-                             const TextFormLabel(
-                                 icon: "assets/icons/profile.svg",
-                                 label: 'الاسم بالكامل'),
-                             AppTextFormField(
-                               controller: _fullNameController,
-                               onChanged: (value) {},
-                             ),
-                             const SizedBox(height: 10),
-                             const TextFormLabel(
-                                 icon: "assets/icons/email.svg",
-                                 label: 'البريد الإلكتروني'),
-                             AppTextFormField(
-                               controller: _emailController,
-                               onChanged: (value) {},
-                               textInputField: TextInputType.emailAddress,
-                             ),
-                             const SizedBox(height: 10),
-                             const TextFormLabel(
-                                 icon: "assets/icons/call.svg",
-                                 label: 'رقم الجوال'),
-                             AppTextFormField(
-                               controller: _phoneNumController,
-                               hintText: '059/056',
-                               onChanged: (value) {},
-                             ),
-                             const SizedBox(height: 10),
-                             const SizedBox(height: 40),
-                             AppButton(
-                               text: 'تعديل',
-                               onPressed: () async {
-                                 await _updateProfile();
-                               },
-                             ),
-                           ],
-                         ),
-                       ),
-                     );
-                   }else{
-                     return Center(
-                       child: CircularProgressIndicator(color: kPrimaryColor,),
-                     );
-                   }
-                  },
-                ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  InkWell(
+                                    onTap: () {
+                                      // open gallery to reset the photo
+                                      _pickImage();
+                                    },
+                                    child: Text(
+                                      'إعادة تعيين الصورة',
+                                      style: TextStyle(
+                                          color: kPrimaryColor, fontSize: 14),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 50),
+                                  const TextFormLabel(
+                                      icon: "assets/icons/profile.svg",
+                                      label: 'الاسم بالكامل'),
+                                  AppTextFormField(
+                                    controller: _fullNameController,
+                                    onChanged: (value) {},
+                                  ),
+                                  const SizedBox(height: 10),
+                                  const TextFormLabel(
+                                      icon: "assets/icons/email.svg",
+                                      label: 'البريد الإلكتروني'),
+                                  AppTextFormField(
+                                    controller: _emailController,
+                                    onChanged: (value) {},
+                                    textInputField: TextInputType.emailAddress,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  const TextFormLabel(
+                                      icon: "assets/icons/call.svg",
+                                      label: 'رقم الجوال'),
+                                  AppTextFormField(
+                                    controller: _phoneNumController,
+                                    hintText: '059/056',
+                                    onChanged: (value) {},
+                                  ),
+                                  const SizedBox(height: 10),
+                                  const SizedBox(height: 40),
+                                  AppButton(
+                                    text: 'تعديل',
+                                    onPressed: () async {
+                                      await _updateProfile();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }else{
+                          return Center(
+                            child: CircularProgressIndicator(color: kPrimaryColor,),
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                  isLoading ? Positioned.fill(
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: kPrimaryColor,
+                      ),
+                    ),
+                  ): Container()
+                ] ,
               ),
             ),
           ],
@@ -181,6 +192,9 @@ class _BuyerInfoScreenState extends State<BuyerInfoScreen> {
       userApi.email = _emailController.text.trim();
       userApi.profile?.imgProfile = _imageFile!.path;
       userApi.phoneNumber = _phoneNumController.text.trim();
+      setState(() {
+        isLoading = true;
+      });
       bool status = await AuthApiController().updateUserProfile(user: userApi);
       if (status) {
         final User? user = FirebaseAuth.instance.currentUser;
@@ -201,8 +215,11 @@ class _BuyerInfoScreenState extends State<BuyerInfoScreen> {
               _authGetXController.userApi!.profile?.imgProfile = userApi.profile?.imgProfile;
             });
             _updateTextControllers(userApi);
+            setState(() {
+              isLoading = false;
+            });
             Get.snackbar('نجحت العملية!', 'تم تحديث معلومات الحساب بنجاح', colorText: kPrimaryColor);
-            Navigator.pushNamed(context, '/basic_buyer_screens');
+            Navigator.pushReplacementNamed(context, '/basic_buyer_screens');
           } catch (e) {
             print('error: $e');
             Get.snackbar('خطأ!', 'حاول مرة أخرى', colorText: Colors.red);

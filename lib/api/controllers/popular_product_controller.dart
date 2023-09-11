@@ -28,7 +28,7 @@ class PopularProductControllers extends GetxController with ApiHelper{
   Future<void> getPopularProductList() async {
     _isLoading = true;
     var productsList = await _apiController.showHome();
-    _popularProductList = productsList.where((element) => element.featured == 0 ).toList();
+    _popularProductList = productsList.where((element) => element.featured == 1 ).toList();
     _isLoading = false;
     update();
   }

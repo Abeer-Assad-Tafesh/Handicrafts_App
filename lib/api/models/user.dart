@@ -13,13 +13,12 @@ class UserApi {
   late String? updatedAt;
   late String password;
   late Profile? profile;
-  late Store store;
-
-
+  late Store? store;
 
   UserApi() {
     profile = Profile(userId: 0); // Initialize with an empty Profile object
   }
+
   UserApi.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
@@ -32,7 +31,7 @@ class UserApi {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     profile = json['profile'] != null ? Profile.fromJson(json['profile']) : null;
-    store = Store.fromJson(json['store']);
+    store = json['store'] != null ? Store.fromJson(json['store']): null;
   }
 }
 

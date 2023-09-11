@@ -67,6 +67,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                           AppTextFormField(
                             controller: _emailController,
                             onChanged: (value) {},
+                            textInputField: TextInputType.emailAddress,
                           ),
                           const SizedBox(height: 40),
                           AppTextFormField(
@@ -80,7 +81,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                             onPressed: () async {
                               bool status = await sendMessage();
                               if(status){
-                                Navigator.pushNamed(context, '/sent_successfully_screen');
+                                navigate();
                               }
                             },
                           ),
@@ -96,7 +97,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
     );
   }
 
-
+  navigate(){
+    Navigator.pushReplacementNamed(context, '/sent_successfully_screen');
+  }
 
   Future<bool> sendMessage() async {
     if(checkData()){
@@ -137,7 +140,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
     } else if (_messageController.text.trim().isEmpty) {
       Get.snackbar('مهلاً', 'أدخل رسالتك ', colorText: Colors.red);
       return false;
-    }else if (_messageController.text.trim().length > 70) {
+    }else if (_messageController.text.trim().length >= 70) {
       Get.snackbar('مهلاً', 'الحد الأقصى لطول الرسالة هو 70 حرف ', colorText: Colors.red);
       return false;
     }

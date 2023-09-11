@@ -41,7 +41,7 @@ class _AccountScreenState extends State<AccountScreen> {
     return SharedPrefController().loggedIn
         ? GetBuilder<AuthGetXController>(builder: (controller) {
             var user = controller.userApi;
-            // print('666666666 ${user?.profile?.imgProfile}');
+            print('666666666 $user');
             return SingleChildScrollView(
               child: Padding(
                   padding: const EdgeInsets.only(top: 20, left: 10, right: 10),

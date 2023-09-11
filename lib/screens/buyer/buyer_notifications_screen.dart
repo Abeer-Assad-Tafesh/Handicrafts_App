@@ -31,7 +31,7 @@ class BuyerNotificationsScreen extends StatelessWidget {
                             ListView.builder(
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: 8,
+                              itemCount: 2,
                               itemBuilder: (context, index) => Padding(
                                 padding:
                                     EdgeInsets.only(left: 10.w, right: 10.w),

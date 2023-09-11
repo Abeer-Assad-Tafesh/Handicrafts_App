@@ -91,7 +91,7 @@ class CartController extends GetxController {
     return _items.entries.map((e) => e.value).toList();
   }
 
-  // cart page
+  // cart page   // storeId with it's products
   Map<String, List<CartModel>> getItemsByStore() {
     Map<String, List<CartModel>> itemsByStore = {};
 
@@ -112,6 +112,7 @@ class CartController extends GetxController {
 
     return itemsByStore;
   }
+
 
   double get totalCartProductsPrice{
     double total = 0;

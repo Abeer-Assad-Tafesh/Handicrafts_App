@@ -25,6 +25,8 @@ class AddProductPage extends StatefulWidget {
 }
 
 class _AddProductPageState extends State<AddProductPage> {
+  final ProductGetXController _productGetXController = Get.find();
+
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _productNameController;
   late TextEditingController _productDescriptionController;
@@ -34,6 +36,7 @@ class _AddProductPageState extends State<AddProductPage> {
   List<XFile?> _imageList = List.generate(4, (index) => null);
 
   final picker = ImagePicker();
+  bool isLoading = false;
 
   Future getImage(int index) async {
     XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -76,199 +79,257 @@ class _AddProductPageState extends State<AddProductPage> {
                 back: true,
                 logo: false,
               ),
-              Padding(
-                padding: const EdgeInsets.all(15.0).r,
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                getImage(3);
-                              },
-                              child: DottedBorder(
-                                color: kPrimaryColor,
-                                strokeWidth: 2,
-                                radius: const Radius.circular(20).r,
-                                dashPattern: const [7, 7, 7, 7],
-                                // padding: EdgeInsets.symmetric(horizontal: 40.w,vertical: 40.h),
-                                child: SizedBox(
-                                  height: 102,
-                                  width: 130,
-                                  child: _imageList[3] != null
-                                      ? Image.file(
-                                          File(_imageList[3]!.path),
+              Stack(
+                children : [
+                  Padding(
+                      padding: const EdgeInsets.all(15.0).r,
+                      child: GetBuilder<ProductGetXController>(
+                        builder: (controller) {
+                          return Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          getImage(3);
+                                        },
+                                        child: DottedBorder(
+                                          color: kPrimaryColor,
+                                          strokeWidth: 2,
+                                          radius: const Radius.circular(20).r,
+                                          dashPattern: const [7, 7, 7, 7],
+                                          // padding: EdgeInsets.symmetric(horizontal: 40.w,vertical: 40.h),
+                                          child: SizedBox(
+                                            height: 102,
+                                            width: 130,
+                                            child: _imageList[3] != null
+                                                ? Image.file(
+                                              File(_imageList[3]!.path),
+                                              fit: BoxFit.cover,
+                                            )
+                                                : Center(
+                                                child: SvgPicture.asset(
+                                                  'assets/icons/cloud.svg',
+                                                  height: 25.h,
+                                                  width: 25.w,
+                                                )),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 12,
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          getImage(2);
+                                        },
+                                        child: DottedBorder(
+                                          color: kPrimaryColor,
+                                          strokeWidth: 2,
+                                          radius: const Radius.circular(20).r,
+                                          dashPattern: const [7, 7, 7, 7],
+                                          // padding: EdgeInsets.symmetric(horizontal: 40.w,vertical: 40.h),
+                                          child: SizedBox(
+                                            height: 102,
+                                            width: 130,
+                                            child: _imageList[2] != null
+                                                ? Image.file(
+                                              File(_imageList[2]!.path),
+                                              fit: BoxFit.cover,
+                                            )
+                                                : Center(
+                                                child: SvgPicture.asset(
+                                                  'assets/icons/cloud.svg',
+                                                  height: 25.h,
+                                                  width: 25.w,
+                                                )),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 12.h,
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          getImage(1);
+                                        },
+                                        child: DottedBorder(
+                                          color: kPrimaryColor,
+                                          strokeWidth: 2,
+                                          radius: const Radius.circular(20).r,
+                                          dashPattern: const [7, 7, 7, 7],
+                                          // padding: EdgeInsets.symmetric(horizontal: 40.w,vertical: 40.h),
+                                          child: SizedBox(
+                                            height: 102,
+                                            width: 130,
+                                            child: _imageList[1] != null
+                                                ? Image.file(
+                                              File(_imageList[1]!.path),
+                                              fit: BoxFit.cover,
+                                            )
+                                                : Center(
+                                                child: SvgPicture.asset(
+                                                  'assets/icons/cloud.svg',
+                                                  height: 25.h,
+                                                  width: 25.w,
+                                                )),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      getImage(0);
+                                    },
+                                    child: DottedBorder(
+                                      color: kPrimaryColor,
+                                      strokeWidth: 2,
+                                      radius: const Radius.circular(20).r,
+                                      dashPattern: [10.w, 10.w, 10.w, 10.w],
+                                      // padding: EdgeInsets.symmetric(horizontal: 100.w,vertical: 150.h),
+                                      child: SizedBox(
+                                        height: 335.h,
+                                        width: 225.w,
+                                        child: _imageList[0] != null
+                                            ? Image.file(
+                                          File(_imageList[0]!.path),
                                           fit: BoxFit.cover,
                                         )
-                                      : Center(
-                                          child: SvgPicture.asset(
-                                          'assets/icons/cloud.svg',
-                                          height: 25.h,
-                                          width: 25.w,
-                                        )),
+                                            : Center(
+                                            child: SvgPicture.asset(
+                                              'assets/icons/cloud.svg',
+                                              height: 40.h,
+                                              width: 40.w,
+                                            )),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              SizedBox(height: 20.h),
+                              Form(
+                                key: _formKey,
+                                child: Column(
+                                  children: [
+                                    const TextFormLabel(
+                                      icon: "assets/icons/product.svg",
+                                      label: 'اسم المنتج',
+                                      fontSize: 16,
+                                    ),
+                                    AppTextFormField(
+                                      controller: _productNameController,
+                                      onChanged: (value) {},
+                                      hintText: 'أدخل اسم المنتج',
+                                    ),
+                                    SizedBox(height: 10.h),
+                                    const TextFormLabel(
+                                      icon: "assets/icons/descreption.svg",
+                                      label: 'الوصف',
+                                      fontSize: 16,
+                                    ),
+                                    AppTextFormField(
+                                      controller:
+                                      _productDescriptionController,
+                                      onChanged: (value) {},
+                                      height: 150,
+                                      maxLines: 10,
+                                      hintText: 'أدخل نص لا يزيد عن 70 حرف',
+                                    ),
+                                    SizedBox(height: 10.h),
+                                    const TextFormLabel(
+                                      icon: "assets/icons/price.svg",
+                                      label: 'السعر',
+                                      fontSize: 16,
+                                    ),
+                                    AppTextFormField(
+                                      controller: _productPriceController,
+                                      onChanged: (value) {},
+                                      hintText: 'أدخل سعر المنتج',
+                                    ),
+                                    SizedBox(height: 10.h),
+                                    const TextFormLabel(
+                                      icon: "assets/icons/timer.svg",
+                                      label: 'مدة التسليم',
+                                      fontSize: 16,
+                                    ),
+                                    AppTextFormField(
+                                      hintText: 'مثال 2 يوم',
+                                      controller:
+                                      _productDelivaryTimeController,
+                                      onChanged: (value) {},
+                                    ),
+                                    SizedBox(height: 40.h),
+                                    AppButton(
+                                      text: 'تقديم المنتج',
+                                      onPressed: () {
+                                        _createProduct();
+                                      },
+                                    ),
+                                    SizedBox(height: 40.h),
+                                  ],
                                 ),
                               ),
-                            ),
-                            const SizedBox(
-                              height: 12,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                getImage(2);
-                              },
-                              child: DottedBorder(
-                                color: kPrimaryColor,
-                                strokeWidth: 2,
-                                radius: const Radius.circular(20).r,
-                                dashPattern: const [7, 7, 7, 7],
-                                // padding: EdgeInsets.symmetric(horizontal: 40.w,vertical: 40.h),
-                                child: SizedBox(
-                                  height: 102,
-                                  width: 130,
-                                  child: _imageList[2] != null
-                                      ? Image.file(
-                                          File(_imageList[2]!.path),
-                                          fit: BoxFit.cover,
-                                        )
-                                      : Center(
-                                          child: SvgPicture.asset(
-                                          'assets/icons/cloud.svg',
-                                          height: 25.h,
-                                          width: 25.w,
-                                        )),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 12.h,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                getImage(1);
-                              },
-                              child: DottedBorder(
-                                color: kPrimaryColor,
-                                strokeWidth: 2,
-                                radius: const Radius.circular(20).r,
-                                dashPattern: const [7, 7, 7, 7],
-                                // padding: EdgeInsets.symmetric(horizontal: 40.w,vertical: 40.h),
-                                child: SizedBox(
-                                  height: 102,
-                                  width: 130,
-                                  child: _imageList[1] != null
-                                      ? Image.file(
-                                          File(_imageList[1]!.path),
-                                          fit: BoxFit.cover,
-                                        )
-                                      : Center(
-                                          child: SvgPicture.asset(
-                                          'assets/icons/cloud.svg',
-                                          height: 25.h,
-                                          width: 25.w,
-                                        )),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        InkWell(
-                          onTap: () {
-                            getImage(0);
-                          },
-                          child: DottedBorder(
-                            color: kPrimaryColor,
-                            strokeWidth: 2,
-                            radius: const Radius.circular(20).r,
-                            dashPattern: [10.w, 10.w, 10.w, 10.w],
-                            // padding: EdgeInsets.symmetric(horizontal: 100.w,vertical: 150.h),
-                            child: SizedBox(
-                              height: 335.h,
-                              width: 225.w,
-                              child: _imageList[0] != null
-                                  ? Image.file(
-                                      File(_imageList[0]!.path),
-                                      fit: BoxFit.fitWidth,
-                                    )
-                                  : Center(
-                                      child: SvgPicture.asset(
-                                      'assets/icons/cloud.svg',
-                                      height: 40.h,
-                                      width: 40.w,
-                                    )),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(height: 20.h),
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          const TextFormLabel(
-                            icon: "assets/icons/product.svg",
-                            label: 'اسم المنتج',
-                            fontSize: 16,
-                          ),
-                          AppTextFormField(
-                            controller: _productNameController,
-                            onChanged: (value) {},
-                            hintText: 'أدخل اسم المنتج',
-                          ),
-                          SizedBox(height: 10.h),
-                          const TextFormLabel(
-                            icon: "assets/icons/descreption.svg",
-                            label: 'الوصف',
-                            fontSize: 16,
-                          ),
-                          AppTextFormField(
-                            controller: _productDescriptionController,
-                            onChanged: (value) {},
-                            height: 150,
-                            maxLines: 10,
-                            hintText: 'أدخل نص لا يزيد عن 70 حرف',
-                          ),
-                          SizedBox(height: 10.h),
-                          const TextFormLabel(
-                            icon: "assets/icons/price.svg",
-                            label: 'السعر',
-                            fontSize: 16,
-                          ),
-                          AppTextFormField(
-                            controller: _productPriceController,
-                            onChanged: (value) {},
-                            hintText: 'أدخل سعر المنتج',
-                          ),
-                          SizedBox(height: 10.h),
-                          const TextFormLabel(
-                            icon: "assets/icons/timer.svg",
-                            label: 'مدة التسليم',
-                            fontSize: 16,
-                          ),
-                          AppTextFormField(
-                            hintText: 'مثال 2 يوم',
-                            controller: _productDelivaryTimeController,
-                            onChanged: (value) {},
-                          ),
-                          SizedBox(height: 40.h),
-                          AppButton(
-                            text: 'تقديم المنتج',
-                            onPressed: () {
-                              _createProduct();
-                            },
-                          ),
-                          SizedBox(height: 40.h),
-                        ],
+                            ],
+                          );
+                        },
+                      )),
+                  isLoading ? Positioned.fill(
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: kPrimaryColor,
                       ),
                     ),
-                  ],
-                ),
+                  ): Container()
+                ]
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+
+  Product get product {
+    Product newProduct = Product();
+    newProduct.name = _productNameController.text.trim();
+    newProduct.description = _productDescriptionController.text.trim();
+    newProduct.price = double.parse(_productPriceController.text.trim());
+    newProduct.quantity = int.parse('0');
+    newProduct.deliveryPeriod = int.parse(_productDelivaryTimeController.text.trim());
+    newProduct.productImages =
+        _imageList.map((image) => ProductImage(imageUrl: image!.path)).toList();
+    return newProduct;
+  }
+
+  Future<void> _createProduct() async {
+    if (checkData()) {
+      setState(() {
+        isLoading = true;
+      });
+      bool created =
+          await ProductGetXController.to.createProduct(product: product);
+      if (created) {
+        navigate();
+      }
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  void navigate() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SentSuccessfullyScreen(
+          mainText: 'تم تقديم طلب الاعتماد',
+          subText: 'سيتم مراجعة الطلب خلال 24 ساعة',
         ),
       ),
     );
@@ -287,41 +348,20 @@ class _AddProductPageState extends State<AddProductPage> {
         _productPriceController.text.isNotEmpty) {
       return true;
     }
-    Get.snackbar('مهلاً', 'الرجاء ملء باقي الحقول', colorText: kPrimaryColor);
-    return false;
-  }
-
-  Product get product {
-    Product newProduct = Product();
-    newProduct.name = _productNameController.text;
-    newProduct.description = _productDescriptionController.text;
-    newProduct.price = double.parse(_productPriceController.text);
-    newProduct.quantity = int.parse('0');
-    // newProduct.deliveryTime: int.parse(_productDelivaryTime.text);
-    newProduct.productImages = _imageList.map((image) => ProductImage(imageUrl: image!.path)).toList();
-    return newProduct;
-  }
-
-  Future<void> _createProduct() async {
-    if (checkData()) {
-      bool created =
-          await ProductGetXController.to.createProduct(product: product);
-      if (created) {
-        navigate();
+    for (var char in _productPriceController.text.runes) {
+      if (String.fromCharCode(char).isAlphabetOnly) {
+        Get.snackbar('مهلاً', 'أدخل رقم فقط في حقل مدة التسليم', colorText: Colors.red);
+        return false;
       }
     }
-  }
-
-  void navigate(){
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const SentSuccessfullyScreen(
-          mainText: 'تم تقديم طلب الاعتماد',
-          subText: 'سيتم مراجعة الطلب خلال 24 ساعة',
-        ),
-      ),
-    );
+    for (var char in _productDelivaryTimeController.text.runes) {
+      if (String.fromCharCode(char).isAlphabetOnly) {
+        Get.snackbar('مهلاً', 'أدخل رقم فقط في حقل مدة التسليم', colorText: Colors.red);
+        return false;
+      }
+    }
+    Get.snackbar('مهلاً', 'الرجاء ملء باقي الحقول', colorText: kPrimaryColor);
+    return false;
   }
 
 }

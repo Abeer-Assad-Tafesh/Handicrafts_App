@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:handcrafts/api/api_helper.dart';
 import 'package:handcrafts/screens/buyer/basic_buyer/cart_screen.dart';
 import 'package:handcrafts/screens/buyer/basic_buyer/favorite_screen.dart';
@@ -8,6 +9,14 @@ import 'package:handcrafts/widgets/all_appBar.dart';
 import 'package:handcrafts/widgets/app_tab_bar.dart';
 import 'package:handcrafts/widgets/not_yet.dart';
 
+import '../../../api/controllers/popular_product_controller.dart';
+import '../../../api/controllers/recommended_product_controller.dart';
+import '../../../api/get/auth_getx_controller.dart';
+import '../../../api/get/common_question_getx_controller.dart';
+import '../../../api/get/favorite_product_getx_controller.dart';
+import '../../../api/get/store_getx_controller.dart.dart';
+
+
 class BasicBuyerScreens extends StatefulWidget {
    const BasicBuyerScreens({Key? key,}) : super(key: key);
   @override
@@ -16,6 +25,7 @@ class BasicBuyerScreens extends StatefulWidget {
 
 class _BasicBuyerScreensState extends State<BasicBuyerScreens>
     with TickerProviderStateMixin, ApiHelper {
+
 
   late final TabController _tabController;
   int pageIndex = 0;

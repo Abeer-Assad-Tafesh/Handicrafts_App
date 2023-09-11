@@ -25,7 +25,8 @@ class _HomeMostRatedState extends State<HomeMostRated> {
       child: GetBuilder<RecommendedProductControllers>(
         builder: (controller) {
           if(controller.recommendedProductList.isNotEmpty){
-            print('controller.recommendedProductList.length=> ${controller.recommendedProductList.length}');
+            // print('controller.recommendedProductList.length=> ${controller.recommendedProductList.length}');
+            // print('controller => ${controller.recommendedProductList[0].productImages?[0].imageUrl}');
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [

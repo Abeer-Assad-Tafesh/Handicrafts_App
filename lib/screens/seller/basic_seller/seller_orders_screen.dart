@@ -31,7 +31,7 @@ class _SellerOrdersScreenState extends State<SellerOrdersScreen> {
     "اختر حالة الطلب",
     "قيد المراجعة",
     "قيد التجهيز",
-    " قيد التوصيل",
+    "قيد التوصيل",
     "مكتملة",
   ];
   int current = 0;

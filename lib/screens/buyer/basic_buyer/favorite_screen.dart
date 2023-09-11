@@ -17,15 +17,15 @@ class FavoriteScreen extends StatefulWidget {
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
 
-
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: SharedPrefController().loggedIn
           ? GetBuilder<FavoriteGetXController>(
-              builder: (controller) {
-                if (controller.loading) {
+          builder: (controller) {
+            print('!!!!!!!!!!!!!!!!!!!!${controller.favoriteList}');
+            if (controller.loading) {
                   return Center(
                       child: CircularProgressIndicator(color: kPrimaryColor));
                 } else if (controller.favoriteList.isNotEmpty) {
@@ -39,7 +39,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                               mainAxisSpacing: 0),
                       itemCount: favoriteProducts.length,
                       itemBuilder: (BuildContext ctx, index) {
-                        return ProductCard(product: favoriteProducts[index]);
+
+                        return ProductCard(
+                          product: favoriteProducts[index],
+                        topMargin: 10,);
                       });
                 } else {
                   return const NotYet(

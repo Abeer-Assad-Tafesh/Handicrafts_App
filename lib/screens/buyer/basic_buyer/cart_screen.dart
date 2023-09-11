@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:handcrafts/api/models/cart_model.dart';
@@ -7,10 +8,11 @@ import 'package:handcrafts/api/controllers/cart_controller.dart';
 import 'package:handcrafts/api/controllers/popular_product_controller.dart';
 import 'package:handcrafts/api/controllers/recommended_product_controller.dart';
 import 'package:handcrafts/prefs/shared_pref_controller.dart';
-import 'package:handcrafts/screens/purchase_details_screen.dart';
+import 'package:handcrafts/screens/buyer/purchase_details_screen.dart';
 import 'package:handcrafts/widgets/app_button.dart';
 import 'package:handcrafts/widgets/big_text.dart';
 import 'package:handcrafts/widgets/not_yet.dart';
+import '../../../api/api_settings.dart';
 import '../home/sub_home/product_details_screen.dart';
 
 class CartScreen extends StatefulWidget {
@@ -42,6 +44,7 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return GetBuilder<CartController>(builder: (controller) {
       var itemsByStore = controller.getItemsByStore();
+      print(itemsByStore);
       return SharedPrefController().loggedIn
           ? isLoading == false
               ? controller.getItems.isEmpty
@@ -63,7 +66,6 @@ class _CartScreenState extends State<CartScreen> {
                             itemBuilder: (context, index) {
                               String storeId = itemsByStore.keys.toList()[index];
                               List<CartModel> itemsInStore = itemsByStore[storeId]!;
-
                               return ExpansionTile(
                                 // collapsedBackgroundColor: kPrimaryColor,
                                 textColor: kPrimaryColor,
@@ -71,22 +73,25 @@ class _CartScreenState extends State<CartScreen> {
                                 collapsedIconColor: Colors.black,
                                 title: Row(
                                   children: [
-                                    Image.asset(
-                                      'assets/images/store_logo.png',
-                                      // Replace with the store's image path
-                                      width: 80,
-                                      height: 60,
+                                    CircleAvatar(
+                                      radius: 30.0.r,
+                                      backgroundColor: Colors.blue,
+                                      backgroundImage: NetworkImage(
+                                        ApiSettings.getImageUrl(
+                                            itemsInStore[0].product!
+                                                .store!.logoImage
+                                            !.replaceFirst(
+                                                'uploads/', '')),                                      ),
                                     ),
                                     const SizedBox(width: 10),
-                                    Text('${itemsInStore[index].product!.store.name}'),
-                                    // Replace with the actual store name
+                                    Text('${itemsInStore[0].product!.store?.storeOwner}'),
                                   ],
                                 ),
                                 children: [
                                   ListView.builder(
                                     shrinkWrap: true,
                                     itemCount: itemsInStore.length,
-                                    itemBuilder: (context, index) {
+                                    itemBuilder: (context, i) {
                                       // Display individual items in the store
                                       // CartModel item = itemsInStore[index];
                                       return Container(
@@ -110,8 +115,8 @@ class _CartScreenState extends State<CartScreen> {
                                                         MaterialPageRoute(
                                                           builder: (context) =>
                                                               ProductDetailsScreen(
-                                                                  product: itemsInStore[index].product,
-                                                                  productId: itemsInStore[index].product!.id),
+                                                                  product: itemsInStore[i].product,
+                                                                  productId: itemsInStore[i].product!.id),
                                                         ),
                                                       );
 
@@ -124,7 +129,13 @@ class _CartScreenState extends State<CartScreen> {
                                                         image: DecorationImage(
                                                           fit: BoxFit.cover,
                                                           image: NetworkImage(
-                                                              itemsInStore[index].img!),
+                                                              ApiSettings.getImageUrl(
+                                                                  itemsInStore[i].product!
+                                                                      .productImages![i + 1]!
+                                                                      .imageUrl
+                                                                      .replaceFirst(
+                                                                      'uploads/', '')),
+                                                              )
                                                         ),
                                                       ),
                                                     ),
@@ -143,20 +154,20 @@ class _CartScreenState extends State<CartScreen> {
                                                         InkWell(
                                                           onTap: () {
                                                             controller.addItemToCart(
-                                                                itemsInStore[index].product!, 1);
+                                                                itemsInStore[i].product!, 1);
                                                           },
                                                           child: SvgPicture.asset(
                                                               'assets/icons/plus.svg'),
                                                         ),
                                                         Text(
-                                                          itemsInStore[index].quantity.toString(),
+                                                          itemsInStore[i].quantity.toString(),
                                                           style: const TextStyle(
                                                               fontWeight: FontWeight.bold),
                                                         ),
                                                         InkWell(
                                                             onTap: () {
                                                               controller.addItemToCart(
-                                                                  itemsInStore[index].product!,
+                                                                  itemsInStore[i].product!,
                                                                   -1);
                                                             },
                                                             child: SvgPicture.asset(
@@ -175,11 +186,11 @@ class _CartScreenState extends State<CartScreen> {
                                                       CrossAxisAlignment.start,
                                                       children: [
                                                         BigText(
-                                                            text: itemsInStore[index].product!.name,
+                                                            text: itemsInStore[i].product!.name,
                                                             size: 15
                                                         ),
                                                         BigText(
-                                                            text: itemsInStore[index].product!.category.name!,
+                                                            text: itemsInStore[i].product!.category!.name!,
                                                             size: 12,
                                                             color: Colors.grey
                                                         ),
@@ -200,8 +211,8 @@ class _CartScreenState extends State<CartScreen> {
                                                   GestureDetector(
                                                     onTap: () {
                                                       controller.addItemToCart(
-                                                          itemsInStore[index].product!,
-                                                          -(itemsInStore[index].quantity!));
+                                                          itemsInStore[i].product!,
+                                                          -(itemsInStore[i].quantity!));
                                                     },
                                                     child: const Icon(
                                                       Icons.delete_outline_rounded,
@@ -209,7 +220,7 @@ class _CartScreenState extends State<CartScreen> {
                                                       size: 26,
                                                     ),
                                                   ),
-                                                  Text('${itemsInStore[index].price}₪'),
+                                                  Text('${itemsInStore[i].price}₪'),
                                                 ],
                                               ),
                                             ),
@@ -224,17 +235,10 @@ class _CartScreenState extends State<CartScreen> {
                         const SizedBox(height: 60),
                         AppButton(
                           onPressed: () {
-                            if (!isLoading) {
-                              startLoading();
-                              Future.delayed(const Duration(seconds: 3), () {
-                                Navigator.of(context).push(
-                                    MaterialPageRoute(builder: (context) =>
-                                        PurchaseDetails(
-
-                                        )
-                                    ));
-                              });
-                            }
+                            Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) =>
+                                    PurchaseDetails()
+                                ));
                           },
                           text:
                           ' اطلب الآن | ₪${controller.totalCartProductsPrice.toDouble()}',

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../utils/constants.dart';
@@ -21,7 +22,7 @@ class NavBtnItem extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return ListTile(
-      title: SvgPicture.asset(iconImage, color: selected ? kPrimaryColor : Colors.grey.shade600,),
+      title: SvgPicture.asset(iconImage, color: selected ? kPrimaryColor : Colors.grey.shade600,height: 20.h,width: 20.w,),
       subtitle: Visibility(
           visible: dotVisibility,
           maintainAnimation: true,

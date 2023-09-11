@@ -15,6 +15,7 @@ import 'package:handcrafts/widgets/app_text_form_field.dart';
 import 'package:handcrafts/widgets/small_text.dart';
 import 'package:handcrafts/widgets/text_form_label.dart';
 import 'package:random_color/random_color.dart';
+import 'package:share_plus/share_plus.dart';
 
 class BuyerLoginPage extends StatefulWidget {
   const BuyerLoginPage({Key? key}) : super(key: key);
@@ -251,15 +252,25 @@ class _BuyerLoginPageState extends State<BuyerLoginPage> {
             UserApi? user = SharedPrefController().user;
             print('${user?.typeUser}');
             if (user?.typeUser == 'buyer') {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const BasicBuyerScreens()));
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const BasicBuyerScreens()));
+              Get.snackbar('أهلا بك...', 'تم تسجيل الدخول بنجاح',
+                  colorText: kPrimaryColor);
             } else {
-              print('user store id : ${user?.store.userId}');
+
+              // print('user store id : ${user?.store?.userId}');
               // if(user?.store.id == null){
-                if(user?.store.userId == null){
-                Navigator.pushNamed(context, 'add_store_page');
+                if(!SharedPrefController().storeExists){
+                  // print('hereeeeeeeeeee${!SharedPrefController().storeExists}');
+                Navigator.pushNamed(context, '/add_store_page');
+                Get.snackbar('أكمل الإجراءات',
+                    'قم باستكمال معلومات متجرك الخاص للدخول إليه',
+                    colorText: kPrimaryColor,
+                duration: const Duration(seconds: 2));
               }else{
-                Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                    BasicSellerScreens(storeId: user?.store.userId,)
+                  print('heroooooooooooo    ${SharedPrefController().storeExists} + ${user?.store?.id}');
+                  SharedPrefController().saveCraftsmanStoreId(storeId: user?.store?.id);
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>
+                    BasicSellerScreens(storeId: user?.store?.id,)
                 ));
               }
             }

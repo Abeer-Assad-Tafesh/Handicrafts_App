@@ -3,13 +3,7 @@ import 'package:handcrafts/widgets/small_text.dart';
 import '../utils/constants.dart';
 import '../widgets/out_boarding_content.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import '../api/controllers/popular_product_controller.dart';
-import '../api/controllers/recommended_product_controller.dart';
-import '../api/get/auth_getx_controller.dart';
-import '../api/get/common_question_getx_controller.dart';
-import '../api/get/favorite_product_getx_controller.dart';
-import '../api/get/store_getx_controller.dart.dart';
+
 
 class OutBoardingScreen extends StatefulWidget {
   const OutBoardingScreen({Key? key}) : super(key: key);
@@ -19,13 +13,6 @@ class OutBoardingScreen extends StatefulWidget {
 }
 
 class _OutBoardingScreenState extends State<OutBoardingScreen> {
-
-  final PopularProductControllers _popularProductControllers = Get.put(PopularProductControllers());
-  final RecommendedProductControllers _recommendedProductControllers = Get.put(RecommendedProductControllers());
-  final StoreGetXController _storeGetXController = Get.put(StoreGetXController());
-  final AuthGetXController _authGetXController = Get.put(AuthGetXController());
-  final CommonQuestionGetXController _getXController = Get.put(CommonQuestionGetXController());
-  final FavoriteGetXController _favoriteGetXController =  Get.put(FavoriteGetXController());
 
   late PageController _pageController;
   late int _currentPage = 0;

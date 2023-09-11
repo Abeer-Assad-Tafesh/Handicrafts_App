@@ -24,9 +24,15 @@ class AuthApiController {
     });
 
     if (response.statusCode == 201) {
-      Get.snackbar('تم إنشاء الحساب بنجاح ..',
-          'سجل دخولك مرة أخرى لتتمتع بالتسوق داخل التطبيق',
-          colorText: kPrimaryColor);
+      if(user.typeUser == 'buyer'){
+        Get.snackbar('تم إنشاء الحساب بنجاح ..',
+            'سجل دخولك مرة أخرى لتتمتع بالتسوق داخل التطبيق',
+            colorText: kPrimaryColor);
+      }else{
+        Get.snackbar('تم إنشاء الحساب بنجاح ..',
+            'سجل دخولك مرة أخرى لتقوم بإنشاء متجرك الخاص',
+            colorText: kPrimaryColor);
+      }
       return true;
     } else if (response.statusCode == 422) {
       Get.snackbar('خطأ!', '${jsonDecode(response.body)['message']}',
@@ -50,11 +56,20 @@ class AuthApiController {
       var jsonUser = jsonDecode(response.body)['user'];
       var jsonToken = jsonDecode(response.body)['token'];
       user = UserApi.fromJson(jsonUser);
+      if (jsonUser['store'].containsKey('id')) {
+        // The 'store_id' key exists in the JSON object
+        SharedPrefController().storeExist(isExist: true);
+
+        // print('Yahhhhhhhhhhhhhhhhhhhhhhh');
+      } else {
+        // print('Noooooooooooooooooooooo');
+        // The 'store_id' key does not exist in the JSON object
+        SharedPrefController().storeExist(isExist: false);
+        print(SharedPrefController().storeExists);
+      }
       SharedPrefController().savePassword(password: password);
       SharedPrefController().save(user: user!, token: jsonToken);
 
-      Get.snackbar('أهلا بك...', 'تم تسجيل الدخول بنجاح',
-          colorText: kPrimaryColor);
       return true;
     } else if (response.statusCode == 401) {
       Get.snackbar('عذراً!', '${jsonDecode(response.body)['message']}',
@@ -94,6 +109,7 @@ class AuthApiController {
 
 
   Future<UserApi?> getProfile() async {
+    print('token: ${SharedPrefController().token}');
     var url = Uri.parse(ApiSettings.getProfile);
     var response = await http.get(
         url,
@@ -109,14 +125,14 @@ class AuthApiController {
           colorText: kPrimaryColor);*/
       return user;
     } else {
-     /* Get.snackbar('حدث خطأ ما777!', '${jsonDecode(response.body)['message']}',
+     /* Get.snackbar('حدث خطأ ما777!', '${jsonDecode(response.body)['message']} + ${response.statusCode}',
           colorText: Colors.red);*/
       return null;
     }
   }
 
 
-  Future<bool> updateUserProfile({required UserApi user,}) async {
+  Future<bool> updateUserProfile({required UserApi user}) async {
     var url = Uri.parse(ApiSettings.updateProfile);
     var response = await http.post(url, body: {
       'name': user.name,
@@ -144,7 +160,6 @@ class AuthApiController {
       'email': email,
     });
     if (response.statusCode == 200) {
-
       return true;
     } else {
       Get.snackbar('حدث خطأ ما8888!', '${jsonDecode(response.body)['message']}',
@@ -196,8 +211,5 @@ class AuthApiController {
       return false;
     }
   }
-
-
-
 
 }

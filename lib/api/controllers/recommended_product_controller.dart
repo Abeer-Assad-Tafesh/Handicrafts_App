@@ -21,7 +21,8 @@ class RecommendedProductControllers extends GetxController{
     _isLoading = true;
     update();
     var productsList = await _apiController.showHome();
-    _recommendedProductList = productsList.where((element) => element.rating >= 0 ).toList();
+    _recommendedProductList = productsList.where((element) => element.rating >= 3 ).toList();
+    print('_recommendedProductList ${_recommendedProductList.length}');
     _isLoading = false;
     print('we are here');
     update();

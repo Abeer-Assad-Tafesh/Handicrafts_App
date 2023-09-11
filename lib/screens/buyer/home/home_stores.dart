@@ -47,6 +47,7 @@ class HomeStores extends StatelessWidget {
             height: 200,
             child: GetBuilder<StoreGetXController>(
               builder: (controller) {
+                // print('aaaaaaaaaaa ${controller.storesList.length}');
                 return ListView.builder(
                   shrinkWrap: false,
                   scrollDirection: Axis.horizontal,

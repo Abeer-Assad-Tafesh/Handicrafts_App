@@ -151,9 +151,8 @@ class _AboutShopPageState extends State<AboutShopPage> {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (context) => ChatScreen(
-                                            store_Name: widget.store!.name,
-                                            store_Id:
-                                                widget.store!.id.toString(),
+                                            store_Id: widget.store!.id.toString(),
+                                            store_Name: widget.store!.storeOwner,
                                           ),
                                         ),
                                       );
@@ -222,10 +221,10 @@ class _AboutShopPageState extends State<AboutShopPage> {
                               children: [
                                 InkWell(
                                   onTap: () {
-                                    if (widget.product!.store.urlFacebook !=
+                                    if (widget.product!.store?.urlFacebook !=
                                         null) {
                                       _launchURL(
-                                          widget.product!.store.urlFacebook);
+                                          widget.product!.store?.urlFacebook);
                                     } else {
                                       Get.snackbar('عذراً',
                                           'لا يوجد صفحة فيسبوك للمتجر');
@@ -241,10 +240,10 @@ class _AboutShopPageState extends State<AboutShopPage> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    if (widget.product!.store.urlInstagram !=
+                                    if (widget.product!.store?.urlInstagram !=
                                         null) {
                                       _launchURL(
-                                          widget.product!.store.urlInstagram);
+                                          widget.product!.store?.urlInstagram);
                                     } else {
                                       Get.snackbar('عذراً',
                                           'لا يوجد صفحة انستجرام للمتجر');
@@ -275,10 +274,10 @@ class _AboutShopPageState extends State<AboutShopPage> {
                               children: [
                                 InkWell(
                                   onTap: () {
-                                    if (widget.product!.store.phoneWhatsapp !=
+                                    if (widget.product!.store?.phoneWhatsapp !=
                                         null) {
                                       makePhoneCall(widget
-                                          .product!.store.phoneWhatsapp
+                                          .product!.store!.phoneWhatsapp
                                           .toString());
                                     }
                                   },
@@ -292,28 +291,12 @@ class _AboutShopPageState extends State<AboutShopPage> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    if (_auth.currentUser != null) {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => ChatScreen(
-                                            store_Name: widget.product!.store.name,
-                                            store_Id:
-                                            widget.product!.store.id.toString(),
-                                          ),
-                                        ),
-                                      );
-                                    } else {
-                                      Get.snackbar('سجل الدخول لحسابك أولاً',
-                                          'سجل الدخول لتتمتع بالمراسلة مع المتجر والمشترين :)');
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                            const LoginRegisterScreen()),
-                                      );
-                                    }
+                                    sendSMS(widget
+                                        .product!.store!.phoneWhatsapp
+                                        .toString());
                                   },
                                   child: SvgPicture.asset(
-                                    "assets/icons/chat.svg",
+                                    "assets/icons/message.svg",
                                     height: 22,
                                   ),
                                 ),
@@ -341,10 +324,8 @@ class _AboutShopPageState extends State<AboutShopPage> {
                                         MaterialPageRoute(builder: (context) {
                                       if (_auth.currentUser != null) {
                                         return ChatScreen(
-                                          store_Name:
-                                              widget.product!.store.name,
-                                          store_Id: widget.product!.store.id
-                                              .toString(),
+                                          store_Id: widget.product!.store?.id.toString(),
+                                          store_Name: widget.product!.store?.storeOwner.toString(),
                                         );
                                       } else {
                                         Get.snackbar('سجل الدخول لحسابك أولاً',
@@ -375,7 +356,7 @@ class _AboutShopPageState extends State<AboutShopPage> {
                               height: 15,
                             ),
                             Text(
-                              widget.product!.store.description?? '',
+                              widget.product!.store?.description?? '',
                               style: const TextStyle(fontSize: 12),
                             ),
                           ],

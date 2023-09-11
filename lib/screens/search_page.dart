@@ -21,10 +21,16 @@ class _SearchScreenState extends State<SearchScreen> {
   void search(String text,List<Product> products) {
     setState(() {
       searchText = text.toLowerCase();
-      searchResults = products
+      /*searchResults = products
           .where((product) =>
           product.name.toLowerCase().contains(searchText.toLowerCase()))
-          .toList();
+          .toList();*/
+      searchResults = products
+          .where((product) =>
+      product.name.toLowerCase().contains(searchText.toLowerCase()) ||
+          product.description.toLowerCase().contains(searchText.toLowerCase()) ||
+          product.category!.name.toLowerCase().contains(searchText.toLowerCase())
+      ).toList();
     });
   }
 

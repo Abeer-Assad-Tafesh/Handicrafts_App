@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:handcrafts/api/get/store_getx_controller.dart.dart';
 import 'package:handcrafts/api/models/store.dart';
 import 'package:handcrafts/prefs/shared_pref_controller.dart';
 import 'package:handcrafts/utils/constants.dart';
 import 'package:handcrafts/widgets/borderd_circle_avatar.dart';
 
+import '../api/api_settings.dart';
 import '../api/models/user.dart';
 
 class AllAppBar extends StatelessWidget {
@@ -12,7 +15,15 @@ class AllAppBar extends StatelessWidget {
   final bool logo;
   final String text;
   final double spaceBeforeLogo;
-  AllAppBar({super.key, this.text = '', required this.back, this.logo = true,this.spaceBeforeLogo = 0});
+  final double spaceAfterLogo;
+
+  AllAppBar(
+      {super.key,
+      this.text = '',
+      required this.back,
+      this.logo = true,
+      this.spaceBeforeLogo = 0,
+      this.spaceAfterLogo = 30});
 
   @override
   Widget build(BuildContext context) {
@@ -77,9 +88,38 @@ class AllAppBar extends StatelessWidget {
                             },
                             child: SvgPicture.asset("assets/icons/search.svg"),
                           )
-                        : CircleAvatarWithBorder(
-                            imageUrl: "assets/images/store_logo.png",
-                          )
+                        : GetBuilder<StoreGetXController>(
+                            builder: (controller) {
+                            var logo = controller.store?.logoImage;
+                            return logo != null
+                                ? Container(
+                                    width: 60.0,
+                                    height: 60.0,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: Colors.grey,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(3.0),
+                                      child: ClipOval(
+                                        child: Image.network(
+                                          ApiSettings.getImageUrl(controller
+                                              .store!.logoImage!
+                                              .replaceFirst('uploads/', '')),
+                                          fit: BoxFit.cover,
+                                          width: 50.0,
+                                          height: 50.0,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                              width: 60,
+                            );
+                          })
                 /*CircleAvatarWithBorder(imageUrl:
                 store.logoImage == null ? "assets/images/store_logo.svg"
                     : store.logoImage
@@ -98,8 +138,8 @@ class AllAppBar extends StatelessWidget {
                       ),
                       SharedPrefController().typeUser == 'buyer'
                           ? const SizedBox()
-                          : const SizedBox(
-                              width: 30,
+                          : SizedBox(
+                              width: spaceAfterLogo,
                             ),
                     ],
                   )

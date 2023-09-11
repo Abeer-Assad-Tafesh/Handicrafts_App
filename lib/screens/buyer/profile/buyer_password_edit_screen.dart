@@ -28,6 +28,7 @@ class _BuyerPasswordInfoScreenState extends State<BuyerPasswordInfoScreen> {
   bool _obscureNewPassword = true;
   bool _obscureOldPassword = true;
   bool _obscureConfirmedPassword = true;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -59,107 +60,118 @@ class _BuyerPasswordInfoScreenState extends State<BuyerPasswordInfoScreen> {
             spaceBeforeLogo: 12,
           ),
           Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 30, right: 30, top: 100, bottom: 30),
-                child: Column(
-                  children: [
-                    const Text(
-                      'تغيير كلمة المرور',
-                      style: TextStyle(color: Colors.black, fontSize: 16),
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    const TextFormLabel(
-                        icon: "assets/icons/password.svg",
-                        label: 'كلمة المرور الحالية'),
-                    Stack(
+            child: Stack(
+              children :[
+                SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 30, right: 30, top: 100, bottom: 30),
+                    child: Column(
                       children: [
-                        AppTextFormField(
-                          controller: _oldPasswordController,
-                          onChanged: (value) {},
-                          obscureText: _obscureOldPassword,
+                        const Text(
+                          'تغيير كلمة المرور',
+                          style: TextStyle(color: Colors.black, fontSize: 16),
                         ),
-                        Positioned(
-                          left: 5,top: 3,
-                          child: IconButton(
-                            icon: _obscureOldPassword ? SvgPicture.asset('assets/icons/show.svg',color: kPrimaryColor,) :  SvgPicture.asset('assets/icons/hide.svg',color: kPrimaryColor,),
-                            onPressed: () {
-                              setState(() {
-                                _obscureOldPassword = !_obscureOldPassword;
-                              });
-                            },
-                          ),
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        const TextFormLabel(
+                            icon: "assets/icons/password.svg",
+                            label: 'كلمة المرور الحالية'),
+                        Stack(
+                          children: [
+                            AppTextFormField(
+                              controller: _oldPasswordController,
+                              onChanged: (value) {},
+                              obscureText: _obscureOldPassword,
+                            ),
+                            Positioned(
+                              left: 5,top: 3,
+                              child: IconButton(
+                                icon: _obscureOldPassword ? SvgPicture.asset('assets/icons/show.svg',color: kPrimaryColor,) :  SvgPicture.asset('assets/icons/hide.svg',color: kPrimaryColor,),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscureOldPassword = !_obscureOldPassword;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const TextFormLabel(
+                            icon: "assets/icons/password.svg",
+                            label: 'كلمة المرور الجديدة'),
+                        Stack(
+                          children: [
+                            AppTextFormField(
+                              controller: _newPasswordController,
+                              onChanged: (value){},
+                              obscureText: _obscureNewPassword,
+                            ),
+                            Positioned(
+                              left: 5,top: 3,
+                              child: IconButton(
+                                icon: _obscureNewPassword ? SvgPicture.asset('assets/icons/show.svg',color: kPrimaryColor,) :  SvgPicture.asset('assets/icons/hide.svg',color: kPrimaryColor,),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscureNewPassword = !_obscureNewPassword;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const TextFormLabel(
+                            icon: "assets/icons/password.svg",
+                            label: 'تأكيد كلمة المرور'),
+                        Stack(
+                          children: [
+                            AppTextFormField(
+                              controller: _confirmedNewPasswordController,
+                              onChanged: (value) {},
+                              obscureText: _obscureConfirmedPassword,
+                            ),
+                            Positioned(
+                              left: 5,top: 3,
+                              child: IconButton(
+                                icon: _obscureConfirmedPassword ? SvgPicture.asset('assets/icons/show.svg',color: kPrimaryColor,) :  SvgPicture.asset('assets/icons/hide.svg',color: kPrimaryColor,),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscureConfirmedPassword = !_obscureConfirmedPassword;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        AppButton(
+                          text: 'تعديل',
+                          onPressed: () async {
+                            await performResetPassword();
+                            // Navigator.pushNamed(context, '/basic_screens');
+                          },
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const TextFormLabel(
-                        icon: "assets/icons/password.svg",
-                        label: 'كلمة المرور الجديدة'),
-                    Stack(
-                      children: [
-                        AppTextFormField(
-                          controller: _newPasswordController,
-                          onChanged: (value){},
-                          obscureText: _obscureNewPassword,
-                        ),
-                        Positioned(
-                          left: 5,top: 3,
-                          child: IconButton(
-                            icon: _obscureNewPassword ? SvgPicture.asset('assets/icons/show.svg',color: kPrimaryColor,) :  SvgPicture.asset('assets/icons/hide.svg',color: kPrimaryColor,),
-                            onPressed: () {
-                              setState(() {
-                                _obscureNewPassword = !_obscureNewPassword;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const TextFormLabel(
-                        icon: "assets/icons/password.svg",
-                        label: 'تأكيد كلمة المرور'),
-                    Stack(
-                      children: [
-                        AppTextFormField(
-                          controller: _confirmedNewPasswordController,
-                          onChanged: (value) {},
-                          obscureText: _obscureConfirmedPassword,
-                        ),
-                        Positioned(
-                          left: 5,top: 3,
-                          child: IconButton(
-                            icon: _obscureConfirmedPassword ? SvgPicture.asset('assets/icons/show.svg',color: kPrimaryColor,) :  SvgPicture.asset('assets/icons/hide.svg',color: kPrimaryColor,),
-                            onPressed: () {
-                              setState(() {
-                                _obscureConfirmedPassword = !_obscureConfirmedPassword;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    AppButton(
-                      text: 'تعديل',
-                      onPressed: () async {
-                          await performResetPassword();
-                        // Navigator.pushNamed(context, '/basic_screens');
-                      },
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+                isLoading ? Positioned.fill(
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: kPrimaryColor,
+                    ),
+                  ),
+                ): Container()
+              ]
             ),
           )
         ],
@@ -171,6 +183,9 @@ class _BuyerPasswordInfoScreenState extends State<BuyerPasswordInfoScreen> {
     if(checkData()){
       if(_oldPasswordController.text.trim() == SharedPrefController().password){
         if (_newPasswordController.text.trim() == _confirmedNewPasswordController.text.trim()) {
+          setState(() {
+            isLoading = true;
+          });
           bool status = await AuthApiController()
               .resetPassword(newPassword: _newPasswordController.text.trim(),
             oldPassword: _oldPasswordController.text.trim(),
@@ -186,8 +201,11 @@ class _BuyerPasswordInfoScreenState extends State<BuyerPasswordInfoScreen> {
                 await user.reauthenticateWithCredential(credential);
                 await user.updatePassword(_newPasswordController.text.trim());
                 SharedPrefController().updatePassword(password: _newPasswordController.text.trim());
+                setState(() {
+                  isLoading = false;
+                });
                 Get.snackbar('نجحت العملية', 'تم إعادة تعيين كلمة المرور بنجاح',colorText: kPrimaryColor);
-                Navigator.pushNamed(context, '/basic_buyer_screens');
+                navigate();
               } catch (e) {
                 Get.snackbar('حدث خطأ ما!', 'حاول مرة أخرى', colorText: Colors.red);
               }
@@ -198,6 +216,10 @@ class _BuyerPasswordInfoScreenState extends State<BuyerPasswordInfoScreen> {
         Get.snackbar('مهلاً', 'كلمة المرور القديمة غير صحيحية', colorText: Colors.red);
       }
     }
+  }
+
+  navigate(){
+    Navigator.pop(context);
   }
 
   bool checkData() {

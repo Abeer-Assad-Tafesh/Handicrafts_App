@@ -47,7 +47,12 @@ class _ContactUsSellerPageState extends State<ContactUsSellerPage> {
       body: SafeArea(
           child: Column(
             children: [
-              AllAppBar(text: 'تواصل معنا',back: true,logo: false,),
+              AllAppBar(
+                text: 'تواصل معنا',
+                back: true,
+                spaceAfterLogo: 0,
+                spaceBeforeLogo: 20,
+              ),
               Expanded(
                 child: SingleChildScrollView(
                   child: Padding(
@@ -66,6 +71,7 @@ class _ContactUsSellerPageState extends State<ContactUsSellerPage> {
                           AppTextFormField(
                             controller: _emailController,
                             onChanged: (value) {},
+                            textInputField: TextInputType.emailAddress,
                           ),
                           SizedBox(height: 40.h),
                           AppTextFormField(
@@ -124,7 +130,7 @@ class _ContactUsSellerPageState extends State<ContactUsSellerPage> {
     }else if (_emailController.text.trim().isEmpty) {
       Get.snackbar('مهلاً', 'أدخل ايميلك ', colorText: Colors.red);
       return false;
-    } else if (!regex.hasMatch(_emailController.text.trim()!)) {
+    } else if (!regex.hasMatch(_emailController.text.trim())) {
       Get.snackbar('مهلاً', 'أدخل إيميل صحيح ', colorText: Colors.red);
       return false;
     }else if (_emailController.text.trim() != SharedPrefController().email) {
@@ -133,7 +139,7 @@ class _ContactUsSellerPageState extends State<ContactUsSellerPage> {
     } else if (_messageController.text.trim().isEmpty) {
       Get.snackbar('مهلاً', 'أدخل رسالتك ', colorText: Colors.red);
       return false;
-    }else if (_messageController.text.trim().length > 70) {
+    }else if (_messageController.text.trim().length >= 70) {
       Get.snackbar('مهلاً', 'الحد الأقصى لطول الرسالة هو 70 حرف ', colorText: Colors.red);
       return false;
     }

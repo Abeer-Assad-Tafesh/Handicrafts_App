@@ -36,11 +36,11 @@ class _HomeScreenState extends State<HomeScreen> {
         color: kPrimaryColor,
       ));
     } else {*/
-      print("hhhhhhhhhhh ${
+      /*print("hhhhhhhhhhh ${
             _popularProductControllers.isLoading ||
                 _recommendedProductControllers.isLoading ||
                 _storeGetXController.isLoading
-          }");
+          }");*/
       return SingleChildScrollView(
         child: Column(
           children: [

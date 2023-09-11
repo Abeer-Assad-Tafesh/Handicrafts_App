@@ -147,7 +147,9 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     if (_messageController.text.isNotEmpty) {
       SharedPrefController().saveChatMessage(_messageController.text);
       var message = {
-        'sendby': _auth.currentUser!.displayName,
+        // 'sendby': _auth.currentUser!.displayName,
+        'sendby': SharedPrefController().typeUser == 'buyer' ? _auth.currentUser!.displayName
+            : storeName,
         'message': _messageController.text,
         'type': 'text',
         // 'userImageProfile': '',
@@ -309,22 +311,28 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
   Widget messageContainer(var message, var sender, var time, var type, BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    print('$storeName   $sender');
     return type == 'text'
         ? Container(
-            margin: EdgeInsets.only(top: 4.h,bottom: 2.h,left: 40.w,right: 5.w),
-            alignment: sender == _auth.currentUser?.displayName
+            margin: EdgeInsets.only(top: 4.h,bottom: 2.h,left: 5.w,right: 5.w),
+            alignment: sender ==  _auth.currentUser!.displayName
                 ? Alignment.centerRight
                 : Alignment.centerLeft,
             child: Column(
-              crossAxisAlignment: sender == _auth.currentUser?.displayName
+              crossAxisAlignment: sender ==  _auth.currentUser!.displayName
                   ? CrossAxisAlignment.start
                   : CrossAxisAlignment.end,
               // mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  '$sender',
-                        style: TextStyle(fontSize: 10, color: Colors.grey[500]),
-                      ),
+                Row(
+                  children: [
+                    SizedBox(width: 15,),
+                    Text(
+                     '$sender',
+                            style: TextStyle(fontSize: 10, color: Colors.grey[500]),
+                          ),
+                  ],
+                ),
                 const SizedBox(),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -336,10 +344,12 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                     Flexible(
                       child: Container(
                         decoration: BoxDecoration(
-                            color: sender == _auth.currentUser?.displayName
+                            color: sender == (SharedPrefController().typeUser == 'buyer' ? _auth.currentUser!.displayName
+                                :storeName)
                                 ? Color(0xC57D8D7B)
                                 : Colors.grey[400]!,
-                            borderRadius: sender == _auth.currentUser?.displayName
+                            borderRadius: sender == (SharedPrefController().typeUser == 'buyer' ? _auth.currentUser!.displayName
+                                :storeName)
                                 ?  BorderRadius.only(
                                     topLeft: Radius.circular(20.0.r),
                                     topRight: Radius.circular(20.0.r),
@@ -355,14 +365,16 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                               vertical: 0.h, horizontal: 14.w),
                           child: Column(
                             crossAxisAlignment:
-                                sender == _auth.currentUser?.displayName
+                                sender == (SharedPrefController().typeUser == 'buyer' ? _auth.currentUser!.displayName
+                                    :storeName)
                                     ? CrossAxisAlignment.start
                                     : CrossAxisAlignment.end,
                             children: [
                               Text(
                                 message,
                                 style: TextStyle(
-                                  color: sender == _auth.currentUser?.displayName
+                                  color: sender == (SharedPrefController().typeUser == 'buyer' ? _auth.currentUser!.displayName
+                                      :storeName)
                                       ? Colors.white
                                       : Colors.black,
                                   fontSize: 14.sp,
@@ -385,24 +397,33 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           )
         : Container(
             margin:  EdgeInsets.symmetric(vertical: 4.h, horizontal: 10.w),
-      alignment: sender == _auth.currentUser?.displayName
+      alignment: sender == (SharedPrefController().typeUser == 'buyer' ? _auth.currentUser!.displayName
+          :storeName)
           ? Alignment.centerRight
           : Alignment.centerLeft,
             child: Column(
-              crossAxisAlignment: sender == _auth.currentUser?.displayName
+              crossAxisAlignment: sender == (SharedPrefController().typeUser == 'buyer' ? _auth.currentUser!.displayName
+                  :storeName)
                   ? CrossAxisAlignment.start
                   : CrossAxisAlignment.end,
               children: [
-                Text(
-                  '$sender',
-                  style: TextStyle(fontSize: 10.sp, color: Colors.grey[500]),
+                Row(
+                  children: [
+                    SizedBox(width: 15,),
+                    Text(
+                      SharedPrefController().typeUser == 'buyer' ?'$sender'
+                          :'$storeName',
+                      style: TextStyle(fontSize: 10.sp, color: Colors.grey[500]),
+                    ),
+                  ],
                 ),
                 Stack(children: [
                   Container(
                     height: size.height / 2.5,
                     width: size.width,
                     // margin: const EdgeInsets.all(10),
-                    alignment: sender == _auth.currentUser?.displayName
+                    alignment: sender == (SharedPrefController().typeUser == 'buyer' ? _auth.currentUser!.displayName
+                        :storeName)
                         ? Alignment.centerRight
                         : Alignment.centerLeft,
                     child: InkWell(
@@ -418,7 +439,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                             borderRadius: BorderRadius.circular(10.r),
                             border: Border.all(
                                 width: 3.w,
-                                color: sender == _auth.currentUser?.displayName
+                                color: sender == (SharedPrefController().typeUser == 'buyer' ? _auth.currentUser!.displayName
+                                    :storeName)
                                     ? const Color(0xC57D8D7B)
                                     : Colors.grey[400]!),
                           ),
